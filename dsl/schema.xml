@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="demo1" endian="big">
+    <fields>
+        <enum name="MsgId" type="uint8" semanticType="messageId" >
+            <validValue name="Ack" val="0" />
+            <validValue name="SimpleInts" val="1" />
+        </enum>
+    </fields>
+    
+    <frame name="Frame">
+        <sync name="Sync">
+            <int name="Sync" type="uint16" defaultValue="0xabcd" validValue="0xabcd" failOnInvalid="true"/>
+        </sync>
+        <size name="Size">
+            <int name="Size" type="uint16" serOffset="2" displayOffset="2"/>
+        </size>
+        <id name="Id" field="MsgId" />
+        <payload name="Data" />
+        <checksum name="Checksum" alg="crc-ccitt" from="Size">
+            <int name="Checksum" type="uint16" />
+        </checksum>
+    </frame>       
+    
+    <message name="Ack" id="MsgId.Ack" sender="Server">
+        <ref field="MsgId" />
+    </message>
+    
+    <message name="SimpleInts" id="MsgId.SimpleInts" displayName="Simple Ints" sender="client">
+        <int name="F1" type="int8" defaultValue="1" />        
+        <int name="F2" type="uint8" defaultValue="2" />
+        <int name="F3" type="int16" defaultValue="3" />        
+        <int name="F4" type="uint16" defaultValue="4" />
+        <int name="F5" type="int32" defaultValue="5"/>        
+        <int name="F6" type="uint32" defaultValue="6"/>
+        <int name="F7" type="int64" defaultValue="7"/>        
+        <int name="F8" type="uint64" defaultValue="8"/>
+        <int name="F9" type="intvar" length="4" defaultValue="9" />
+        <int name="F10" type="uintvar" length="4" defaultValue="10"/>
+    </message>
+</schema>
