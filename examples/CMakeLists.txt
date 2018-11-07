@@ -32,7 +32,8 @@ if ((CMAKE_COMPILER_IS_GNUCC) OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"))
     
 elseif (MSVC)
 
-    #add_definitions("/wd4251" "/wd4503" "/wd4309" "/wd4267" "-D_SCL_SECURE_NO_WARNINGS")
+    #add_definitions("/wd4251" "/wd4503" "/wd4309" "/wd4267")
+    add_definitions("-D_SCL_SECURE_NO_WARNINGS")
 
     if (NOT DEMO1_NO_WARN_AS_ERR)
         add_definitions("/WX")
@@ -67,6 +68,8 @@ if ("${COMMS_INSTALL_DIR}" STREQUAL "")
         CMAKE_ARGS
             -DCC_COMMS_LIB_ONLY=ON -DCC_NO_UNIT_TESTS=ON
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} 
+            -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
         BINARY_DIR "${cc_bin_dir}"
     )
 
