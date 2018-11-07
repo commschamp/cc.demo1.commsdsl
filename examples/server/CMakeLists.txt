@@ -24,6 +24,7 @@ target_link_libraries(${name}
     Boost::boost Boost::program_options Boost::system ${CMAKE_THREAD_LIBS_INIT})
 target_include_directories(${name} PRIVATE "${OUTPUT_DIR}/include")
 
+add_dependencies(${name} ${PROJECT_NAME})
 if (TARGET ${COMMS_TGT})
     add_dependencies(${name} ${COMMS_TGT})
 endif ()

@@ -54,7 +54,7 @@ if ("${COMMS_INSTALL_DIR}" STREQUAL "")
     set (cc_main_dir "${CMAKE_BINARY_DIR}/comms_champion")
     set (cc_src_dir "${cc_main_dir}/src")
     set (cc_bin_dir "${cc_main_dir}/build")
-    set (cc_install_dir "${cc_main_dir}/install")
+    set (cc_install_dir "${cc_bin_dir}/install")
 
 
     ExternalProject_Add(
@@ -67,7 +67,7 @@ if ("${COMMS_INSTALL_DIR}" STREQUAL "")
         CMAKE_ARGS
             -DCC_COMMS_LIB_ONLY=ON -DCC_NO_UNIT_TESTS=ON
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-        BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/cc_build"
+        BINARY_DIR "${cc_bin_dir}"
     )
 
     include_directories(${cc_install_dir}/include)
