@@ -48,7 +48,7 @@ set (COMMS_TGT "comms_tgt")
 if ("${COMMS_INSTALL_DIR}" STREQUAL "")
     include(ExternalProject)
     if ("${COMMS_TAG}" STREQUAL "")
-        set(COMMS_TAG "master")
+        set(COMMS_TAG "develop")
     endif ()
 
     set (cc_main_dir "${CMAKE_BINARY_DIR}/comms_champion")
