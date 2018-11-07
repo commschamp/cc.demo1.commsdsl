@@ -3,12 +3,12 @@
 #include <csignal>
 
 #include "ProgramOptions.h"
-#include "Server.h"
+#include "Client.h"
 
 int main(int argc, const char* argv[])
 {
     try {
-        demo1::server::ProgramOptions options;
+        demo1::client::ProgramOptions options;
         options.parse(argc, argv);
         if (options.helpRequested()) {
             std::cout << "Usage:\n\t" << argv[0] << " [OPTIONS]\n";
@@ -31,8 +31,8 @@ int main(int argc, const char* argv[])
                 std::cerr << "Termination due to signal " << signum << std::endl;
             });
 
-        demo1::server::Server server(io, options.port());
-        if (!server.start()) {
+        demo1::client::Client client(io, options.server(), options.port());
+        if (!client.start()) {
             return -1;
         }
 

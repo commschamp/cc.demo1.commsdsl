@@ -1,4 +1,4 @@
-set (name "${PROJECT_NAME}_server_example")
+set (name "${PROJECT_NAME}_client_example")
 
 find_package(Boost)
 
@@ -15,8 +15,7 @@ find_package(Threads REQUIRED)
 set (src
     "main.cpp"
     "ProgramOptions.cpp"
-    "Server.cpp"
-    "Session.cpp"
+    "Client.cpp"
 )
 
 add_executable(${name} ${src})

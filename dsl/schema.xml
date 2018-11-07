@@ -35,6 +35,10 @@
         <int name="F7" type="int64" defaultValue="7"/>        
         <int name="F8" type="uint64" defaultValue="8"/>
         <int name="F9" type="intvar" length="4" defaultValue="9" />
-        <int name="F10" type="uintvar" length="4" defaultValue="10"/>
+        <int name="F10" type="uintvar" length="4" defaultValue="10" endian="little">
+            <description>
+                Using little endian (LEB-128) to encode this field.
+            </description>
+        </int>
     </message>
 </schema>
