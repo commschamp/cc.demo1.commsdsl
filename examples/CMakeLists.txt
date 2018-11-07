@@ -69,6 +69,8 @@ if ("${COMMS_INSTALL_DIR}" STREQUAL "")
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
         BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/cc_build"
     )
+
+    include_directories(${cc_install_dir}/include)
 else ()
     list (APPEND CMAKE_PREFIX_PATH "${COMMS_INSTALL_DIR}")
 
