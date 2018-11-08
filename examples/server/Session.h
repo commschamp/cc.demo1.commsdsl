@@ -2,10 +2,10 @@
 
 #include <functional>
 #include <memory>
-#include <array>
 #include <vector>
 
 #include <boost/asio.hpp>
+#include <boost/array.hpp>
 
 #include "demo1/Message.h"
 #include "demo1/ServerInputMessages.h"
@@ -45,8 +45,12 @@ public:
         >;
 
     using InSimpleInts = demo1::message::SimpleInts<InputMsg>;
+    using InScaledInts = demo1::message::ScaledInts<InputMsg>;
+    using InFloats = demo1::message::Floats<InputMsg>;
 
     void handle(InSimpleInts& msg);
+    void handle(InScaledInts& msg);
+    void handle(InFloats& msg);
     void handle(InputMsg&);
 
 private:
@@ -68,7 +72,7 @@ private:
 
     Socket m_socket;
     TermCallback m_termCb;    
-    std::array<std::uint8_t, 1024> m_readBuf;
+    boost::array<std::uint8_t, 1024> m_readBuf;
     std::vector<std::uint8_t> m_inputBuf;
     Frame m_frame;
     Socket::endpoint_type m_remote;

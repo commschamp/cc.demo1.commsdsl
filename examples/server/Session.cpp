@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "demo1/message/Ack.h"
+#include "comms/units.h"
 
 namespace demo1
 {
@@ -49,6 +50,42 @@ void Session::handle (InSimpleInts& msg)
         "\tF8 = " << msg.field_f8().value() << '\n' <<
         "\tF9 = " << msg.field_f9().value() << '\n' <<
         "\tF10 = " << msg.field_f10().value() << '\n' <<
+        std::endl;
+    sendAck(msg.doGetId());
+}
+
+void Session::handle (InScaledInts& msg)
+{
+    std::cout << 
+        '\t' << msg.field_lat().name() << ": "
+            "raw = " << msg.field_lat().value() << 
+            "; deg = " << comms::units::getDegrees<float>(msg.field_lat()) <<
+            "; rad = " << comms::units::getRadians<float>(msg.field_lat()) << '\n' <<
+        '\t' << msg.field_lon().name() << ": " 
+            "raw = " << msg.field_lon().value() << 
+            "; deg = " << comms::units::getDegrees<float>(msg.field_lon()) <<
+            "; rad = " << comms::units::getRadians<float>(msg.field_lon()) << '\n' <<
+        '\t' << msg.field_height().name() << ": " 
+            "raw = " << msg.field_height().value() << 
+            "; mm = " << comms::units::getMillimeters<float>(msg.field_height()) <<
+            "; cm = " << comms::units::getCentimeters<float>(msg.field_height()) << 
+            "; m = " << comms::units::getMeters<float>(msg.field_height()) << '\n' <<
+        '\t' << msg.field_someScaledVal().name() << ": " 
+            "raw = " << msg.field_someScaledVal().value() << 
+            "; scaled = " << msg.field_someScaledVal().getScaled<float>() << '\n' <<            
+        std::endl;
+    sendAck(msg.doGetId());
+}
+
+void Session::handle(InFloats& msg)
+{
+    std::cout << 
+        '\t' << msg.field_timeout().name() << ": "  << msg.field_timeout().value() << '\n' <<
+        '\t' << msg.field_distance().name() << ": " 
+            "raw = " << msg.field_distance().value() << 
+            "; mm = " << comms::units::getMillimeters<float>(msg.field_distance()) <<
+            "; cm = " << comms::units::getCentimeters<float>(msg.field_distance()) << 
+            "; m = " << comms::units::getMeters<float>(msg.field_distance()) << '\n' <<
         std::endl;
     sendAck(msg.doGetId());
 }

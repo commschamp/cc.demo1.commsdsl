@@ -4,6 +4,8 @@
         <enum name="MsgId" type="uint8" semanticType="messageId" >
             <validValue name="Ack" val="0" />
             <validValue name="SimpleInts" val="1" />
+            <validValue name="ScaledInts" val="2" />
+            <validValue name="Floats" val="3" />
         </enum>
     </fields>
     
@@ -41,4 +43,39 @@
             </description>
         </int>
     </message>
+
+    <fields>
+        <int name="Lat" type="int32" units="deg" scaling="1/10000000" displayDecimals="7">
+            <description>
+                Latitude in 1/10^7 of the degrees
+            </description>
+        </int>
+        <int reuse="Lat" name="lon" description="Longitude in 1/10^7 of the degrees" />
+    </fields>
+
+    <message name="ScaledInts" id="MsgId.ScaledInts" displayName="Scaled Ints" sender="client">
+        <ref field="Lat" />
+        <ref field="Lon" />
+        <int name="Height" type="int32" units="mm" >
+            <description value="Height above ellipsoid in mm" />
+        </int>
+        <int name="SomeScaledVal" type="uint32" scaling="1/100" displayDecimals="2">
+            <description>
+                Some scaled value without units.
+            </description>
+            <displayName value="Some Scaled Value" />
+        </int>
+    </message>
+
+    <message name="Floats" id="MsgId.Floats" sender="client">
+        <float name="Timeout" type="float" units="sec">
+            <special name="Infinite" val="0.0" />
+            <special name="Invalid" val="nan" />
+        </float>        
+        <float name="Distance" type="float" units="m" defaultValue="Invalid">
+            <special name="Infinite" val="inf" />
+            <special name="Invalid" val="nan" />
+        </float>        
+    </message>
+
 </schema>

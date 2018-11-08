@@ -5,6 +5,7 @@
 
 #include "demo1/MsgId.h"
 #include "demo1/AllMessages.h"
+#include "comms/units.h"
 
 namespace demo1
 {
@@ -128,7 +129,9 @@ void Client::readDataFromStdin()
 
                 using SendFunc = void (Client::*)();
                 static const std::map<unsigned, SendFunc> Map = {
-                    std::make_pair(demo1::MsgId_SimpleInts, &Client::sendSimpleInts)
+                    std::make_pair(demo1::MsgId_SimpleInts, &Client::sendSimpleInts),
+                    std::make_pair(demo1::MsgId_ScaledInts, &Client::sendScaledInts),
+                    std::make_pair(demo1::MsgId_Floats, &Client::sendFloats)
                 };
 
                 auto iter = Map.find(msgId);
@@ -153,6 +156,25 @@ void Client::sendSimpleInts()
     msg.field_f9().value() = 12345;
     msg.field_f10().value() = 678910;
     // Keep default value of other fields
+    sendMessage(msg);
+}
+
+void Client::sendScaledInts()
+{
+    demo1::message::ScaledInts<OutputMsg> msg;
+    comms::units::setDegrees(msg.field_lat(), -27.470125);
+    comms::units::setDegrees(msg.field_lon(), 153.021072);
+    comms::units::setMeters(msg.field_height(), 80.123);
+    msg.field_someScaledVal().setScaled(123.45);
+    sendMessage(msg);
+}
+
+void Client::sendFloats()
+{
+    demo1::message::Floats<OutputMsg> msg;
+    msg.field_timeout().setInvalid();
+    assert(std::isnan(msg.field_timeout().value()));
+    comms::units::setCentimeters(msg.field_distance(), 34.56);
     sendMessage(msg);
 }
 

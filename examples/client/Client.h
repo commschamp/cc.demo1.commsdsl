@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <string>
 #include <iterator>
-#include <array>
 #include <vector>
 
 #include <boost/asio.hpp>
+#include <boost/array.hpp>
 
 #include "demo1/Message.h"
 #include "demo1/ClientInputMessages.h"
@@ -56,6 +56,8 @@ private:
     void readDataFromServer();
     void readDataFromStdin();
     void sendSimpleInts();
+    void sendScaledInts();
+    void sendFloats();
     void sendMessage(const OutputMsg& msg);
     void waitForAck();
     void processInput();
@@ -68,7 +70,7 @@ private:
     boost::asio::streambuf m_stdinBuf;
     Frame m_frame;
     demo1::MsgId m_sentId = demo1::MsgId_Ack;
-    std::array<std::uint8_t, 32> m_readBuf;
+    boost::array<std::uint8_t, 32> m_readBuf;
     std::vector<std::uint8_t> m_inputBuf;
 };
 
