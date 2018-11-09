@@ -58,6 +58,7 @@ private:
     void sendSimpleInts();
     void sendScaledInts();
     void sendFloats();
+    void sendEnums();
     void sendMessage(const OutputMsg& msg);
     void waitForAck();
     void processInput();

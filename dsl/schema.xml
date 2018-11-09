@@ -6,6 +6,7 @@
             <validValue name="SimpleInts" val="1" />
             <validValue name="ScaledInts" val="2" />
             <validValue name="Floats" val="3" />
+            <validValue name="Enums" val="4" />
         </enum>
     </fields>
     
@@ -78,4 +79,38 @@
         </float>        
     </message>
 
+    <message name="Enums" id="MsgId.Enums" sender="client">
+        <enum name="F1" type="uint8">
+            <description value="Simple enum with sequential values" />
+            <validValue name="V0" val="0" />
+            <validValue name="V1" val="1" />
+            <validValue name="V2" val="2" />
+        </enum>
+
+        <enum name="F2" type="int16" defaultValue="V3">
+            <description>
+                Enum with signed values
+            </description>
+            <validValue name="V1" val="-1" />
+            <validValue name="V2" val="5" />
+            <validValue name="V3" val="6" />
+            <validValue name="V4" val="7" />
+        </enum>
+
+        <enum name="F3" type="uint32" length="3" defaultValue="V1" hexAssign="true">
+            <description>
+                Enum with non-standard length
+            </description>
+            <validValue name="V1" val="0x010203" />
+            <validValue name="V2" val="0x040506" />
+        </enum>
+
+        <enum name="F4" type="uintvar" length="2">
+            <description>
+                Enum with variable length
+            </description>
+            <validValue name="V1" val="0" />
+            <validValue name="V2" val="128" />
+        </enum>
+    </message>
 </schema>

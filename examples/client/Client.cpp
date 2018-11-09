@@ -131,7 +131,8 @@ void Client::readDataFromStdin()
                 static const std::map<unsigned, SendFunc> Map = {
                     std::make_pair(demo1::MsgId_SimpleInts, &Client::sendSimpleInts),
                     std::make_pair(demo1::MsgId_ScaledInts, &Client::sendScaledInts),
-                    std::make_pair(demo1::MsgId_Floats, &Client::sendFloats)
+                    std::make_pair(demo1::MsgId_Floats, &Client::sendFloats),
+                    std::make_pair(demo1::MsgId_Enums, &Client::sendEnums)
                 };
 
                 auto iter = Map.find(msgId);
@@ -175,6 +176,15 @@ void Client::sendFloats()
     msg.field_timeout().setInvalid();
     assert(std::isnan(msg.field_timeout().value()));
     comms::units::setCentimeters(msg.field_distance(), 34.56);
+    sendMessage(msg);
+}
+
+void Client::sendEnums()
+{
+    demo1::message::Enums<OutputMsg> msg;
+    msg.field_f1().value() = demo1::message::EnumsFields<>::F1Val::V2;
+    msg.field_f4().value() = demo1::message::EnumsFields<>::F4Val::V2;
+    // Keep default value of other fields
     sendMessage(msg);
 }
 

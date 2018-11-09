@@ -90,6 +90,17 @@ void Session::handle(InFloats& msg)
     sendAck(msg.doGetId());
 }
 
+void Session::handle(InEnums& msg)
+{
+    std::cout << 
+        '\t' << msg.field_f1().name() << " = "  << (unsigned)msg.field_f1().value() << '\n' <<
+        '\t' << msg.field_f2().name() << " = "  << (int)msg.field_f2().value() << '\n' <<
+        '\t' << msg.field_f3().name() << " = 0x" << std::hex  << (unsigned)msg.field_f3().value() << std::dec << '\n' <<
+        '\t' << msg.field_f4().name() << " = "  << (unsigned)msg.field_f4().value() << '\n' <<
+        std::endl;
+    sendAck(msg.doGetId());
+}
+
 void Session::handle(InputMsg&)
 {
     std::cerr << "WARNING: Unexpected message received" << std::endl;
