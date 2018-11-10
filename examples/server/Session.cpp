@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <iterator>
 
 #include "demo1/message/Ack.h"
 #include "comms/units.h"
@@ -11,6 +12,18 @@ namespace demo1
 
 namespace server
 {
+
+namespace
+{
+
+void printRawData(const std::vector<std::uint8_t>& data)
+{
+    std::cout << std::hex;
+    std::copy(data.begin(), data.end(), std::ostream_iterator<unsigned>(std::cout, " "));
+    std::cout << std::dec << '\n';
+}
+
+} // namespace
 
 void Session::start()
 {
@@ -135,9 +148,25 @@ void Session::handle(InStrings& msg)
         '\t' << msg.field_f2().name() << " = " << msg.field_f2().value() << '\n' <<
         '\t' << msg.field_f3().name() << " = " << msg.field_f3().value() << '\n' <<
         '\t' << msg.field_f4().name() << " = " << msg.field_f4().value() << '\n' <<
+        '\t' << msg.field_f5().name() << " = " << msg.field_f5().value() << '\n' <<
         std::endl;
     sendAck(msg.doGetId());
 }
+
+void Session::handle(InDatas& msg)
+{
+    std::cout << '\t' << msg.field_f1().name() << " = ";
+    printRawData(msg.field_f1().value());
+    std::cout << '\t' << msg.field_f2().name() << " = ";
+    printRawData(msg.field_f2().value());
+    std::cout << '\t' << msg.field_f3().name() << " = ";
+    printRawData(msg.field_f3().value());
+    std::cout << '\t' << msg.field_f4().name() << " = ";
+    printRawData(msg.field_f4().value());
+    std::cout << std::endl;
+    sendAck(msg.doGetId());
+}
+
 
 void Session::handle(InputMsg&)
 {

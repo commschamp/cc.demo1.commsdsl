@@ -10,6 +10,7 @@
             <validValue name="Sets" val="5" />
             <validValue name="Bitfields" val="6" />
             <validValue name="Strings" val="7" />
+            <validValue name="Datas" val="8" />
         </enum>
     </fields>
     
@@ -152,6 +153,7 @@
     </message>
 
     <message name="Strings" id="MsgId.Strings" sender="client">
+        <int name="F4Len" type="uint8" description="Detached length of F4." />
         <string name="F1" length="5" description="Fixed length string" />
         <string name="F2" defaultValue="hello">
             <description value="Length prefixed string" />
@@ -162,7 +164,25 @@
         <string name="F3" zeroTermSuffix="true">
             <description value="Zero terminated string" />
         </string>
-        <string name="F4" description="String without length limit" />
+        <string name="F4" lengthPrefix="$F4Len">
+            <description value="String with detached length prefix" />
+        </string>
+        <string name="F5" description="String without length limit" />
+    </message>
+
+    <message name="Datas" id="MsgId.Datas" sender="client">
+        <int name="F3Len" type="uint8" description="Detached length of F4." />
+        <data name="F1" length="5" description="Fixed length raw data" />
+        <data name="F2" defaultValue="ab cd ef">
+            <description value="Length prefixed raw data" />
+            <lengthPrefix>
+                <int name="Length" type="uint8" />
+            </lengthPrefix>
+        </data>
+        <data name="F3" lengthPrefix="$F3Len">
+            <description value="Data with detached length prefix" />
+        </data>
+        <data name="F4" description="Data without length limit" />
     </message>
 
 </schema>

@@ -135,7 +135,8 @@ void Client::readDataFromStdin()
                     std::make_pair(demo1::MsgId_Enums, &Client::sendEnums),
                     std::make_pair(demo1::MsgId_Sets, &Client::sendSets),
                     std::make_pair(demo1::MsgId_Bitfields, &Client::sendBitfields),
-                    std::make_pair(demo1::MsgId_Strings, &Client::sendStrings)
+                    std::make_pair(demo1::MsgId_Strings, &Client::sendStrings),
+                    std::make_pair(demo1::MsgId_Datas, &Client::sendDatas)
                 };
 
                 auto iter = Map.find(msgId);
@@ -215,8 +216,21 @@ void Client::sendStrings()
     demo1::message::Strings<OutputMsg> msg;
     msg.field_f1().value() = "bla";
     msg.field_f3().value() = "str";
-    msg.field_f4().value() = "aa";
+    msg.field_f4().value() = "oooo";
+    msg.field_f5().value() = "aa";
     // Keep default value of other fields
+    msg.doRefresh(); // Bring message into consistent state, i.e. update F4Len
+    sendMessage(msg);
+}
+
+void Client::sendDatas()
+{
+    demo1::message::Datas<OutputMsg> msg;
+    msg.field_f1().value() = {0x10, 0x20, 0x30};
+    msg.field_f3().value() = {0x01, 0x02, 0x03};
+    msg.field_f4().value() = {0x06, 0x07};
+    // Keep default value of other fields
+    msg.doRefresh(); // Bring message into consistent state, i.e. update F3Len
     sendMessage(msg);
 }
 
