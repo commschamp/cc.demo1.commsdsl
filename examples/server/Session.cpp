@@ -1,6 +1,7 @@
 #include "Session.h"
 
 #include <iostream>
+#include <iomanip>
 
 #include "demo1/message/Ack.h"
 #include "comms/units.h"
@@ -97,6 +98,19 @@ void Session::handle(InEnums& msg)
         '\t' << msg.field_f2().name() << " = "  << (int)msg.field_f2().value() << '\n' <<
         '\t' << msg.field_f3().name() << " = 0x" << std::hex  << (unsigned)msg.field_f3().value() << std::dec << '\n' <<
         '\t' << msg.field_f4().name() << " = "  << (unsigned)msg.field_f4().value() << '\n' <<
+        std::endl;
+    sendAck(msg.doGetId());
+}
+
+void Session::handle(InSets& msg)
+{
+    std::cout << std::hex <<
+        '\t' << msg.field_f1().name() << " = 0x"  << (unsigned)msg.field_f1().value() << 
+            " (valid = " << std::boolalpha << msg.field_f1().valid() << ")\n" <<
+        '\t' << msg.field_f2().name() << " = 0x"  << msg.field_f2().value() << 
+            " (valid = " << std::boolalpha << msg.field_f2().valid() << ")\n" <<
+        '\t' << msg.field_f3().name() << " = 0x"  << msg.field_f3().value() << 
+            " (valid = " << std::boolalpha << msg.field_f3().valid() << ")\n" <<
         std::endl;
     sendAck(msg.doGetId());
 }

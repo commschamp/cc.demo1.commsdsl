@@ -7,6 +7,7 @@
             <validValue name="ScaledInts" val="2" />
             <validValue name="Floats" val="3" />
             <validValue name="Enums" val="4" />
+            <validValue name="Sets" val="5" />
         </enum>
     </fields>
     
@@ -113,4 +114,24 @@
             <validValue name="V2" val="128" />
         </enum>
     </message>
+
+    <message name="Sets" id="MsgId.Sets" sender="client">
+        <set name="F1" type="uint8">
+            <description value="Sequential 1 byte set" />
+            <bit name="Bit0" idx="0" />
+            <bit name="Bit1" idx="1" />
+            <bit name="Bit2" idx="2" />
+        </set>
+        <set name="F2" length="2">
+            <description value="Non Sequential 2 bytes set" />
+            <bit name="Bit0" idx="0" />
+            <bit name="Bit15" idx="15" defaultValue="true" />
+        </set>
+        <set name="F3" length="3">
+            <description value="Non standard length (3 bytes) set" />
+            <bit name="Bit0" idx="0" />
+            <bit name="Bit2" idx="2" />
+        </set>
+    </message>
+
 </schema>

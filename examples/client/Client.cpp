@@ -132,7 +132,8 @@ void Client::readDataFromStdin()
                     std::make_pair(demo1::MsgId_SimpleInts, &Client::sendSimpleInts),
                     std::make_pair(demo1::MsgId_ScaledInts, &Client::sendScaledInts),
                     std::make_pair(demo1::MsgId_Floats, &Client::sendFloats),
-                    std::make_pair(demo1::MsgId_Enums, &Client::sendEnums)
+                    std::make_pair(demo1::MsgId_Enums, &Client::sendEnums),
+                    std::make_pair(demo1::MsgId_Sets, &Client::sendSets)
                 };
 
                 auto iter = Map.find(msgId);
@@ -185,6 +186,16 @@ void Client::sendEnums()
     msg.field_f1().value() = demo1::message::EnumsFields<>::F1Val::V2;
     msg.field_f4().value() = demo1::message::EnumsFields<>::F4Val::V2;
     // Keep default value of other fields
+    sendMessage(msg);
+}
+
+void Client::sendSets()
+{
+    demo1::message::Sets<OutputMsg> msg;
+    msg.field_f1().setBitValue_Bit2(true);
+    msg.field_f2().setBitValue_Bit0(true);
+    msg.field_f3().value() = 0x7; // sets also reserved bit 1
+    // Keep default value of other bits
     sendMessage(msg);
 }
 

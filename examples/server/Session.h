@@ -48,11 +48,13 @@ public:
     using InScaledInts = demo1::message::ScaledInts<InputMsg>;
     using InFloats = demo1::message::Floats<InputMsg>;
     using InEnums = demo1::message::Enums<InputMsg>;
+    using InSets = demo1::message::Sets<InputMsg>;
 
     void handle(InSimpleInts& msg);
     void handle(InScaledInts& msg);
     void handle(InFloats& msg);
     void handle(InEnums& msg);
+    void handle(InSets& msg);
     void handle(InputMsg&);
 
 private:
