@@ -60,6 +60,7 @@ private:
     void sendFloats();
     void sendEnums();
     void sendSets();
+    void sendBitfields();
     void sendMessage(const OutputMsg& msg);
     void waitForAck();
     void processInput();

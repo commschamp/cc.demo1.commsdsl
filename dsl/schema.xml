@@ -8,6 +8,7 @@
             <validValue name="Floats" val="3" />
             <validValue name="Enums" val="4" />
             <validValue name="Sets" val="5" />
+            <validValue name="Bitfields" val="6" />
         </enum>
     </fields>
     
@@ -52,7 +53,7 @@
                 Latitude in 1/10^7 of the degrees
             </description>
         </int>
-        <int reuse="Lat" name="lon" description="Longitude in 1/10^7 of the degrees" />
+        <int reuse="Lat" name="Lon" description="Longitude in 1/10^7 of the degrees" />
     </fields>
 
     <message name="ScaledInts" id="MsgId.ScaledInts" displayName="Scaled Ints" sender="client">
@@ -132,6 +133,21 @@
             <bit name="Bit0" idx="0" />
             <bit name="Bit2" idx="2" />
         </set>
+    </message>
+
+    <message name="Bitfields" id="MsgId.Bitfields" sender="client">
+        <bitfield name="F1">
+            <int name="Mem1" type="uint8" bitLength="3" />
+            <set name="Mem2" bitLength="3">
+                <bit name="Bit0" idx="0" />
+                <bit name="Bit1" idx="1" />
+                <bit name="Bit2" idx="2" />
+            </set>
+            <enum name="Mem3" type="uint8" bitLength="2">
+                <validValue name="V1" val="0" />
+                <validValue name="V2" val="3" />
+            </enum>
+        </bitfield>
     </message>
 
 </schema>

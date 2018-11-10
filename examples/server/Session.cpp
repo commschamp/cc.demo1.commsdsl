@@ -115,6 +115,20 @@ void Session::handle(InSets& msg)
     sendAck(msg.doGetId());
 }
 
+void Session::handle(InBitfields& msg)
+{
+    std::cout << 
+        '\t' << msg.field_f1().name() << ":\n" <<
+        "\t\t" << msg.field_f1().field_mem1().name() << " = "  << 
+            (unsigned)msg.field_f1().field_mem1().value() << '\n' << 
+        "\t\t" << msg.field_f1().field_mem2().name() << std::hex << 
+            " = 0x"  << msg.field_f1().field_mem2().value() << std::dec << '\n' << 
+        "\t\t" << msg.field_f1().field_mem3().name() << " = "  << (unsigned)msg.field_f1().field_mem3().value() << '\n' << 
+        std::endl;
+    sendAck(msg.doGetId());
+}
+
+
 void Session::handle(InputMsg&)
 {
     std::cerr << "WARNING: Unexpected message received" << std::endl;
