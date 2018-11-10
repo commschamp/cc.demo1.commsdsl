@@ -61,6 +61,7 @@ private:
     void sendEnums();
     void sendSets();
     void sendBitfields();
+    void sendStrings();
     void sendMessage(const OutputMsg& msg);
     void waitForAck();
     void processInput();

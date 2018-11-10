@@ -9,6 +9,7 @@
             <validValue name="Enums" val="4" />
             <validValue name="Sets" val="5" />
             <validValue name="Bitfields" val="6" />
+            <validValue name="Strings" val="7" />
         </enum>
     </fields>
     
@@ -148,6 +149,20 @@
                 <validValue name="V2" val="3" />
             </enum>
         </bitfield>
+    </message>
+
+    <message name="Strings" id="MsgId.Strings" sender="client">
+        <string name="F1" length="5" description="Fixed length string" />
+        <string name="F2" defaultValue="hello">
+            <description value="Length prefixed string" />
+            <lengthPrefix>
+                <int name="Length" type="uint8" />
+            </lengthPrefix>
+        </string>
+        <string name="F3" zeroTermSuffix="true">
+            <description value="Zero terminated string" />
+        </string>
+        <string name="F4" description="String without length limit" />
     </message>
 
 </schema>

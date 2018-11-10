@@ -81,7 +81,7 @@ void Session::handle (InScaledInts& msg)
 void Session::handle(InFloats& msg)
 {
     std::cout << 
-        '\t' << msg.field_timeout().name() << ": "  << msg.field_timeout().value() << '\n' <<
+        '\t' << msg.field_timeout().name() << ": " << msg.field_timeout().value() << '\n' <<
         '\t' << msg.field_distance().name() << ": " 
             "raw = " << msg.field_distance().value() << 
             "; mm = " << comms::units::getMillimeters<float>(msg.field_distance()) <<
@@ -94,10 +94,10 @@ void Session::handle(InFloats& msg)
 void Session::handle(InEnums& msg)
 {
     std::cout << 
-        '\t' << msg.field_f1().name() << " = "  << (unsigned)msg.field_f1().value() << '\n' <<
-        '\t' << msg.field_f2().name() << " = "  << (int)msg.field_f2().value() << '\n' <<
+        '\t' << msg.field_f1().name() << " = " << (unsigned)msg.field_f1().value() << '\n' <<
+        '\t' << msg.field_f2().name() << " = " << (int)msg.field_f2().value() << '\n' <<
         '\t' << msg.field_f3().name() << " = 0x" << std::hex  << (unsigned)msg.field_f3().value() << std::dec << '\n' <<
-        '\t' << msg.field_f4().name() << " = "  << (unsigned)msg.field_f4().value() << '\n' <<
+        '\t' << msg.field_f4().name() << " = " << (unsigned)msg.field_f4().value() << '\n' <<
         std::endl;
     sendAck(msg.doGetId());
 }
@@ -105,11 +105,11 @@ void Session::handle(InEnums& msg)
 void Session::handle(InSets& msg)
 {
     std::cout << std::hex <<
-        '\t' << msg.field_f1().name() << " = 0x"  << (unsigned)msg.field_f1().value() << 
+        '\t' << msg.field_f1().name() << " = 0x" << (unsigned)msg.field_f1().value() << 
             " (valid = " << std::boolalpha << msg.field_f1().valid() << ")\n" <<
-        '\t' << msg.field_f2().name() << " = 0x"  << msg.field_f2().value() << 
+        '\t' << msg.field_f2().name() << " = 0x" << msg.field_f2().value() << 
             " (valid = " << std::boolalpha << msg.field_f2().valid() << ")\n" <<
-        '\t' << msg.field_f3().name() << " = 0x"  << msg.field_f3().value() << 
+        '\t' << msg.field_f3().name() << " = 0x" << msg.field_f3().value() << 
             " (valid = " << std::boolalpha << msg.field_f3().valid() << ")\n" <<
         std::endl;
     sendAck(msg.doGetId());
@@ -123,11 +123,21 @@ void Session::handle(InBitfields& msg)
             (unsigned)msg.field_f1().field_mem1().value() << '\n' << 
         "\t\t" << msg.field_f1().field_mem2().name() << std::hex << 
             " = 0x"  << msg.field_f1().field_mem2().value() << std::dec << '\n' << 
-        "\t\t" << msg.field_f1().field_mem3().name() << " = "  << (unsigned)msg.field_f1().field_mem3().value() << '\n' << 
+        "\t\t" << msg.field_f1().field_mem3().name() << " = " << (unsigned)msg.field_f1().field_mem3().value() << '\n' << 
         std::endl;
     sendAck(msg.doGetId());
 }
 
+void Session::handle(InStrings& msg)
+{
+    std::cout << 
+        '\t' << msg.field_f1().name() << " = " << msg.field_f1().value() << '\n' <<
+        '\t' << msg.field_f2().name() << " = " << msg.field_f2().value() << '\n' <<
+        '\t' << msg.field_f3().name() << " = " << msg.field_f3().value() << '\n' <<
+        '\t' << msg.field_f4().name() << " = " << msg.field_f4().value() << '\n' <<
+        std::endl;
+    sendAck(msg.doGetId());
+}
 
 void Session::handle(InputMsg&)
 {

@@ -134,7 +134,8 @@ void Client::readDataFromStdin()
                     std::make_pair(demo1::MsgId_Floats, &Client::sendFloats),
                     std::make_pair(demo1::MsgId_Enums, &Client::sendEnums),
                     std::make_pair(demo1::MsgId_Sets, &Client::sendSets),
-                    std::make_pair(demo1::MsgId_Bitfields, &Client::sendBitfields)
+                    std::make_pair(demo1::MsgId_Bitfields, &Client::sendBitfields),
+                    std::make_pair(demo1::MsgId_Strings, &Client::sendStrings)
                 };
 
                 auto iter = Map.find(msgId);
@@ -206,6 +207,16 @@ void Client::sendBitfields()
     msg.field_f1().field_mem1().value() = 5;
     msg.field_f1().field_mem2().setBitValue_Bit2(true);
     msg.field_f1().field_mem3().value() = demo1::message::BitfieldsFields<>::F1Members::Mem3Val::V2;
+    sendMessage(msg);
+}
+
+void Client::sendStrings()
+{
+    demo1::message::Strings<OutputMsg> msg;
+    msg.field_f1().value() = "bla";
+    msg.field_f3().value() = "str";
+    msg.field_f4().value() = "aa";
+    // Keep default value of other fields
     sendMessage(msg);
 }
 

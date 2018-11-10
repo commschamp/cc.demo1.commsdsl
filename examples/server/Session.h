@@ -50,6 +50,7 @@ public:
     using InEnums = demo1::message::Enums<InputMsg>;
     using InSets = demo1::message::Sets<InputMsg>;
     using InBitfields = demo1::message::Bitfields<InputMsg>;
+    using InStrings = demo1::message::Strings<InputMsg>;
 
     void handle(InSimpleInts& msg);
     void handle(InScaledInts& msg);
@@ -57,6 +58,7 @@ public:
     void handle(InEnums& msg);
     void handle(InSets& msg);
     void handle(InBitfields& msg);
+    void handle(InStrings& msg);
     void handle(InputMsg&);
 
 private:
