@@ -1,14 +1,12 @@
 set (name "${PROJECT_NAME}_client_example")
 
-find_package(Boost)
+find_package(Boost 
+    COMPONENTS program_options system date_time)
 
 if (NOT Boost_FOUND)
     message (Warning "Cannot compile ${name} application due to missing boost libraries")
     return ()
 endif()
-
-find_package(Boost REQUIRED
-    COMPONENTS program_options system date_time)
 
 find_package(Threads REQUIRED)
 
