@@ -139,6 +139,7 @@ void Client::readDataFromStdin()
                     std::make_pair(demo1::MsgId_Datas, &Client::sendDatas),
                     std::make_pair(demo1::MsgId_Lists, &Client::sendLists),
                     std::make_pair(demo1::MsgId_Optionals, &Client::sendOptionals),
+                    std::make_pair(demo1::MsgId_Variants, &Client::sendVariants),
                 };
 
                 auto iter = Map.find(msgId);
@@ -270,10 +271,21 @@ void Client::sendOptionals()
     // Note usage of .field() to get access to inner field of optional
     msg.field_f2().field().value() = 0xaaaa; 
     msg.field_f3().field().value() = 0xbbbb;
-    
+
     msg.field_flags().setBitValue_F2Exists(true);
     msg.field_flags().setBitValue_F3Missing(true);
     msg.doRefresh(); // Bring message into consistent state, i.e. update optional modes
+    sendMessage(msg);
+}
+
+void Client::sendVariants()
+{
+    demo1::message::Variants<OutputMsg> msg;
+    auto& propsVec = msg.field_properties().value();
+    propsVec.resize(3U);
+    propsVec[0].initField_prop1().field_val().value() = 1234;
+    propsVec[1].initField_prop3().field_val().value() = "hello";
+    propsVec[2].initField_prop2().field_val().value() = 5555555;
     sendMessage(msg);
 }
 

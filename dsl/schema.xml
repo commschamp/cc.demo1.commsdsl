@@ -13,6 +13,7 @@
             <validValue name="Datas" val="8" />
             <validValue name="Lists" val="9" />
             <validValue name="Optionals" val="10" />
+            <validValue name="Variants" val="11" />
         </enum>
     </fields>
     
@@ -265,4 +266,38 @@
             <int name="F3" type="uint16" defaultValue="0x2222" />
         </optional>
     </message>
+
+    <fields>
+        <int name="PropKey" type="uint8" displayName="Key" failOnInvalid="true" />
+    </fields>
+
+    <message name="Variants" id="MsgId.Variants" sender="client">
+        <description>
+            To demonstrate usage of variants fields, this message
+            contains a list of heterogatious values implemented using
+            variant field. Every element is a key-value pair.
+        </description>
+        <fields>
+            <list name="Properties">
+                <variant name="Property">
+                    <bundle name="Prop1">
+                        <int reuse="PropKey" name="Key" defaultValue="1" validValue="1" />
+                        <int name="Val" type="int16" />
+                    </bundle>
+                    <bundle name="Prop2">
+                        <int reuse="PropKey" name="Key" defaultValue="2" validValue="2" />
+                        <int name="Val" type="uint32" />
+                    </bundle>
+                    <bundle name="Prop3">
+                        <int reuse="PropKey" name="Key" defaultValue="3" validValue="3" />
+                        <string name="Val">
+                            <lengthPrefix>
+                                <int name="Length" type="uint8" />
+                            </lengthPrefix>
+                        </string>
+                    </bundle>
+                </variant>
+            </list>
+        </fields>
+    </message>    
 </schema>

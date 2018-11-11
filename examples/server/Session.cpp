@@ -23,6 +23,14 @@ void printRawData(const std::vector<std::uint8_t>& data)
     std::cout << std::dec << '\n';
 }
 
+struct VariantPrintHelper
+{
+    template <std::size_t TIdx, typename TField>
+    void operator()(const TField& field) const
+    {
+        std::cout << "{" << (unsigned)field.field_key().value() << ", " << field.field_val().value() << "}";
+    }
+};
 } // namespace
 
 void Session::start()
@@ -228,6 +236,20 @@ void Session::handle(InOptionals& msg)
         '\t' << msg.field_f3().name() << " = 0x" << msg.field_f3().field().value() << 
             " (exists = " << std::boolalpha << msg.field_f3().doesExist() << ")\n" <<
         std::dec << std::endl;
+    sendAck(msg.doGetId());
+}
+
+void Session::handle(InVariants& msg)
+{
+    std::cout << '\t' << msg.field_properties().name() << " = {";
+    for (auto& p : msg.field_properties().value()) {
+        if (&p != &msg.field_properties().value().front()) {
+            std::cout << ", ";
+        }
+
+        p.currentFieldExec(VariantPrintHelper());
+    }
+    std::cout << "}\n" << std::endl;
     sendAck(msg.doGetId());
 }
 
