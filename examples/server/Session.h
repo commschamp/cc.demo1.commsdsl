@@ -52,6 +52,7 @@ public:
     using InBitfields = demo1::message::Bitfields<InputMsg>;
     using InStrings = demo1::message::Strings<InputMsg>;
     using InDatas = demo1::message::Datas<InputMsg>;
+    using InLists = demo1::message::Lists<InputMsg>;
 
     void handle(InSimpleInts& msg);
     void handle(InScaledInts& msg);
@@ -61,6 +62,7 @@ public:
     void handle(InBitfields& msg);
     void handle(InStrings& msg);
     void handle(InDatas& msg);
+    void handle(InLists& msg);
     void handle(InputMsg&);
 
 private:

@@ -11,6 +11,7 @@
             <validValue name="Bitfields" val="6" />
             <validValue name="Strings" val="7" />
             <validValue name="Datas" val="8" />
+            <validValue name="Lists" val="9" />
         </enum>
     </fields>
     
@@ -183,6 +184,72 @@
             <description value="Data with detached length prefix" />
         </data>
         <data name="F4" description="Data without length limit" />
+    </message>
+
+    <message name="Lists" id="MsgId.Lists" sender="client">
+        <int name="F2Count" type="uint8" />
+        <list name="F1" count="5">
+            <description value="Fixed size list of int fields" />
+            <element>
+                <int name="Elem" type="uint32" />
+            </element>
+        </list>
+        <list name="F2" countPrefix="$F2Count">
+            <description value="List of int fields with detached count prefix" />
+            <element>
+                <int name="Elem" type="uint32" />
+            </element>
+        </list>
+        <list name="F3">
+            <description>List of bundles prefixed with number of elements</description>
+            <element>
+                <bundle name="Element">
+                    <int name="Mem1" type="uint32" />
+                    <int name="Mem2" type="int32" />
+                </bundle>
+            </element>
+            <countPrefix>
+                <int name="CountPrefix" type="uint8" />
+            </countPrefix>
+        </list>
+        <list name="F4">
+            <description>
+                List of bundles prefixed with serialization length.
+                Every element is prefixed with its serialization length as well.
+            </description>
+            <element>
+                <bundle name="Element">
+                    <int name="Mem1" type="uint32" />
+                    <string name="Mem2" />
+                </bundle>
+            </element>
+            <lengthPrefix>
+                <int name="LengthPrefix" type="uint8" />
+            </lengthPrefix>
+            <elemLengthPrefix>
+                <int name="ElemLengthPrefix" type="uint8" />
+            </elemLengthPrefix>
+        </list>
+
+        <list name="F5" elemFixedLength="true">
+            <description>
+                List of fixed length bundles prefixed with number of elements.
+                First element is prefixed with the serialization length of the element.
+            </description>
+            <element>
+                <bundle name="Element">
+                    <int name="Mem1" type="uint32" />
+                    <int name="Mem2" type="int32"/>
+                </bundle>
+            </element>
+            <countPrefix>
+                <int name="LengthPrefix" type="uint8" />
+            </countPrefix>
+            <elemLengthPrefix>
+                <int name="ElemLengthPrefix" type="uint8" />
+            </elemLengthPrefix>
+        </list>
+
     </message>
 
 </schema>

@@ -167,6 +167,56 @@ void Session::handle(InDatas& msg)
     sendAck(msg.doGetId());
 }
 
+void Session::handle(InLists& msg)
+{
+    std::cout << '\t' << msg.field_f1().name() << " = {" << std::hex;
+    for (auto& v : msg.field_f1().value()) {
+        if (&v != &msg.field_f1().value().front()) {
+            std::cout << ", ";
+        }
+        std::cout << "0x" << v.value();
+    }
+    std::cout << std::dec << "}\n";
+
+    std::cout << '\t' << msg.field_f2().name() << " = {" << std::hex;
+    for (auto& v : msg.field_f2().value()) {
+        if (&v != &msg.field_f2().value().front()) {
+            std::cout << ", ";
+        }
+        std::cout << "0x" << v.value();
+    }
+    std::cout << std::dec << "}\n";
+
+    std::cout << '\t' << msg.field_f3().name() << " = {";
+    for (auto& v : msg.field_f3().value()) {
+        if (&v != &msg.field_f3().value().front()) {
+            std::cout << ", ";
+        }
+        std::cout << "{" << v.field_mem1().value() << ", " << v.field_mem2().value() << "}";
+    }
+    std::cout << "}\n";    
+
+    std::cout << '\t' << msg.field_f4().name() << " = {";
+    for (auto& v : msg.field_f4().value()) {
+        if (&v != &msg.field_f4().value().front()) {
+            std::cout << ", ";
+        }
+        std::cout << "{" << v.field_mem1().value() << ", " << v.field_mem2().value() << "}";
+    }
+    std::cout << "}\n";    
+
+    std::cout << '\t' << msg.field_f5().name() << " = {";
+    for (auto& v : msg.field_f5().value()) {
+        if (&v != &msg.field_f5().value().front()) {
+            std::cout << ", ";
+        }
+        std::cout << "{" << v.field_mem1().value() << ", " << v.field_mem2().value() << "}";
+    }
+    std::cout << "}\n";            
+
+    std::cout << std::endl;
+    sendAck(msg.doGetId());
+}
 
 void Session::handle(InputMsg&)
 {

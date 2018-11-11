@@ -136,7 +136,8 @@ void Client::readDataFromStdin()
                     std::make_pair(demo1::MsgId_Sets, &Client::sendSets),
                     std::make_pair(demo1::MsgId_Bitfields, &Client::sendBitfields),
                     std::make_pair(demo1::MsgId_Strings, &Client::sendStrings),
-                    std::make_pair(demo1::MsgId_Datas, &Client::sendDatas)
+                    std::make_pair(demo1::MsgId_Datas, &Client::sendDatas),
+                    std::make_pair(demo1::MsgId_Lists, &Client::sendLists),
                 };
 
                 auto iter = Map.find(msgId);
@@ -231,6 +232,34 @@ void Client::sendDatas()
     msg.field_f4().value() = {0x06, 0x07};
     // Keep default value of other fields
     msg.doRefresh(); // Bring message into consistent state, i.e. update F3Len
+    sendMessage(msg);
+}
+
+void Client::sendLists()
+{
+    demo1::message::Lists<OutputMsg> msg;
+    msg.field_f1().value().resize(2);
+    msg.field_f1().value()[0].value() = 0x11223344;
+    msg.field_f1().value()[1].value() = 0xaabbccdd;
+
+    msg.field_f2().value().resize(1);
+    msg.field_f2().value()[0].value() = 0xffffffff;
+
+    msg.field_f3().value().resize(1);
+    msg.field_f3().value()[0].field_mem1().value() = 5;    
+    msg.field_f3().value()[0].field_mem2().value() = -5;    
+
+    msg.field_f4().value().resize(1);
+    msg.field_f4().value()[0].field_mem1().value() = 7;    
+    msg.field_f4().value()[0].field_mem2().value() = "hello";      
+
+    msg.field_f5().value().resize(2);
+    msg.field_f5().value()[0].field_mem1().value() = 10;    
+    msg.field_f5().value()[0].field_mem2().value() = -10;     
+    msg.field_f5().value()[1].field_mem1().value() = 15;    
+    msg.field_f5().value()[1].field_mem2().value() = -15;     
+
+    msg.doRefresh(); // Bring message into consistent state, i.e. update F2Len
     sendMessage(msg);
 }
 
