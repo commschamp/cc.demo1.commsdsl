@@ -8,7 +8,7 @@ if (NOT Boost_FOUND)
 endif()
 
 find_package(Boost REQUIRED
-    COMPONENTS program_options system)
+    COMPONENTS program_options system date_time)
 
 find_package(Threads REQUIRED)
 
@@ -20,7 +20,7 @@ set (src
 
 add_executable(${name} ${src})
 target_link_libraries(${name} 
-    Boost::boost Boost::program_options Boost::system ${CMAKE_THREAD_LIBS_INIT})
+    Boost::boost Boost::program_options Boost::system Boost::date_time ${CMAKE_THREAD_LIBS_INIT})
 target_include_directories(${name} PRIVATE "${OUTPUT_DIR}/include")
 
 add_dependencies(${name} ${PROJECT_NAME})
