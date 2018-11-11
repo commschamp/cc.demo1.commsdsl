@@ -53,6 +53,7 @@ public:
     using InStrings = demo1::message::Strings<InputMsg>;
     using InDatas = demo1::message::Datas<InputMsg>;
     using InLists = demo1::message::Lists<InputMsg>;
+    using InOptionals = demo1::message::Optionals<InputMsg>;
 
     void handle(InSimpleInts& msg);
     void handle(InScaledInts& msg);
@@ -63,6 +64,7 @@ public:
     void handle(InStrings& msg);
     void handle(InDatas& msg);
     void handle(InLists& msg);
+    void handle(InOptionals& msg);
     void handle(InputMsg&);
 
 private:

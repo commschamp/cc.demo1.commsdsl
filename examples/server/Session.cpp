@@ -218,6 +218,19 @@ void Session::handle(InLists& msg)
     sendAck(msg.doGetId());
 }
 
+void Session::handle(InOptionals& msg)
+{
+    std::cout << std::hex <<
+        '\t' << msg.field_flags().name() << " = 0x" << 
+            (unsigned)msg.field_flags().value() << '\n' <<
+        '\t' << msg.field_f2().name() << " = 0x" << msg.field_f2().field().value() << 
+            " (exists = " << std::boolalpha << msg.field_f2().doesExist() << ")\n" <<
+        '\t' << msg.field_f3().name() << " = 0x" << msg.field_f3().field().value() << 
+            " (exists = " << std::boolalpha << msg.field_f3().doesExist() << ")\n" <<
+        std::dec << std::endl;
+    sendAck(msg.doGetId());
+}
+
 void Session::handle(InputMsg&)
 {
     std::cerr << "WARNING: Unexpected message received" << std::endl;

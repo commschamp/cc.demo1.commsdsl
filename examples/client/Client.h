@@ -64,6 +64,7 @@ private:
     void sendStrings();
     void sendDatas();
     void sendLists();
+    void sendOptionals();
     void sendMessage(const OutputMsg& msg);
     void waitForAck();
     void processInput();

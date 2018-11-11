@@ -12,6 +12,7 @@
             <validValue name="Strings" val="7" />
             <validValue name="Datas" val="8" />
             <validValue name="Lists" val="9" />
+            <validValue name="Optionals" val="10" />
         </enum>
     </fields>
     
@@ -249,7 +250,19 @@
                 <int name="ElemLengthPrefix" type="uint8" />
             </elemLengthPrefix>
         </list>
-
     </message>
 
+    <message name="Optionals" id="MsgId.Optionals" sender="client">
+        <set name="Flags" type="uint8">
+            <description value="Flags indicating existence of the fields to follow" />
+            <bit name="F2Exists" idx="0" />
+            <bit name="F3Missing" idx="1" />
+        </set>
+        <optional name="F2" defaultMode="missing" cond="$Flags.F2Exists">
+            <int name="F2" type="uint16" defaultValue="0x1111"/>
+        </optional>
+        <optional name="F3" defaultMode="exist"  cond="!$Flags.F3Missing">
+            <int name="F3" type="uint16" defaultValue="0x2222" />
+        </optional>
+    </message>
 </schema>

@@ -138,6 +138,7 @@ void Client::readDataFromStdin()
                     std::make_pair(demo1::MsgId_Strings, &Client::sendStrings),
                     std::make_pair(demo1::MsgId_Datas, &Client::sendDatas),
                     std::make_pair(demo1::MsgId_Lists, &Client::sendLists),
+                    std::make_pair(demo1::MsgId_Optionals, &Client::sendOptionals),
                 };
 
                 auto iter = Map.find(msgId);
@@ -260,6 +261,19 @@ void Client::sendLists()
     msg.field_f5().value()[1].field_mem2().value() = -15;     
 
     msg.doRefresh(); // Bring message into consistent state, i.e. update F2Len
+    sendMessage(msg);
+}
+
+void Client::sendOptionals()
+{
+    demo1::message::Optionals<OutputMsg> msg;
+    // Note usage of .field() to get access to inner field of optional
+    msg.field_f2().field().value() = 0xaaaa; 
+    msg.field_f3().field().value() = 0xbbbb;
+    
+    msg.field_flags().setBitValue_F2Exists(true);
+    msg.field_flags().setBitValue_F3Missing(true);
+    msg.doRefresh(); // Bring message into consistent state, i.e. update optional modes
     sendMessage(msg);
 }
 
