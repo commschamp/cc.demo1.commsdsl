@@ -18,7 +18,6 @@ Client::Client(
         const std::string& server,
         std::uint16_t port)    
   : m_socket(io),
-    m_stdin(io, ::dup(STDIN_FILENO)),
     m_timer(io),
     m_server(server),
     m_port(port)
@@ -50,8 +49,6 @@ bool Client::start()
     }
 
     std::cout << "INFO: Connected to " << m_socket.remote_endpoint() << std::endl;
-
-    assert(m_stdin.is_open());
     readDataFromServer();
     readDataFromStdin();
     return true;
@@ -104,58 +101,49 @@ void Client::readDataFromStdin()
 {
     std::cout << "\nEnter (new) message ID to send: " << std::endl;
     m_sentId = demo1::MsgId_Ack;
-    m_stdinBuf.consume(m_stdinBuf.size());
-    boost::asio::async_read_until(
-        m_stdin,
-        m_stdinBuf,
-        '\n',
-        [this](const boost::system::error_code& ec, std::size_t bytesCount)
-        {
-            static_cast<void>(bytesCount);
-            do {
-                if (ec) {
-                    std::cerr << "ERROR: Failed to read from stdin with error: " << ec << std::endl;
-                    break;
-                }
-
-                //std::cout << "Read " << bytesCount << " bytes" << std::endl;
-                std::istream stream(&m_stdinBuf);
-                unsigned msgId = 0U;
-                stream >> msgId;
-                if (!stream.good()) {
-                    std::cerr << "ERROR: Unexpected input, use numeric value" << std::endl;
-                    break;
-                }
-
-                using SendFunc = void (Client::*)();
-                static const std::map<unsigned, SendFunc> Map = {
-                    std::make_pair(demo1::MsgId_SimpleInts, &Client::sendSimpleInts),
-                    std::make_pair(demo1::MsgId_ScaledInts, &Client::sendScaledInts),
-                    std::make_pair(demo1::MsgId_Floats, &Client::sendFloats),
-                    std::make_pair(demo1::MsgId_Enums, &Client::sendEnums),
-                    std::make_pair(demo1::MsgId_Sets, &Client::sendSets),
-                    std::make_pair(demo1::MsgId_Bitfields, &Client::sendBitfields),
-                    std::make_pair(demo1::MsgId_Strings, &Client::sendStrings),
-                    std::make_pair(demo1::MsgId_Datas, &Client::sendDatas),
-                    std::make_pair(demo1::MsgId_Lists, &Client::sendLists),
-                    std::make_pair(demo1::MsgId_Optionals, &Client::sendOptionals),
-                    std::make_pair(demo1::MsgId_Variants, &Client::sendVariants),
-                };
-
-                auto iter = Map.find(msgId);
-                if (iter == Map.end()) {
-                    std::cerr << "ERROR: Unknown message ID, try another one" << std::endl;
-                    break;
-                }
-
-                auto func = iter->second;
-                (this->*func)();
-                return; // Don't read STDIN right away, wait for ACK first
-            } while (false);
-
-            readDataFromStdin();
+    do {
+        // Windows doesn't really support asynchronous read of stdin with boost::asio,
+        // do it in a sync way
+        unsigned msgId = 0U;
+        std::cin >> msgId;
+        if (!std::cin.good()) {
+            std::cerr << "ERROR: Unexpected input, use numeric value" << std::endl;
+            std::cin.clear();
+            std::cin.ignore();
+            break;
         }
-    );
+
+        using SendFunc = void (Client::*)();
+        static const std::map<unsigned, SendFunc> Map = {
+            std::make_pair(demo1::MsgId_SimpleInts, &Client::sendSimpleInts),
+            std::make_pair(demo1::MsgId_ScaledInts, &Client::sendScaledInts),
+            std::make_pair(demo1::MsgId_Floats, &Client::sendFloats),
+            std::make_pair(demo1::MsgId_Enums, &Client::sendEnums),
+            std::make_pair(demo1::MsgId_Sets, &Client::sendSets),
+            std::make_pair(demo1::MsgId_Bitfields, &Client::sendBitfields),
+            std::make_pair(demo1::MsgId_Strings, &Client::sendStrings),
+            std::make_pair(demo1::MsgId_Datas, &Client::sendDatas),
+            std::make_pair(demo1::MsgId_Lists, &Client::sendLists),
+            std::make_pair(demo1::MsgId_Optionals, &Client::sendOptionals),
+            std::make_pair(demo1::MsgId_Variants, &Client::sendVariants),
+        };
+
+        auto iter = Map.find(msgId);
+        if (iter == Map.end()) {
+            std::cerr << "ERROR: Unknown message ID, try another one" << std::endl;
+            break;
+        }
+
+        auto func = iter->second;
+        (this->*func)();
+        return; // Don't read STDIN right away, wait for ACK first
+    } while (false);
+
+    m_socket.get_io_service().post(
+        [this]()
+        {
+            readDataFromStdin();
+        });
 }
 
 void Client::sendSimpleInts()

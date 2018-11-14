@@ -71,11 +71,9 @@ private:
     void processInput();
 
     Socket m_socket;
-    StdinSocket m_stdin;
     boost::asio::deadline_timer m_timer;
     std::string m_server;
     std::uint16_t m_port = 0U;
-    boost::asio::streambuf m_stdinBuf;
     Frame m_frame;
     demo1::MsgId m_sentId = demo1::MsgId_Ack;
     boost::array<std::uint8_t, 32> m_readBuf;
