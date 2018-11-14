@@ -102,8 +102,9 @@ void Client::readDataFromStdin()
     std::cout << "\nEnter (new) message ID to send: " << std::endl;
     m_sentId = demo1::MsgId_Ack;
     do {
-        // Windows doesn't really support asynchronous read of stdin with boost::asio,
-        // do it in a sync way
+        // Unfortunatelly Windows doesn't provide an easy way to 
+        // asynchronously read from stdin with boost::asio,
+        // read synchronously. DON'T COPY-PASTE TO PRODUCTION CODE!!!
         unsigned msgId = 0U;
         std::cin >> msgId;
         if (!std::cin.good()) {
