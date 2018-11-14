@@ -1,15 +1,5 @@
 set (name "${PROJECT_NAME}_server_example")
 
-find_package(Boost
-    COMPONENTS program_options system)
-
-if (NOT Boost_FOUND)
-    message (Warning "Cannot compile ${name} application due to missing boost libraries")
-    return ()
-endif()
-
-find_package(Threads REQUIRED)
-
 set (src
     "main.cpp"
     "ProgramOptions.cpp"
@@ -19,16 +9,17 @@ set (src
 
 add_executable(${name} ${src})
 target_include_directories(${name} PRIVATE "${OUTPUT_DIR}/include")
-target_link_libraries(${name} Boost::boost)
-#target_compile_definitions (${name} PRIVATE "-DBOOST_NO_CXX11_SCOPED_ENUMS")
+target_link_libraries(${name} Boost::boost Boost::program_options Boost::system)
+
+foreach (c ${extra_boost_components})
+    target_link_libraries(${name} Boost::${c})
+endforeach()
+
+target_link_libraries(${name} ${CMAKE_THREAD_LIBS_INIT})
 
 if (WIN32)
     target_link_libraries(
-        ${name} ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}
-            Setupapi.lib Ws2_32.lib imm32.lib winmm.lib)
-else ()    
-    target_link_libraries(${name} 
-        Boost::program_options Boost::system ${CMAKE_THREAD_LIBS_INIT})
+        ${name} Setupapi.lib Ws2_32.lib imm32.lib winmm.lib)
 endif ()
 
 add_dependencies(${name} ${PROJECT_NAME})

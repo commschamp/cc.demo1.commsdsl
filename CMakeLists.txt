@@ -85,7 +85,6 @@ add_custom_target(${PROJECT_NAME} ALL
         -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"
     DEPENDS ${tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
-
 if (NO_EXAMPLES)
     return()
 endif()

@@ -86,5 +86,23 @@ else ()
     include_directories(${CC_INCLUDE_DIRS})
 endif ()
 
+find_package(Boost)
+
+if (NOT Boost_FOUND)
+    message (Warning "Cannot compile example applications due to missing boost libraries")
+    return ()
+endif()
+
+set (extra_boost_components)
+if (WIN32)
+    # For some reason windows build requires extra boost components
+    set (extra_boost_components date_time regex)
+endif ()
+
+find_package(Boost REQUIRED
+    COMPONENTS program_options system ${extra_boost_components})
+
+find_package(Threads REQUIRED)
+
 add_subdirectory (server)
 add_subdirectory (client)
