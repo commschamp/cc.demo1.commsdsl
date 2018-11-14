@@ -38,7 +38,6 @@ public:
 
 private:
     using Socket = boost::asio::ip::tcp::socket;
-    using StdinSocket = boost::asio::posix::stream_descriptor;
 
     using OutputMsg = 
         demo1::Message<
