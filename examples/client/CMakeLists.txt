@@ -1,15 +1,5 @@
 set (name "${PROJECT_NAME}_client_example")
 
-find_package(Boost 
-    COMPONENTS program_options system)
-
-if (NOT Boost_FOUND)
-    message (Warning "Cannot compile ${name} application due to missing boost libraries")
-    return ()
-endif()
-
-find_package(Threads REQUIRED)
-
 set (src
     "main.cpp"
     "ProgramOptions.cpp"
