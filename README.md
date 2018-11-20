@@ -54,7 +54,7 @@ built **commsdsl2comms** is not provided, then this project will build the
 latter itself.
 
 The [example](#examples) applications use [Boost](https://www.boost.org)
-to parse its command line parameters as well as manage their asynchronous I/O. 
+to parse their command line parameters as well as manage their asynchronous I/O. 
 In case Boost libraries are not installed in expected default location
 (mostly happens on Windows systems), use variables described in 
 [CMake documentation](https://cmake.org/cmake/help/v3.8/module/FindBoost.html) 
@@ -64,7 +64,7 @@ linkage with static Boost libraries.
 
 **NOTE**, that **commsdsl2comms** application also requires 
 [Boost](https://www.boost.org) libraries. Please provide path to the latter, when
-**commsdsl2comms** is built internally, even example applications are excluded
+**commsdsl2comms** is built internally, even if example applications are excluded
 from the build.
 
 If code generation output directory is not provided, it defaults to 
@@ -107,6 +107,9 @@ $> nmake install
 # How to Use Generated Code
 Please read [How to Use Generated Code](https://github.com/arobenko/commsdsl#how-to-use-generated-code)
 guidelines from [commsdsl](https://github.com/arobenko/commsdsl) project.
+
+The [release](https://github.com/arobenko/cc.demo1.commsdsl/releases)
+artifacts contain doxygen generated documentation of the protocol definition.
 
 # Contact Information
 For bug reports, feature requests, or any other question you may open an issue

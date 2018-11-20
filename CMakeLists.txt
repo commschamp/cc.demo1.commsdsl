@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.5)
 project ("cc.demo1.commsdsl")
 
 option (DEMO1_NO_EXAMPLES "Disable examples compilation." OFF)
-option (DEMO1_NO_WARN_AS_ERR "Disable examples compilation." OFF)
+option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
 
 # Additional variables to be used if needed
 # ---------------------------
@@ -85,7 +85,7 @@ add_custom_target(${PROJECT_NAME} ALL
         -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"
     DEPENDS ${tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
-if (NO_EXAMPLES)
+if (DEMO1_NO_EXAMPLES)
     return()
 endif()
 
