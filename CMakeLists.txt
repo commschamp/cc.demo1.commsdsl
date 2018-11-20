@@ -70,12 +70,22 @@ if (DEMO1_NO_WARN_AS_ERR)
     set (warn_as_error)
 endif ()
 
+add_custom_target(rm_tmp_tgt
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${tmp_dir}
+)
+
 add_custom_command(
     OUTPUT ${tmp_dir}
-    DEPENDS ${schema_file} ${src_files} ${extra_dep}
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${tmp_dir}
+    DEPENDS ${schema_file} ${src_files} ${extra_dep} rm_tmp_tgt
     COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -o ${tmp_dir} 
         ${COMMSDSL2COMMS_EXTRA_ARGS}  ${schema_file}
+)
+
+set (readme_file "${tmp_dir}/README.md")
+add_custom_command(
+    OUTPUT ${readme_file}
+    DEPENDS ${tmp_dir} 
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/readme.generated ${readme_file}
 )
 
 set (output_tgt ${name}_output_tgt)
@@ -83,7 +93,7 @@ add_custom_target(${PROJECT_NAME} ALL
     COMMAND ${CMAKE_COMMAND}
         -DGENERATED="${tmp_dir}" -DOUTPUT="${OUTPUT_DIR}"
         -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"
-    DEPENDS ${tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+    DEPENDS ${tmp_dir} ${readme_file} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
 if (DEMO1_NO_EXAMPLES)
     return()
