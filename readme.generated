@@ -1,5 +1,5 @@
 # Overview
-This repository contains **generated** definition of *demo1* 
+This repository contains **generated** definition of **demo1** 
 syntetic demo protocol for [CommsChampion](https://github.com/arobenko/comms_champion)
 ecosystem. 
 
