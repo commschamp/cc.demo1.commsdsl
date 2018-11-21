@@ -42,6 +42,10 @@ Once proper message ID is entered, it prepares and sends requested message to
 the server, then waits for `Ack`. When the latter is received, inquires for
 new message ID to send.
 
+# License
+Please read [License](https://github.com/arobenko/commsdsl#license)
+section from [commsdsl](https://github.com/arobenko/commsdsl) project.
+
 # How to Build
 This project uses CMake as its build system. Please open main
 [CMakeLists.txt](CMakeLists.txt) file and review available options as well as
