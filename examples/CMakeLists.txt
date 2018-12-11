@@ -63,14 +63,15 @@ if ("${COMMS_INSTALL_DIR}" STREQUAL "")
         STAMP_DIR "${cc_bin_dir}"
         GIT_REPOSITORY "https://github.com/arobenko/comms_champion.git"
         GIT_TAG "${COMMS_TAG}"
-        SOURCE_DIR "${cc_src_dir}"
+        SOURCE_DIR ${cc_src_dir}
+        BINARY_DIR "${cc_bin_dir}"
         INSTALL_DIR ${cc_install_dir}
         CMAKE_ARGS
             -DCC_COMMS_LIB_ONLY=ON -DCC_NO_UNIT_TESTS=ON
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} 
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-        BINARY_DIR "${cc_bin_dir}"
+            -DCMAKE_INSTALL_PREFIX=${cc_install_dir}
     )
 
     include_directories(${cc_install_dir}/include)
