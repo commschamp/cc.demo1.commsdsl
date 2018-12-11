@@ -64,6 +64,7 @@ if ("${COMMS_INSTALL_DIR}" STREQUAL "")
         GIT_REPOSITORY "https://github.com/arobenko/comms_champion.git"
         GIT_TAG "${COMMS_TAG}"
         SOURCE_DIR "${cc_src_dir}"
+        INSTALL_DIR ${cc_install_dir}
         CMAKE_ARGS
             -DCC_COMMS_LIB_ONLY=ON -DCC_NO_UNIT_TESTS=ON
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
