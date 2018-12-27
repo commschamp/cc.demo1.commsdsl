@@ -11,17 +11,17 @@ option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
 # COMMSDSL2COMMS_EXTRA_ARGS - Extra arguments to pass to "commsdsl2comms"
 # COMMS_INSTALL_DIR - Directory where external COMMS library installed. If not specified
 #    it will be checked out automatically.
-# COMMSDSL_TAG - Tag of the commsdsl project to checkout (defaults to "master") if COMMSDSL2COMMS
+# COMMSDSL_TAG - Tag of the commsdsl project to checkout if COMMSDSL2COMMS
 #     is not provided.
-# COMMS_TAG - Tag of the COMMS library to checkout (defaults to "master") if COMMS_INSTALL_DIR
+# COMMS_TAG - Tag of the COMMS library to checkout if COMMS_INSTALL_DIR
 #     is not provided and examples are not disabled.
 
 if ("${COMMSDSL_TAG}" STREQUAL "")
-    set(COMMSDSL_TAG "develop")
+    set(COMMSDSL_TAG "v1.1")
 endif ()
 
 if ("${COMMS_TAG}" STREQUAL "")
-    set(COMMS_TAG "develop")
+    set(COMMS_TAG "v1.0")
 endif ()
 
 set (COMMSDSL_TGT "commsdsl_tgt")
