@@ -4,7 +4,6 @@
 #include <sstream>
 
 #include "demo1/MsgId.h"
-#include "demo1/AllMessages.h"
 #include "comms/units.h"
 
 namespace demo1
