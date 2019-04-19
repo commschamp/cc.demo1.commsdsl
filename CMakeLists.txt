@@ -24,6 +24,8 @@ if ("${COMMS_TAG}" STREQUAL "")
     set(COMMS_TAG "develop")
 endif ()
 
+set (VERSION "0.6")
+
 set (COMMSDSL_TGT "commsdsl_tgt")
 if ("${COMMSDSL2COMMS}" STREQUAL "")
         include(ExternalProject)
@@ -87,7 +89,7 @@ add_custom_target(rm_tmp_tgt
 add_custom_command(
     OUTPUT ${tmp_dir}
     DEPENDS ${schema_file} ${src_files} ${extra_dep} rm_tmp_tgt
-    COMMAND ${COMMSDSL2COMMS} ${warn_as_error} 
+    COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -V ${VERSION}
         --cc-tag ${COMMS_TAG} -o ${tmp_dir} 
         ${COMMSDSL2COMMS_EXTRA_ARGS}  ${schema_file}
 )
