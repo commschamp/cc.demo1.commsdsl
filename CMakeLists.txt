@@ -17,12 +17,14 @@ option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
 #     is not provided and examples are not disabled.
 
 if ("${COMMSDSL_TAG}" STREQUAL "")
-    set(COMMSDSL_TAG "v1.3.1")
+    set(COMMSDSL_TAG "v1.4")
 endif ()
 
 if ("${COMMS_TAG}" STREQUAL "")
-    set(COMMS_TAG "v1.2.1")
+    set(COMMS_TAG "v1.2.2")
 endif ()
+
+set (VERSION "0.6")
 
 set (COMMSDSL_TGT "commsdsl_tgt")
 if ("${COMMSDSL2COMMS}" STREQUAL "")
@@ -87,7 +89,7 @@ add_custom_target(rm_tmp_tgt
 add_custom_command(
     OUTPUT ${tmp_dir}
     DEPENDS ${schema_file} ${src_files} ${extra_dep} rm_tmp_tgt
-    COMMAND ${COMMSDSL2COMMS} ${warn_as_error} 
+    COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -V ${VERSION}
         --cc-tag ${COMMS_TAG} -o ${tmp_dir} 
         ${COMMSDSL2COMMS_EXTRA_ARGS}  ${schema_file}
 )
