@@ -156,7 +156,7 @@
     </message>
 
     <message name="Strings" id="MsgId.Strings" sender="client">
-        <int name="F4Len" type="uint8" description="Detached length of F4." />
+        <int name="F4Len" type="uint8" description="Detached length of F4." displayReadOnly="true"/>
         <string name="F1" length="5" description="Fixed length string" />
         <string name="F2" defaultValue="hello">
             <description value="Length prefixed string" />
@@ -174,7 +174,7 @@
     </message>
 
     <message name="Datas" id="MsgId.Datas" sender="client">
-        <int name="F3Len" type="uint8" description="Detached length of F4." />
+        <int name="F3Len" type="uint8" description="Detached length of F3." displayReadOnly="true"/>
         <data name="F1" length="5" description="Fixed length raw data" />
         <data name="F2" defaultValue="ab cd ef">
             <description value="Length prefixed raw data" />
@@ -189,7 +189,7 @@
     </message>
 
     <message name="Lists" id="MsgId.Lists" sender="client">
-        <int name="F2Count" type="uint8" />
+        <int name="F2Count" type="uint8" displayReadOnly="true"/>
         <list name="F1" count="5">
             <description value="Fixed size list of int fields" />
             <element>
@@ -211,7 +211,7 @@
                 </bundle>
             </element>
             <countPrefix>
-                <int name="CountPrefix" type="uint8" />
+                <int name="Count" type="uint8" />
             </countPrefix>
         </list>
         <list name="F4">
@@ -226,10 +226,10 @@
                 </bundle>
             </element>
             <lengthPrefix>
-                <int name="LengthPrefix" type="uint8" />
+                <int name="Length" type="uint8" />
             </lengthPrefix>
             <elemLengthPrefix>
-                <int name="ElemLengthPrefix" type="uint8" />
+                <int name="ElemLength" type="uint8" />
             </elemLengthPrefix>
         </list>
 
@@ -245,10 +245,10 @@
                 </bundle>
             </element>
             <countPrefix>
-                <int name="LengthPrefix" type="uint8" />
+                <int name="Count" type="uint8" />
             </countPrefix>
             <elemLengthPrefix>
-                <int name="ElemLengthPrefix" type="uint8" />
+                <int name="ElemLength" type="uint8" />
             </elemLengthPrefix>
         </list>
     </message>
