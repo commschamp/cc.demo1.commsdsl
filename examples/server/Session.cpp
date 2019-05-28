@@ -23,14 +23,80 @@ void printRawData(const std::vector<std::uint8_t>& data)
     std::cout << std::dec << '\n';
 }
 
+struct VariantValueFieldPrinter
+{
+    template <typename TField>
+    void operator()(const TField& field) const
+    {
+        printInternal(field, Tag<typename std::decay<decltype(field)>::type>());
+    }
+
+private:
+    struct DataTag{};
+    struct OneByteIntTag{};
+    struct OtherTag {};
+
+    template <typename TField>
+    using Tag =
+        typename std::conditional<
+            comms::field::isArrayList<TField>(),
+            DataTag,
+            typename std::conditional<
+                comms::field::isIntValue<TField>() && (sizeof(typename TField::ValueType) == 1U),
+                OneByteIntTag,
+                OtherTag
+            >::type
+        >::type;
+
+
+    template <typename TField>
+    static void printInternal(const TField& field, DataTag)
+    {
+        printRawData(field.value());
+    }
+
+    template <typename TField>
+    static void printInternal(const TField& field, OneByteIntTag)
+    {
+        std::cout << static_cast<int>(field.value());
+    }
+
+    template <typename TField>
+    static void printInternal(const TField& field, OtherTag)
+    {
+        std::cout << field.value();
+    }
+};
+
+template <typename TField>
+void printFieldValue(const TField& field)
+{
+    VariantValueFieldPrinter()(field);
+}
+
 struct VariantPrintHelper
 {
     template <std::size_t TIdx, typename TField>
     void operator()(const TField& field) const
     {
-        std::cout << "{" << (unsigned)field.field_key().value() << ", " << field.field_val().value() << "}";
+        std::cout << "{" << (unsigned)field.field_key().value() << ", ";
+        printFieldValue(field.field_val());
+        std::cout << "}";
     }
 };
+
+struct Variant2PrintHelper
+{
+    template <std::size_t TIdx, typename TField>
+    void operator()(const TField& field) const
+    {
+        std::cout << "{" << (unsigned)field.field_type().value() << ", " <<
+            field.field_length().value() << ", ";
+        printFieldValue(field.field_val());
+        std::cout << "}";
+    }
+};
+
 } // namespace
 
 void Session::start()
@@ -248,6 +314,20 @@ void Session::handle(InVariants& msg)
         }
 
         p.currentFieldExec(VariantPrintHelper());
+    }
+    std::cout << "}\n" << std::endl;
+    sendAck(msg.doGetId());
+}
+
+void Session::handle(InVariants2& msg)
+{
+    std::cout << '\t' << msg.field_properties().name() << " = {";
+    for (auto& p : msg.field_properties().value()) {
+        if (&p != &msg.field_properties().value().front()) {
+            std::cout << ", ";
+        }
+
+        p.currentFieldExec(Variant2PrintHelper());
     }
     std::cout << "}\n" << std::endl;
     sendAck(msg.doGetId());

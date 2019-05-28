@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema name="demo1" endian="big">
+<schema name="demo1" endian="big" dslVersion="2">
     <fields>
         <enum name="MsgId" type="uint8" semanticType="messageId" >
             <validValue name="Ack" val="0" />
@@ -14,6 +14,7 @@
             <validValue name="Lists" val="9" />
             <validValue name="Optionals" val="10" />
             <validValue name="Variants" val="11" />
+            <validValue name="Variants2" val="12" />
         </enum>
     </fields>
     
@@ -268,7 +269,7 @@
     </message>
 
     <fields>
-        <int name="PropKey" type="uint8" displayName="Key" failOnInvalid="true" />
+        <int name="PropKey" type="uint8" displayName="Key" failOnInvalid="true" displayReadOnly="true"/>
     </fields>
 
     <message name="Variants" id="MsgId.Variants" sender="client">
@@ -300,4 +301,39 @@
             </list>
         </fields>
     </message>    
+    
+    <message name="Variants2" id="MsgId.Variants2" sender="client">
+        <description>
+            To demonstrate usage of variants fields, this message
+            contains a list of heterogatious values implemented using
+            variant field. Every element is a type-length-value triplet.
+        </description>
+        <fields>
+            <list name="Properties">
+                <variant name="Property">
+                    <bundle name="Prop1">
+                        <int reuse="PropKey" name="Type" defaultValue="1" validValue="1" />
+                        <int name="Length" type="uint16" semanticType="length" displayReadOnly="true"/>
+                        <int name="Val" type="int16" />
+                    </bundle>
+                    <bundle name="Prop2">
+                        <int reuse="PropKey" name="Type" defaultValue="2" validValue="2" />
+                        <int name="Length" type="uint16" semanticType="length" displayReadOnly="true" />
+                        <int name="Val" type="uint32" />
+                    </bundle>
+                    <bundle name="Prop3">
+                        <int reuse="PropKey" name="Type" defaultValue="3" validValue="3" />
+                        <int name="Length" type="uint16" semanticType="length" displayReadOnly="true" />
+                        <string name="Val" />
+                    </bundle>
+                    <bundle name="UnknownProp">
+                        <int reuse="PropKey" name="Type" failOnInvalid="false" />
+                        <int name="Length" type="uint16" semanticType="length" displayReadOnly="true" />
+                        <data name="Val" />
+                    </bundle>
+                </variant>
+            </list>
+        </fields>
+    </message>    
+    
 </schema>
