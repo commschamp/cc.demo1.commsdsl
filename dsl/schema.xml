@@ -302,6 +302,11 @@
         </fields>
     </message>    
     
+    <fields>
+        <int name="PropType" reuse="PropKey" displayName="Type" />
+        <int name="PropRemLen" type="uint16" displayName="Length" semanticType="length" displayReadOnly="true"/>
+    </fields>
+    
     <message name="Variants2" id="MsgId.Variants2" sender="client">
         <description>
             To demonstrate usage of variants fields, this message
@@ -312,23 +317,23 @@
             <list name="Properties">
                 <variant name="Property">
                     <bundle name="Prop1">
-                        <int reuse="PropKey" name="Type" defaultValue="1" validValue="1" />
-                        <int name="Length" type="uint16" semanticType="length" displayReadOnly="true"/>
+                        <int reuse="PropType" name="Type" defaultValue="1" validValue="1" />
+                        <ref field="PropRemLen" name="Length" />
                         <int name="Val" type="int16" />
                     </bundle>
                     <bundle name="Prop2">
-                        <int reuse="PropKey" name="Type" defaultValue="2" validValue="2" />
-                        <int name="Length" type="uint16" semanticType="length" displayReadOnly="true" />
+                        <int reuse="PropType" name="Type" defaultValue="2" validValue="2" />
+                        <ref field="PropRemLen" name="Length" />
                         <int name="Val" type="uint32" />
                     </bundle>
                     <bundle name="Prop3">
-                        <int reuse="PropKey" name="Type" defaultValue="3" validValue="3" />
-                        <int name="Length" type="uint16" semanticType="length" displayReadOnly="true" />
+                        <int reuse="PropType" name="Type" defaultValue="3" validValue="3" />
+                        <ref field="PropRemLen" name="Length" />
                         <string name="Val" />
                     </bundle>
                     <bundle name="UnknownProp">
-                        <int reuse="PropKey" name="Type" failOnInvalid="false" />
-                        <int name="Length" type="uint16" semanticType="length" displayReadOnly="true" />
+                        <int reuse="PropType" name="Type" failOnInvalid="false" />
+                        <ref field="PropRemLen" name="Length" />
                         <data name="Val" />
                     </bundle>
                 </variant>
