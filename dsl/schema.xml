@@ -330,9 +330,9 @@
                         </bundle>
                     </variant>
                 </element>
-                <countPrefix>
-                    <int name="Count" type="uint8" />
-                </countPrefix>
+                <lengthPrefix>
+                    <int name="Length" type="uint8" />
+                </lengthPrefix>
             </list>
         </fields>
     </message>    
