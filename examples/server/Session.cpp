@@ -307,29 +307,26 @@ void Session::handle(InOptionals& msg)
 
 void Session::handle(InVariants& msg)
 {
-    std::cout << '\t' << msg.field_properties().name() << " = {";
-    for (auto& p : msg.field_properties().value()) {
-        if (&p != &msg.field_properties().value().front()) {
+    std::cout << '\t' << msg.field_props1().name() << " = {";
+    for (auto& p : msg.field_props1().value()) {
+        if (&p != &msg.field_props1().value().front()) {
             std::cout << ", ";
         }
 
         p.currentFieldExec(VariantPrintHelper());
     }
     std::cout << "}\n" << std::endl;
-    sendAck(msg.doGetId());
-}
-
-void Session::handle(InVariants2& msg)
-{
-    std::cout << '\t' << msg.field_properties().name() << " = {";
-    for (auto& p : msg.field_properties().value()) {
-        if (&p != &msg.field_properties().value().front()) {
+    
+    std::cout << '\t' << msg.field_props2().name() << " = {";
+    for (auto& p : msg.field_props2().value()) {
+        if (&p != &msg.field_props2().value().front()) {
             std::cout << ", ";
         }
 
         p.currentFieldExec(Variant2PrintHelper());
     }
     std::cout << "}\n" << std::endl;
+    
     sendAck(msg.doGetId());
 }
 

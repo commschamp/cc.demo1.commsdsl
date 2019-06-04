@@ -126,7 +126,6 @@ void Client::readDataFromStdin()
             std::make_pair(demo1::MsgId_Lists, &Client::sendLists),
             std::make_pair(demo1::MsgId_Optionals, &Client::sendOptionals),
             std::make_pair(demo1::MsgId_Variants, &Client::sendVariants),
-            std::make_pair(demo1::MsgId_Variants2, &Client::sendVariants2),
         };
 
         auto iter = Map.find(msgId);
@@ -270,23 +269,19 @@ void Client::sendOptionals()
 void Client::sendVariants()
 {
     demo1::message::Variants<OutputMsg> msg;
-    auto& propsVec = msg.field_properties().value();
-    propsVec.resize(3U);
-    propsVec[0].initField_prop1().field_val().value() = 1234;
-    propsVec[1].initField_prop3().field_val().value() = "hello";
-    propsVec[2].initField_prop2().field_val().value() = 5555555;
-    sendMessage(msg);
-}
-
-void Client::sendVariants2()
-{
-    demo1::message::Variants2<OutputMsg> msg;
-    auto& propsVec = msg.field_properties().value();
-    propsVec.resize(3U);
-    propsVec[0].initField_prop1().field_val().value() = 1234;
-    propsVec[1].initField_prop3().field_val().value() = "hello";
-    propsVec[2].initField_prop2().field_val().value() = 5555555;
+    auto& props1Vec = msg.field_props1().value();
+    props1Vec.resize(3U);
+    props1Vec[0].initField_prop1().field_val().value() = 1234;
+    props1Vec[1].initField_prop3().field_val().value() = "hello";
+    props1Vec[2].initField_prop2().field_val().value() = 5555555;
+    
+    auto& props2Vec = msg.field_props2().value();
+    props2Vec.resize(3U);
+    props2Vec[0].initField_prop1().field_val().value() = 4321;
+    props2Vec[1].initField_prop3().field_val().value() = "blabla";
+    props2Vec[2].initField_prop2().field_val().value() = 88888;
     msg.doRefresh(); // Bring all the lengths into consistent state
+    
     sendMessage(msg);
 }
 
