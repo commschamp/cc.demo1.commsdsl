@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema name="demo1" endian="big">
+<schema name="demo1" endian="big" dslVersion="2">
     <fields>
         <enum name="MsgId" type="uint8" semanticType="messageId" >
             <validValue name="Ack" val="0" />
@@ -268,7 +268,9 @@
     </message>
 
     <fields>
-        <int name="PropKey" type="uint8" displayName="Key" failOnInvalid="true" />
+        <int name="PropKey" type="uint8" displayName="Key" failOnInvalid="true" displayReadOnly="true"/>
+        <int name="PropType" reuse="PropKey" displayName="Type" />
+        <int name="PropRemLen" type="uint16" displayName="Length" semanticType="length" displayReadOnly="true"/>
     </fields>
 
     <message name="Variants" id="MsgId.Variants" sender="client">
@@ -278,25 +280,59 @@
             variant field. Every element is a key-value pair.
         </description>
         <fields>
-            <list name="Properties">
-                <variant name="Property">
-                    <bundle name="Prop1">
-                        <int reuse="PropKey" name="Key" defaultValue="1" validValue="1" />
-                        <int name="Val" type="int16" />
-                    </bundle>
-                    <bundle name="Prop2">
-                        <int reuse="PropKey" name="Key" defaultValue="2" validValue="2" />
-                        <int name="Val" type="uint32" />
-                    </bundle>
-                    <bundle name="Prop3">
-                        <int reuse="PropKey" name="Key" defaultValue="3" validValue="3" />
-                        <string name="Val">
-                            <lengthPrefix>
-                                <int name="Length" type="uint8" />
-                            </lengthPrefix>
-                        </string>
-                    </bundle>
-                </variant>
+            <list name="Props1">
+                <element>
+                    <variant name="Property">
+                        <bundle name="Prop1">
+                            <int reuse="PropKey" name="Key" defaultValue="1" validValue="1" />
+                            <int name="Val" type="int16" />
+                        </bundle>
+                        <bundle name="Prop2">
+                            <int reuse="PropKey" name="Key" defaultValue="2" validValue="2" />
+                            <int name="Val" type="uint32" />
+                        </bundle>
+                        <bundle name="Prop3">
+                            <int reuse="PropKey" name="Key" defaultValue="3" validValue="3" />
+                            <string name="Val">
+                                <lengthPrefix>
+                                    <int name="Length" type="uint8" />
+                                </lengthPrefix>
+                            </string>
+                        </bundle>
+                    </variant>
+                </element>
+                <countPrefix>
+                    <int name="Count" type="uint8" />
+                </countPrefix>
+            </list>
+            <list name="Props2">
+                <element>
+                    <variant name="Property">
+                        <bundle name="Prop1">
+                            <int reuse="PropType" name="Type" defaultValue="1" validValue="1" />
+                            <ref field="PropRemLen" name="Length" />
+                            <int name="Val" type="int16" />
+                        </bundle>
+                        <bundle name="Prop2">
+                            <int reuse="PropType" name="Type" defaultValue="2" validValue="2" />
+                            <ref field="PropRemLen" name="Length" />
+                            <int name="Val" type="uint32" />
+                        </bundle>
+                        <bundle name="Prop3">
+                            <int reuse="PropType" name="Type" defaultValue="3" validValue="3" />
+                            <ref field="PropRemLen" name="Length" />
+                            <string name="Val" />
+                        </bundle>
+                        <bundle name="UnknownProp">
+                            <int reuse="PropType" name="Type" failOnInvalid="false" />
+                            <ref field="PropRemLen" name="Length" />
+                            <data name="Val" />
+                        </bundle>
+                    </variant>
+                </element>
+                <lengthPrefix>
+                    <int name="Length" type="uint8" />
+                </lengthPrefix>
             </list>
         </fields>
     </message>    
