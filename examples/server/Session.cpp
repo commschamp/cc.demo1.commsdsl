@@ -6,6 +6,7 @@
 
 #include "demo1/message/Ack.h"
 #include "comms/units.h"
+#include "comms/process.h"
 
 namespace demo1
 {
@@ -349,39 +350,10 @@ void Session::terminateSession()
 
 void Session::processInput()
 {
-    std::size_t consumed = 0U;
-    while (consumed < m_inputBuf.size()) {
-        // Smart pointer to the message object.
-        Frame::MsgPtr msgPtr; 
-
-        // Get the iterator for reading
-        auto begIter = comms::readIteratorFor<InputMsg>(&m_inputBuf[0] + consumed);
-        auto iter = begIter;
-
-        // Do the read
-        auto es = m_frame.read(msgPtr, iter, m_inputBuf.size() - consumed);
-        if (es == comms::ErrorStatus::NotEnoughData) {
-            break; // Not enough data in the buffer, stop processing
-        } 
-    
-        if (es == comms::ErrorStatus::ProtocolError) {
-            // Something is not right with the data, remove one character and try again
-            std::cerr << "WARNING: Corrupted buffer" << std::endl;
-            ++consumed;
-            continue;
-        }
-
-        if (es == comms::ErrorStatus::Success) {
-            assert(msgPtr); // If read is successful, msgPtr is expected to hold a valid pointer
-            std::cout << "INFO: New message: " << msgPtr->name() << std::endl;
-            msgPtr->dispatch(*this); // Call appropriate handle() function
-        }
-
-        // The iterator for reading has been advanced, update the difference
-        consumed += std::distance(begIter, iter);
+    if (!m_inputBuf.empty()) {
+        auto consumed = comms::processAllWithDispatch(&m_inputBuf[0], m_inputBuf.size(), m_frame, *this);
+        m_inputBuf.erase(m_inputBuf.begin(), m_inputBuf.begin() + consumed);
     }
-
-    m_inputBuf.erase(m_inputBuf.begin(), m_inputBuf.begin() + consumed);
 }
 
 void Session::sendAck(demo1::MsgId id)
