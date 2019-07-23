@@ -17,14 +17,14 @@ option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
 #     is not provided and examples are not disabled.
 
 if ("${COMMSDSL_TAG}" STREQUAL "")
-    set(COMMSDSL_TAG "v2.0.2")
+    set(COMMSDSL_TAG "v2.1")
 endif ()
 
 if ("${COMMS_TAG}" STREQUAL "")
-    set(COMMS_TAG "v1.3")
+    set(COMMS_TAG "v2.0")
 endif ()
 
-set (VERSION "0.7.2")
+set (VERSION "0.8")
 
 set (COMMSDSL_TGT "commsdsl_tgt")
 if ("${COMMSDSL2COMMS}" STREQUAL "")
@@ -63,14 +63,11 @@ endif ()
 
 set (schema_file "${CMAKE_SOURCE_DIR}/dsl/schema.xml")
 set (tmp_dir "${CMAKE_BINARY_DIR}/output.tmp")
-#set (code_input_dir "${CMAKE_SOURCE_DIR}/src")
 
 if ("${OUTPUT_DIR}" STREQUAL "")
     set (OUTPUT_DIR "${CMAKE_BINARY_DIR}/output")
 endif ()
 
-
-#file (GLOB_RECURSE src_files ${code_input_dir})
 
 set (extra_dep)
 if (TARGET ${COMMSDSL_TGT})
