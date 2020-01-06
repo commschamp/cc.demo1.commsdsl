@@ -177,9 +177,10 @@ void Client::sendFloats()
 
 void Client::sendEnums()
 {
-    demo1::message::Enums<OutputMsg> msg;
-    msg.field_f1().value() = demo1::message::EnumsFields<>::F1Val::V2;
-    msg.field_f4().value() = demo1::message::EnumsFields<>::F4Val::V2;
+    using OutMsg = demo1::message::Enums<OutputMsg>;
+    OutMsg msg;
+    msg.field_f1().value() = OutMsg::Field_f1::ValueType::V2;
+    msg.field_f4().value() = OutMsg::Field_f4::ValueType::V2;
     // Keep default value of other fields
     sendMessage(msg);
 }
@@ -196,10 +197,11 @@ void Client::sendSets()
 
 void Client::sendBitfields()
 {
-    demo1::message::Bitfields<OutputMsg> msg;
+    using OutMsg = demo1::message::Bitfields<OutputMsg>;
+    OutMsg msg;
     msg.field_f1().field_mem1().value() = 5;
     msg.field_f1().field_mem2().setBitValue_Bit2(true);
-    msg.field_f1().field_mem3().value() = demo1::message::BitfieldsFields<>::F1Members::Mem3Val::V2;
+    msg.field_f1().field_mem3().value() = OutMsg::Field_f1::Field_mem3::ValueType::V2;
     sendMessage(msg);
 }
 
