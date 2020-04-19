@@ -66,6 +66,14 @@ matrix:
           sources:
             - sourceline: "ppa:ubuntu-toolchain-r/test"        
           packages:
+            - g++-7    
+      env: _CC=gcc-7 _CXX=g++-7 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=17"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"        
+          packages:
             - g++-8    
       env: _CC=gcc-8 _CXX=g++-8 _DSL_CC=${_CC} _DSL_CXX=${_CXX}
     - os: linux
@@ -75,7 +83,15 @@ matrix:
             - sourceline: "ppa:ubuntu-toolchain-r/test"        
           packages:
             - g++-8    
-      env: _CC=gcc-8 _CXX=g++-8 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=14"      
+      env: _CC=gcc-8 _CXX=g++-8 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=14"     
+     - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"        
+          packages:
+            - g++-8    
+      env: _CC=gcc-8 _CXX=g++-8 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=17"  
     - os: linux
       addons:
         apt:
@@ -91,7 +107,23 @@ matrix:
             - sourceline: "ppa:ubuntu-toolchain-r/test"        
           packages:
             - g++-9    
-      env: _CC=gcc-9 _CXX=g++-9 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=14"        
+      env: _CC=gcc-9 _CXX=g++-9 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=14"       
+     - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"        
+          packages:
+            - g++-9    
+      env: _CC=gcc-9 _CXX=g++-9 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=17" 
+       - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: "ppa:ubuntu-toolchain-r/test"        
+          packages:
+            - g++-9    
+      env: _CC=gcc-9 _CXX=g++-9 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=20" 
     - os: linux
       addons:
         apt:
@@ -144,6 +176,14 @@ matrix:
       addons:
         apt:
           sources:
+            - llvm-toolchain-xenial-5.0
+          packages:
+            - clang-5.0    
+      env: _CC=clang-5.0 _CXX=clang++-5.0 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=17"
+    - os: linux
+      addons:
+        apt:
+          sources:
             - llvm-toolchain-xenial-6.0
           packages:
             - clang-6.0    
@@ -156,6 +196,14 @@ matrix:
           packages:
             - clang-6.0    
       env: _CC=clang-6.0 _CXX=clang++-6.0 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=14"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-6.0
+          packages:
+            - clang-6.0    
+      env: _CC=clang-6.0 _CXX=clang++-6.0 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=17"
     - os: linux
       addons:
         apt:
@@ -176,6 +224,14 @@ matrix:
       addons:
         apt:
           sources:
+            - llvm-toolchain-xenial-7
+          packages:
+            - clang-7    
+      env: _CC=clang-7 _CXX=clang++-7 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=17"
+    - os: linux
+      addons:
+        apt:
+          sources:
             - llvm-toolchain-xenial-8
           packages:
             - clang-8    
@@ -188,6 +244,22 @@ matrix:
           packages:
             - clang-8    
       env: _CC=clang-8 _CXX=clang++-8 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=14"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-8
+          packages:
+            - clang-8    
+      env: _CC=clang-8 _CXX=clang++-8 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=17"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-8
+          packages:
+            - clang-8    
+      env: _CC=clang-8 _CXX=clang++-8 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=20"
       
 before_install:
   - sudo apt-get install libqt5serialport5-dev  -y 
