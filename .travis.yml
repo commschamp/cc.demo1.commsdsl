@@ -84,7 +84,7 @@ matrix:
           packages:
             - g++-8    
       env: _CC=gcc-8 _CXX=g++-8 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=14"     
-     - os: linux
+    - os: linux
       addons:
         apt:
           sources:
@@ -108,7 +108,7 @@ matrix:
           packages:
             - g++-9    
       env: _CC=gcc-9 _CXX=g++-9 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=14"       
-     - os: linux
+    - os: linux
       addons:
         apt:
           sources:
@@ -116,7 +116,7 @@ matrix:
           packages:
             - g++-9    
       env: _CC=gcc-9 _CXX=g++-9 _DSL_CC=${_CC} _DSL_CXX=${_CXX} _BUILD="-DCMAKE_CXX_STANDARD=17" 
-       - os: linux
+    - os: linux
       addons:
         apt:
           sources:
