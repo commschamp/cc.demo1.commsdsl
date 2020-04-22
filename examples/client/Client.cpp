@@ -14,7 +14,7 @@ namespace client
 {
 
 Client::Client(
-        boost::asio::io_service& io, 
+        common::boost_wrap::io& io, 
         const std::string& server,
         std::uint16_t port)    
   : m_socket(io),
@@ -29,7 +29,7 @@ Client::Client(
 
 bool Client::start()
 {
-    boost::asio::ip::tcp::resolver resolver(m_socket.get_io_service());
+    boost::asio::ip::tcp::resolver resolver(common::boost_wrap::get_io(m_socket));
     auto query = boost::asio::ip::tcp::resolver::query(m_server, std::to_string(m_port));
 
     boost::system::error_code ec;
@@ -83,7 +83,7 @@ void Client::readDataFromServer()
 
             if (ec) {
                 std::cerr << "ERROR: Failed to read with error: " << ec.message() << std::endl;
-                m_socket.get_io_service().stop();
+                common::boost_wrap::get_io(m_socket).stop();
                 return;
             }
 
@@ -140,7 +140,8 @@ void Client::readDataFromStdin()
         return; // Don't read STDIN right away, wait for ACK first
     } while (false);
 
-    m_socket.get_io_service().post(
+    common::boost_wrap::post(
+        common::boost_wrap::get_io(m_socket),
         [this]()
         {
             readDataFromStdin();

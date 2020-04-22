@@ -4,8 +4,9 @@
 #include <memory>
 #include <vector>
 
-#include <boost/asio.hpp>
 #include <boost/array.hpp>
+
+#include "common/boost_wrap.h"
 
 #include "demo1/Message.h"
 #include "demo1/input/ServerInputMessages.h"

@@ -8,7 +8,7 @@ namespace demo1
 namespace server
 {
 
-Server::Server(boost::asio::io_service& io, std::uint16_t port)    
+Server::Server(demo1::common::boost_wrap::io& io, std::uint16_t port)    
   : m_acceptor(io),
     m_socket(io),
     m_port(port)

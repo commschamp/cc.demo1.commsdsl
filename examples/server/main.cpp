@@ -16,7 +16,7 @@ int main(int argc, const char* argv[])
             return 0;
         }
 
-        boost::asio::io_service io;
+        demo1::common::boost_wrap::io io;
 
         boost::asio::signal_set signals(io, SIGINT, SIGTERM);
         signals.async_wait(
