@@ -23,12 +23,6 @@ namespace boost_wrap
 
 using io = boost::asio::io_service;
 
-template <typename TObj>
-io& get_io(TObj&& obj)
-{
-    return obj.get_io_service();
-}
-
 template <typename TFunc>
 void post(io& i, TFunc&& func)
 {
@@ -38,12 +32,6 @@ void post(io& i, TFunc&& func)
 #else // #if (DEMO1_BOOST_MINOR < 66)
 
 using io = boost::asio::io_context;
-
-template <typename TObj>
-io& get_io(TObj&& obj)
-{
-    return obj.get_executor().context();
-}
 
 template <typename TFunc>
 void post(io& i, TFunc&& func)

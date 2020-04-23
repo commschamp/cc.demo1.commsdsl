@@ -24,8 +24,9 @@ public:
     using Socket = boost::asio::ip::tcp::socket;
     using TermCallback = std::function<void ()>;
 
-    explicit Session(Socket&& sock) 
-      : m_socket(std::move(sock)),
+    explicit Session(common::boost_wrap::io& io, Socket&& sock) 
+      : m_io(io),
+        m_socket(std::move(sock)),
         m_remote(m_socket.remote_endpoint()) 
     {
     };
@@ -87,6 +88,7 @@ private:
     void processInput();
     void sendAck(demo1::MsgId id);
 
+    common::boost_wrap::io& m_io;
     Socket m_socket;
     TermCallback m_termCb;    
     boost::array<std::uint8_t, 1024> m_readBuf;

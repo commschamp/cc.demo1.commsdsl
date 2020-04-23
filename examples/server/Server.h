@@ -25,6 +25,7 @@ private:
 
     void acceptNewConnection();
 
+    common::boost_wrap::io& m_io;
     Acceptor m_acceptor;
     Socket m_socket;
     std::uint16_t m_port = 0U;

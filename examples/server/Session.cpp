@@ -341,7 +341,7 @@ void Session::terminateSession()
     std::cout << "Terminating session to " << m_remote << std::endl;
     if (m_termCb) {
         common::boost_wrap::post(
-            common::boost_wrap::get_io(m_socket),        
+            m_io,        
             [this]()
             {
                 m_termCb();

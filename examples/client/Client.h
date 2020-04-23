@@ -70,6 +70,7 @@ private:
     void waitForAck();
     void processInput();
 
+    common::boost_wrap::io& m_io;
     Socket m_socket;
     boost::asio::deadline_timer m_timer;
     std::string m_server;
