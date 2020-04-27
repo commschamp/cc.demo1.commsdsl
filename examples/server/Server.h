@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <list>
 
-#include <boost/asio.hpp>
+#include "common/boost_wrap.h"
 
 #include "Session.h"
 
@@ -16,7 +16,7 @@ namespace server
 class Server
 {
 public:
-    Server(boost::asio::io_service& io, std::uint16_t port);
+    Server(common::boost_wrap::io& io, std::uint16_t port);
 
     bool start();
 private:
@@ -25,6 +25,7 @@ private:
 
     void acceptNewConnection();
 
+    common::boost_wrap::io& m_io;
     Acceptor m_acceptor;
     Socket m_socket;
     std::uint16_t m_port = 0U;

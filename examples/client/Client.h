@@ -5,8 +5,9 @@
 #include <iterator>
 #include <vector>
 
-#include <boost/asio.hpp>
 #include <boost/array.hpp>
+
+#include "common/boost_wrap.h"
 
 #include "demo1/Message.h"
 #include "demo1/input/ClientInputMessages.h"
@@ -21,7 +22,7 @@ namespace client
 class Client
 {
 public:
-    Client(boost::asio::io_service& io, const std::string& server, std::uint16_t port);
+    Client(common::boost_wrap::io& io, const std::string& server, std::uint16_t port);
 
     bool start();
 
@@ -69,6 +70,7 @@ private:
     void waitForAck();
     void processInput();
 
+    common::boost_wrap::io& m_io;
     Socket m_socket;
     boost::asio::deadline_timer m_timer;
     std::string m_server;

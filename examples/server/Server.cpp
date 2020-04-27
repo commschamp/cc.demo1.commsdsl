@@ -8,8 +8,9 @@ namespace demo1
 namespace server
 {
 
-Server::Server(boost::asio::io_service& io, std::uint16_t port)    
-  : m_acceptor(io),
+Server::Server(common::boost_wrap::io& io, std::uint16_t port)    
+  : m_io(io),
+    m_acceptor(io),
     m_socket(io),
     m_port(port)
 {
@@ -61,7 +62,7 @@ void Server::acceptNewConnection()
             }
 
             std::cerr << "New connection from " << m_socket.remote_endpoint() << std::endl;
-            SessionPtr newSession(new Session(std::move(m_socket)));
+            SessionPtr newSession(new Session(m_io, std::move(m_socket)));
             auto* sessionPtr = newSession.get();
             newSession->setTerminateCallback(
                 [this, sessionPtr]()
