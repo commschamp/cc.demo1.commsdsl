@@ -71,7 +71,7 @@ endif ()
 
 list (APPEND CMAKE_PREFIX_PATH "${COMMS_INSTALL_DIR}")
 
-find_package(CommsChampion NO_MODULE)
+find_package(LibComms NO_MODULE)
 
 if (NOT TARGET cc::comms)
     message (Warning "Cannot compile example application due to missing COMMS libraries")
