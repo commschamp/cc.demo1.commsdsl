@@ -38,7 +38,7 @@ function (cc_prefetch)
         find_package(Git REQUIRED)
     endif ()
 
-    if (EXISTS "${CC_FETCH_SRC_DIR}/CC_External.cmake")
+    if (EXISTS "${CC_FETCH_SRC_DIR}/cmake/CC_External.cmake")
         return ()
     endif()    
 
