@@ -17,20 +17,26 @@ option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
 #     is not provided and examples are not disabled.
 
 if ("${COMMSDSL_TAG}" STREQUAL "")
-    set(COMMSDSL_TAG "v3.4.2")
+    set(COMMSDSL_TAG "v3.5")
 endif ()
 
 if ("${COMMS_TAG}" STREQUAL "")
-    set(COMMS_TAG "v2.4.1")
+    set(COMMS_TAG "v3.0")
 endif ()
 
-set (VERSION "0.17")
+set (VERSION "0.18")
+
+set (EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
 
 set (COMMSDSL_TGT "commsdsl_tgt")
 if ("${COMMSDSL2COMMS}" STREQUAL "")
+        execute_process (
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${EXTERNALS_DIR}"
+        )   
+        
         include(ExternalProject)
-        set (commsdsl2comms_main_dir "${CMAKE_BINARY_DIR}/commsdsl")
-        set (commsdsl2comms_src_dir "${commsdsl2comms_main_dir}/src")
+        set (commsdsl2comms_main_dir "${PROJECT_BINARY_DIR}/commsdsl")
+        set (commsdsl2comms_src_dir "${EXTERNALS_DIR}/commsdsl")
         set (commsdsl2comms_bin_dir "${commsdsl2comms_main_dir}/build")
         set (commsdsl2comms_install_dir "${commsdsl2comms_main_dir}/install")
         
