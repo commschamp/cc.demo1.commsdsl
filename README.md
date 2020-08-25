@@ -1,11 +1,11 @@
 # Overview
-This is a demo protocol for [CommsChampion Ecosystem](https://arobenko.github.io/cc). 
+This is a demo protocol for [CommsChampion Ecosystem](https://commschamp.github.io). 
 It demonstrates various available fields definitions as well
 as simple transport framing. 
 
 The protocol is defined in the [schema](dsl/schema.xml)
-file using [CommsDSL](https://github.com/arobenko/CommsDSL-Specification).
-The **commsds2comms** code generator from [commsdsl](https://github.com/arobenko/commsdsl)
+file using [CommsDSL](https://github.com/commschamp/CommsDSL-Specification).
+The **commsds2comms** code generator from [commsdsl](https://github.com/commschamp/commsdsl)
 project is used to generate C++11 code of the protocol implementation.
 
 This project also contains two [example](examples) 
@@ -29,7 +29,7 @@ where
 - **CHECKSUM** is 16 bit **CRC-CCITTT** checksum of `SIZE | ID | PAYLOAD` bytes.
 
 The **generated** CMake project of this protocol definition is hosted and can be
-viewed at [cc.demo1.generated](https://github.com/arobenko/cc.demo1.generated)
+viewed at [cc.demo1.generated](https://github.com/commschamp/cc.demo1.generated)
 
 # Examples
 The [server](examples/server) prints values of received message's fields and
@@ -41,8 +41,8 @@ the server, then waits for `Ack`. When the latter is received, inquires for
 new message ID to send.
 
 # License
-Please read [License](https://github.com/arobenko/commsdsl#license)
-section from [commsdsl](https://github.com/arobenko/commsdsl) project.
+Please read [License](https://github.com/commschamp/commsdsl#license)
+section from [commsdsl](https://github.com/commschamp/commsdsl) project.
 
 # How to Build
 This project uses CMake as its build system. Please open main
@@ -50,7 +50,7 @@ This project uses CMake as its build system. Please open main
 mentioned available parameters, which can be used in addition to standard 
 ones provided by CMake itself, to modify the default build. 
 
-The **commsdsl2comms** application from [commsdsl](https://github.com/arobenko/commsdsl)
+The **commsdsl2comms** application from [commsdsl](https://github.com/commschamp/commsdsl)
 project is used to generate appropriate C++ code. If path to externally
 built **commsdsl2comms** is not provided, then this project will build the
 latter itself.
@@ -91,15 +91,15 @@ $> nmake install
 ```
 
 # Supported Compilers
-Please read [Supported Compilers](https://github.com/arobenko/commsdsl#supported-compilers)
-info from [commsdsl](https://github.com/arobenko/commsdsl) project.
+Please read [Supported Compilers](https://github.com/commschamp/commsdsl#supported-compilers)
+info from [commsdsl](https://github.com/commschamp/commsdsl) project.
 
 # How to Build and Use Generated Code
 Please read the
-[Generated CMake Project Walkthrough](https://github.com/arobenko/commsdsl/blob/master/doc/GeneratedProjectWalkthrough.md)
+[Generated CMake Project Walkthrough](https://github.com/commschamp/commsdsl/blob/master/doc/GeneratedProjectWalkthrough.md)
 documentation page for details on the generated project internals.
 
-The [release](https://github.com/arobenko/cc.demo1.commsdsl/releases)
+The [release](https://github.com/commschamp/cc.demo1.commsdsl/releases)
 artifacts contain doxygen generated documentation of the protocol definition.
 
 # Contact Information
