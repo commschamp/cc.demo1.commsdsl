@@ -76,7 +76,9 @@ void Server::acceptNewConnection()
                             });
 
                     if (iter == m_sessions.end()) {
-                        assert(!"Should not happen");
+                        static constexpr bool Should_not_happen = false;
+                        static_cast<void>(Should_not_happen);
+                        assert(Should_not_happen);
                         return;
                     }
 

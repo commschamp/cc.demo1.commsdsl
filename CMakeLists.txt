@@ -3,6 +3,10 @@ project ("cc.demo1.commsdsl")
 
 option (DEMO1_NO_EXAMPLES "Disable examples compilation." OFF)
 option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
+option (DEMO1_USE_CCACHE "Use ccache on UNIX." ON)
+option (DEMO1_EXPORT_CC_COMMS_AS_SYSTEM_HEADERS 
+    "When preparing COMMS library internaly \
+    export it as system headers." ON)
 
 # Additional variables to be used if needed
 # ---------------------------

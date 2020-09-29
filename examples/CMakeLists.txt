@@ -1,42 +1,3 @@
-if ((CMAKE_COMPILER_IS_GNUCC) OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"))
-    set (extra_flags_list
-        "-Wall" "-Wextra" "-Wcast-align" "-Wcast-qual" "-Wctor-dtor-privacy"
-        "-Wmissing-include-dirs"
-        "-Woverloaded-virtual" "-Wredundant-decls" "-Wshadow" "-Wundef" "-Wunused"
-        "-Wno-unknown-pragmas" "-fdiagnostics-show-option"
-    )
-
-    if (CMAKE_COMPILER_IS_GNUCC)
-        list (APPEND extra_flags_list
-            "-Wnoexcept" "-Wlogical-op" "-Wstrict-null-sentinel"
-        )
-
-        if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "4.8")
-            list (APPEND extra_flags_list
-                "-Wno-pragmas" "-Wno-type-limits"
-            )
-        endif()
-
-    endif ()
-
-    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-        list (APPEND extra_flags_list "-Wno-dangling-field -Wno-unused-command-line-argument")
-    endif ()
-    
-    if (NOT DEMO1_NO_WARN_AS_ERR)
-        list (APPEND extra_flags_list "-Werror")
-    endif ()
-    
-    string(REPLACE ";" " " extra_flags "${extra_flags_list}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${extra_flags}")
-    
-elseif (MSVC)
-
-    if (NOT DEMO1_NO_WARN_AS_ERR)
-        add_definitions("/WX")
-    endif ()
-    
-endif ()
 
 include(GNUInstallDirs)
 
@@ -55,10 +16,17 @@ if ("${COMMS_INSTALL_DIR}" STREQUAL "")
     include (${PROJECT_SOURCE_DIR}/cmake/CC_Prefetch.cmake)
     cc_prefetch(SRC_DIR ${cc_src_dir} TAG ${COMMS_TAG})
     include (${cc_src_dir}/cmake/CC_External.cmake)
+
+    set (sys_headers_param)
+    if (NOT DEMO1_EXPORT_CC_COMMS_AS_SYSTEM_HEADERS)
+        set (sys_headers_param NO_SYSTEM_HEADERS)
+    endif ()
+
     cc_build_during_config(
         SRC_DIR ${cc_src_dir}
         BUILD_DIR ${cc_bin_dir}
         TAG ${COMMS_TAG}
+        ${sys_headers_param}
         CMAKE_ARGS
             -DCC_COMMS_LIB_ONLY=ON -DCC_NO_UNIT_TESTS=ON
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -97,6 +65,23 @@ find_package(Boost REQUIRED
 find_package(Threads REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/common/include)
+
+set (cc_compile_file "${COMMS_INSTALL_DIR}/lib/LibComms/cmake/CC_Compile.cmake")
+if (EXISTS ${cc_compile_file})
+    include (${cc_compile_file})
+
+    set (warn_as_err_opt)
+    if (NOT DEMO1_NO_WARN_AS_ERR)
+        set (warn_as_err_opt WARN_AS_ERR)
+    endif()
+
+    set (ccache_opt)
+    if (DEMO1_USE_CCACHE)
+        set (ccache_opt USE_CCACHE)
+    endif()
+
+    cc_compile(${warn_as_err_opt} ${ccache_opt})
+endif ()
 
 add_subdirectory (server)
 add_subdirectory (client)
