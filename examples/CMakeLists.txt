@@ -16,17 +16,10 @@ if ("${COMMS_INSTALL_DIR}" STREQUAL "")
     include (${PROJECT_SOURCE_DIR}/cmake/CC_Prefetch.cmake)
     cc_prefetch(SRC_DIR ${cc_src_dir} TAG ${COMMS_TAG})
     include (${cc_src_dir}/cmake/CC_External.cmake)
-
-    set (sys_headers_param)
-    if (NOT DEMO1_EXPORT_CC_COMMS_AS_SYSTEM_HEADERS)
-        set (sys_headers_param NO_SYSTEM_HEADERS)
-    endif ()
-
     cc_build_during_config(
         SRC_DIR ${cc_src_dir}
         BUILD_DIR ${cc_bin_dir}
         TAG ${COMMS_TAG}
-        ${sys_headers_param}
         CMAKE_ARGS
             -DCC_COMMS_LIB_ONLY=ON -DCC_NO_UNIT_TESTS=ON
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
