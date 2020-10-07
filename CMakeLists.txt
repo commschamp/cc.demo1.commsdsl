@@ -4,9 +4,6 @@ project ("cc.demo1.commsdsl")
 option (DEMO1_NO_EXAMPLES "Disable examples compilation." OFF)
 option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
 option (DEMO1_USE_CCACHE "Use ccache on UNIX." ON)
-option (DEMO1_EXPORT_CC_COMMS_AS_SYSTEM_HEADERS 
-    "When preparing COMMS library internaly \
-    export it as system headers." ON)
 
 # Additional variables to be used if needed
 # ---------------------------
@@ -21,14 +18,14 @@ option (DEMO1_EXPORT_CC_COMMS_AS_SYSTEM_HEADERS
 #     is not provided and examples are not disabled.
 
 if ("${COMMSDSL_TAG}" STREQUAL "")
-    set(COMMSDSL_TAG "develop")
+    set(COMMSDSL_TAG "v3.5.2")
 endif ()
 
 if ("${COMMS_TAG}" STREQUAL "")
-    set(COMMS_TAG "develop")
+    set(COMMS_TAG "v3.1")
 endif ()
 
-set (VERSION "0.18.2")
+set (VERSION "0.19")
 
 set (EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
 
