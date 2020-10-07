@@ -80,7 +80,7 @@ struct VariantPrintHelper
     template <std::size_t TIdx, typename TField>
     void operator()(const TField& field) const
     {
-        std::cout << "{" << (unsigned)field.field_key().value() << ", ";
+        std::cout << "{" << static_cast<unsigned>(field.field_key().value()) << ", ";
         printFieldValue(field.field_val());
         std::cout << "}";
     }
@@ -91,7 +91,7 @@ struct Variant2PrintHelper
     template <std::size_t TIdx, typename TField>
     void operator()(const TField& field) const
     {
-        std::cout << "{" << (unsigned)field.field_type().value() << ", " <<
+        std::cout << "{" << static_cast<unsigned>(field.field_type().value()) << ", " <<
             field.field_length().value() << ", ";
         printFieldValue(field.field_val());
         std::cout << "}";
@@ -129,8 +129,8 @@ void Session::start()
 void Session::handle (InSimpleInts& msg)
 {
     std::cout << 
-        "\tF1 = " << (int)msg.field_f1().value() << '\n' <<
-        "\tF2 = " << (unsigned)msg.field_f2().value() << '\n' <<
+        "\tF1 = " << static_cast<int>(msg.field_f1().value()) << '\n' <<
+        "\tF2 = " << static_cast<unsigned>(msg.field_f2().value()) << '\n' <<
         "\tF3 = " << msg.field_f3().value() << '\n' <<
         "\tF4 = " << msg.field_f4().value() << '\n' <<
         "\tF5 = " << msg.field_f5().value() << '\n' <<
@@ -182,10 +182,10 @@ void Session::handle(InFloats& msg)
 void Session::handle(InEnums& msg)
 {
     std::cout << 
-        '\t' << msg.field_f1().name() << " = " << (unsigned)msg.field_f1().value() << '\n' <<
-        '\t' << msg.field_f2().name() << " = " << (int)msg.field_f2().value() << '\n' <<
-        '\t' << msg.field_f3().name() << " = 0x" << std::hex  << (unsigned)msg.field_f3().value() << std::dec << '\n' <<
-        '\t' << msg.field_f4().name() << " = " << (unsigned)msg.field_f4().value() << '\n' <<
+        '\t' << msg.field_f1().name() << " = " << static_cast<unsigned>(msg.field_f1().value()) << '\n' <<
+        '\t' << msg.field_f2().name() << " = " << static_cast<int>(msg.field_f2().value()) << '\n' <<
+        '\t' << msg.field_f3().name() << " = 0x" << std::hex  << static_cast<unsigned>(msg.field_f3().value()) << std::dec << '\n' <<
+        '\t' << msg.field_f4().name() << " = " << static_cast<unsigned>(msg.field_f4().value()) << '\n' <<
         std::endl;
     sendAck(msg.doGetId());
 }
@@ -193,7 +193,7 @@ void Session::handle(InEnums& msg)
 void Session::handle(InSets& msg)
 {
     std::cout << std::hex <<
-        '\t' << msg.field_f1().name() << " = 0x" << (unsigned)msg.field_f1().value() << 
+        '\t' << msg.field_f1().name() << " = 0x" << static_cast<unsigned>(msg.field_f1().value()) << 
             " (valid = " << std::boolalpha << msg.field_f1().valid() << ")\n" <<
         '\t' << msg.field_f2().name() << " = 0x" << msg.field_f2().value() << 
             " (valid = " << std::boolalpha << msg.field_f2().valid() << ")\n" <<
@@ -208,10 +208,10 @@ void Session::handle(InBitfields& msg)
     std::cout << 
         '\t' << msg.field_f1().name() << ":\n" <<
         "\t\t" << msg.field_f1().field_mem1().name() << " = "  << 
-            (unsigned)msg.field_f1().field_mem1().value() << '\n' << 
+            static_cast<unsigned>(msg.field_f1().field_mem1().value()) << '\n' << 
         "\t\t" << msg.field_f1().field_mem2().name() << std::hex << 
             " = 0x"  << msg.field_f1().field_mem2().value() << std::dec << '\n' << 
-        "\t\t" << msg.field_f1().field_mem3().name() << " = " << (unsigned)msg.field_f1().field_mem3().value() << '\n' << 
+        "\t\t" << msg.field_f1().field_mem3().name() << " = " << static_cast<unsigned>(msg.field_f1().field_mem3().value()) << '\n' << 
         std::endl;
     sendAck(msg.doGetId());
 }
@@ -297,7 +297,7 @@ void Session::handle(InOptionals& msg)
 {
     std::cout << std::hex <<
         '\t' << msg.field_flags().name() << " = 0x" << 
-            (unsigned)msg.field_flags().value() << '\n' <<
+            static_cast<unsigned>(msg.field_flags().value()) << '\n' <<
         '\t' << msg.field_f2().name() << " = 0x" << msg.field_f2().field().value() << 
             " (exists = " << std::boolalpha << msg.field_f2().doesExist() << ")\n" <<
         '\t' << msg.field_f3().name() << " = 0x" << msg.field_f3().field().value() << 
@@ -372,7 +372,9 @@ void Session::sendAck(demo1::MsgId id)
     }
 
     if (es != comms::ErrorStatus::Success) {
-        assert(!"Unexpected error");
+        static constexpr bool Unexpected_error = false;
+        static_cast<void>(Unexpected_error);
+        assert(Unexpected_error);
         return;
     }
 

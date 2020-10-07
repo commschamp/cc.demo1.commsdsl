@@ -58,7 +58,8 @@ bool Client::start()
 void Client::handle(InAckMsg& msg)
 {
     if (msg.field_msgId().value() != m_sentId) {
-        std::cerr << "WARNING: Ack for the wrong ID: " << (unsigned)msg.field_msgId().value() << std::endl;
+        std::cerr << "WARNING: Ack for the wrong ID: " << 
+            static_cast<unsigned>(msg.field_msgId().value()) << std::endl;
         return;
     }
 
@@ -302,7 +303,9 @@ void Client::sendMessage(const OutputMsg& msg)
     }
 
     if (es != comms::ErrorStatus::Success) {
-        assert(!"Unexpected error");
+        static constexpr bool Unexpected_error = false;
+        static_cast<void>(Unexpected_error);
+        assert(Unexpected_error);
         return;
     }
 
