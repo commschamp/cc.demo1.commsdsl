@@ -74,6 +74,7 @@ if (EXISTS ${cc_compile_file})
     endif()
 
     cc_compile(${warn_as_err_opt} ${ccache_opt})
+    cc_msvc_force_warn_opt("/W4")
 endif ()
 
 add_subdirectory (server)
