@@ -18,14 +18,14 @@ option (DEMO1_USE_CCACHE "Use ccache on UNIX." ON)
 #     is not provided and examples are not disabled.
 
 if ("${COMMSDSL_TAG}" STREQUAL "")
-    set(COMMSDSL_TAG "v3.5.3")
+    set(COMMSDSL_TAG "develop")
 endif ()
 
 if ("${COMMS_TAG}" STREQUAL "")
-    set(COMMS_TAG "v3.1.2")
+    set(COMMS_TAG "develop")
 endif ()
 
-set (VERSION "0.19.2")
+set (VERSION "0.20")
 
 set (EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
 
