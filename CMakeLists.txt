@@ -22,7 +22,7 @@ if ("${COMMSDSL_TAG}" STREQUAL "")
 endif ()
 
 if ("${COMMS_TAG}" STREQUAL "")
-    set(COMMS_TAG "v3.1.3")
+    set(COMMS_TAG "develop")
 endif ()
 
 set (VERSION "0.20.1")
