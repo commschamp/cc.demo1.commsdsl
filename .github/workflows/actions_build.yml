@@ -3,14 +3,12 @@ name: Github Actions Build
 on: [push]
 
 jobs:
-  build_gcc48_ubuntu_18_04:
+  build_gcc4.8_ubuntu_18_04:
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: false
       matrix:
         type: [Debug, Release, MinSizeRel]
-        cc_ver: [4.8]
-        cpp: [11]
 
     steps:
     - uses: actions/checkout@v2
@@ -19,7 +17,7 @@ jobs:
       run: sudo apt-get update --fix-missing    
       
     - name: Install Packages
-      run: sudo apt install libqt5gui5 qtbase5-dev libboost-all-dev libxml2-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}}
+      run: sudo apt install libqt5gui5 qtbase5-dev libboost-all-dev libxml2-dev gcc-4.8 g++-4.8 gcc-5 g++-5
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
@@ -27,10 +25,10 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold 
       env:
-        CC: gcc-${{matrix.cc_ver}}
-        CXX: g++-${{matrix.cc_ver}}
+        CC: gcc-5
+        CXX: g++-5
 
     - name: Generate Target Project
       working-directory: ${{runner.workspace}}/build
@@ -45,17 +43,17 @@ jobs:
     - name: Configure Target Project
       shell: bash
       working-directory: ${{runner.workspace}}/build/build.output
-      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold  -DOPT_BUILD_TEST=ON -DOPT_BUILD_PLUGIN=ON
+      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold  -DOPT_BUILD_TEST=ON -DOPT_BUILD_PLUGIN=ON
       env:
-        CC: gcc-${{matrix.cc_ver}}
-        CXX: g++-${{matrix.cc_ver}}
+        CC: gcc-4.8
+        CXX: g++-4.8
 
     - name: Build Target Project
       working-directory: ${{runner.workspace}}/build/build.output
       shell: bash
       run: cmake --build . --target install
       env:
-        VERBOSE: 1         
+        VERBOSE: 1 
 
   build_gcc_ubuntu_18_04:
     runs-on: ubuntu-18.04
