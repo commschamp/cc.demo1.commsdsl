@@ -127,7 +127,7 @@ jobs:
         VERBOSE: 1 
 
     - name: Create Target Tools Project Build Directory
-      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
+      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_tools
       
     - name: Configure Target Tools Project
       shell: bash
@@ -267,7 +267,7 @@ jobs:
         VERBOSE: 1 
 
     - name: Create Target Tools Project Build Directory
-      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
+      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_tools
       
     - name: Configure Target Tools Project
       shell: bash
@@ -408,7 +408,7 @@ jobs:
         VERBOSE: 1 
 
     - name: Create Target Tools Project Build Directory
-      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
+      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_tools
       
     - name: Configure Target Tools Project
       shell: bash
@@ -548,9 +548,9 @@ jobs:
       run: cmake --build . --target install
       env:
         VERBOSE: 1 
-        
+
     - name: Create Target Tools Project Build Directory
-      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
+      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_tools
       
     - name: Configure Target Tools Project
       shell: bash
