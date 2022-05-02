@@ -11,7 +11,7 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: [4.8, 5, 6, 7]
         cpp: [11, 14]
-        comms_tag: ["master"]
+        comms_tag: [master]
 
     steps:
     - uses: actions/checkout@v2
@@ -110,7 +110,7 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: [8, 9, 10, 11]
         cpp: [11, 14, 17, 20]
-        comms_tag: ["master"]
+        comms_tag: [master]
         exclude:
           - cc_ver: 8
             cpp: 20
@@ -211,7 +211,7 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: ["4.0", "5.0", "6.0"]
         cpp: [11, 14, 17]
-        comms_tag: ["master"]
+        comms_tag: [master]
         exclude:
           - cc_ver: "4.0"
             cpp: 17
@@ -262,7 +262,7 @@ jobs:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
 
-    - name: Generate Target Projectss
+    - name: Generate Target Projects
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . 
@@ -313,7 +313,7 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: [7, 8, 9, 10, 11, 12]
         cpp: [11, 14, 17, 20]
-        comms_tag: ["master"]
+        comms_tag: [master]
         exclude:
           - cc_ver: 7
             cpp: 20
@@ -389,7 +389,7 @@ jobs:
       run: cmake --build . --target install
       env:
         VERBOSE: 1 
-        
+
     - name: Create Target Test Project Build Directory
       run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
       
