@@ -73,7 +73,7 @@ jobs:
     - name: Configure Target Protocol Project
       shell: bash
       working-directory: ${{runner.workspace}}/build/build.output
-      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold 
+      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DOPT_REQUIRE_COMMS_LIB=OFF
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
@@ -174,7 +174,7 @@ jobs:
     - name: Configure Target Protocol Project
       shell: bash
       working-directory: ${{runner.workspace}}/build/build.output
-      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install
+      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DOPT_REQUIRE_COMMS_LIB=OFF
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
@@ -275,7 +275,7 @@ jobs:
     - name: Configure Target Protocol Project
       shell: bash
       working-directory: ${{runner.workspace}}/build/build.output
-      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DOPT_BUILD_TEST=ON -DOPT_BUILD_PLUGIN=ON
+      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DOPT_REQUIRE_COMMS_LIB=OFF
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
@@ -377,7 +377,7 @@ jobs:
     - name: Configure Target Protocol Project
       shell: bash
       working-directory: ${{runner.workspace}}/build/build.output
-      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install 
+      run: cmake ${{runner.workspace}}/build/output -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DOPT_REQUIRE_COMMS_LIB=OFF
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
