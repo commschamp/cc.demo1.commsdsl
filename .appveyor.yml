@@ -73,13 +73,13 @@ build_script:
     - mkdir output_test.build
     - cd output_test.build
     - echo TEST_PREFIX_PATH=%TEST_PREFIX_PATH%
-    - cmake ../output_test -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "NMake Makefiles" -DCMAKE_CXX_STANDARD=%CPP_STD% -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="%COMMS_BUILD_DIR%\install;%BUILD_DIR%\output_test.build\install"
+    - cmake ../output_test -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "NMake Makefiles" -DCMAKE_CXX_STANDARD=%CPP_STD% -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="%COMMS_BUILD_DIR%\install;%BUILD_DIR%\output.build\install"
     - cmake --build . --target install
     - echo ------------------------- Building Tools -------------------------
     - cd %BUILD_DIR%
     - mkdir output_tools.build
     - cd output_tools.build
-    - cmake ../output_tools -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "NMake Makefiles" -DCMAKE_CXX_STANDARD=%CPP_STD% -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="%COMMS_BUILD_DIR%\install;%CC_TOOLS_BUILD_DIR%\install;%BUILD_DIR%\output_test.build\install;%QTDIR%"
+    - cmake ../output_tools -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "NMake Makefiles" -DCMAKE_CXX_STANDARD=%CPP_STD% -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="%COMMS_BUILD_DIR%\install;%CC_TOOLS_BUILD_DIR%\install;%BUILD_DIR%\output.build\install;%QTDIR%"
     - cmake --build . --target install    
 
 
