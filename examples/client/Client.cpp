@@ -1,6 +1,8 @@
 #include "Client.h"
 
+#include <cmath>
 #include <iostream>
+#include <map>
 #include <sstream>
 
 #include "demo1/MsgId.h"

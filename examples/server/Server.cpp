@@ -1,5 +1,6 @@
 #include "Server.h"
 
+#include <algorithm>
 #include <iostream>
 
 namespace demo1
