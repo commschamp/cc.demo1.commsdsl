@@ -44,8 +44,8 @@ build_script:
     - if exist %EXTERNALS_DIR% rmdir /S /Q %EXTERNALS_DIR%
     - mkdir %EXTERNALS_DIR%
     - cd %EXTERNALS_DIR%
-    - git clone -b $COMMS_BRANCH https://github.com/commschamp/comms
-    - git clone -b $CC_TOOLS_QT_BRANCH https://github.com/commschamp/cc_tools_qt
+    - git clone -b %COMMS_BRANCH% https://github.com/commschamp/comms
+    - git clone -b %CC_TOOLS_QT_BRANCH% https://github.com/commschamp/cc_tools_qt
     - echo ------------------------- Building COMMS library -------------------------
     - set COMMS_BUILD_DIR=%APPVEYOR_BUILD_FOLDER%\externals\comms\build.%PLATFORM%.%CONFIGURATION%.%TOOLCHAIN%
     - cmake -E make_directory %COMMS_BUILD_DIR%
