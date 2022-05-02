@@ -4,6 +4,7 @@ on: [push]
 
 env:
   COMMS_BRANCH: master
+  CC_TOOLS_QT_BRANCH: master
 
 jobs:
   build_gcc_ubuntu_18_04:
@@ -39,15 +40,37 @@ jobs:
       working-directory: ${{runner.workspace}}/externals/comms/build 
       run: cmake ${{runner.workspace}}/externals/comms -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install
       env:
-        CC: clang-${{matrix.cc_ver}}
-        CXX: clang++-${{matrix.cc_ver}}
+        CC: gcc-${{matrix.cc_ver}}
+        CXX: g++-${{matrix.cc_ver}}
 
     - name: Build COMMS library
       working-directory: ${{runner.workspace}}/externals/comms/build
       shell: bash
       run: cmake --build . --target install
       env:
-        VERBOSE: 1       
+        VERBOSE: 1     
+
+    - name: Clone cc_tools_qt library
+      working-directory: ${{runner.workspace}}/externals 
+      run: git clone -b $CC_TOOLS_QT_BRANCH https://github.com/commschamp/cc_tools_qt
+
+    - name: Create cc_tools_qt build directory
+      run: cmake -E make_directory ${{runner.workspace}}/externals/cc_tools_qt/build  
+
+    - name: Configure cc_tools_qt
+      shell: bash
+      working-directory: ${{runner.workspace}}/externals/cc_tools_qt/build 
+      run: cmake ${{runner.workspace}}/externals/cc_tools_qt -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCC_TOOLS_QT_BUILD_APPS=OFF -DCC_TOOLS_QT_EXTERNAL_COMMS=ON -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install"
+      env:
+        CC: gcc-${{matrix.cc_ver}}
+        CXX: g++-${{matrix.cc_ver}}
+
+    - name: Build cc_tools_qt library
+      working-directory: ${{runner.workspace}}/externals/cc_tools_qt/build
+      shell: bash
+      run: cmake --build . --target install
+      env:
+        VERBOSE: 1               
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
@@ -97,12 +120,29 @@ jobs:
         CXX: g++-${{matrix.cc_ver}}
 
     - name: Build Target Test Project
-      working-directory: ${{runner.workspace}}/build/build.output
+      working-directory: ${{runner.workspace}}/build/build.output_test
       shell: bash
       run: cmake --build . --target install
       env:
         VERBOSE: 1 
 
+    - name: Create Target Tools Project Build Directory
+      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
+      
+    - name: Configure Target Tools Project
+      shell: bash
+      working-directory: ${{runner.workspace}}/build/build.output_tools
+      run: cmake ${{runner.workspace}}/build/output_tools -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/externals/cc_tools_qt/build/install;${{runner.workspace}}/build/build.output/install"
+      env:
+        CC: gcc-${{matrix.cc_ver}}
+        CXX: g++-${{matrix.cc_ver}}
+
+    - name: Build Target Tools Project
+      working-directory: ${{runner.workspace}}/build/build.output_tools
+      shell: bash
+      run: cmake --build . --target install
+      env:
+        VERBOSE: 1 
 
   build_gcc_ubuntu_20_04:
     runs-on: ubuntu-20.04
@@ -140,15 +180,37 @@ jobs:
       working-directory: ${{runner.workspace}}/externals/comms/build 
       run: cmake ${{runner.workspace}}/externals/comms -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install
       env:
-        CC: clang-${{matrix.cc_ver}}
-        CXX: clang++-${{matrix.cc_ver}}
+        CC: gcc-${{matrix.cc_ver}}
+        CXX: g++-${{matrix.cc_ver}}
 
     - name: Build COMMS library
       working-directory: ${{runner.workspace}}/externals/comms/build
       shell: bash
       run: cmake --build . --target install
       env:
-        VERBOSE: 1       
+        VERBOSE: 1   
+
+    - name: Clone cc_tools_qt library
+      working-directory: ${{runner.workspace}}/externals 
+      run: git clone -b $CC_TOOLS_QT_BRANCH https://github.com/commschamp/cc_tools_qt
+
+    - name: Create cc_tools_qt build directory
+      run: cmake -E make_directory ${{runner.workspace}}/externals/cc_tools_qt/build  
+
+    - name: Configure cc_tools_qt
+      shell: bash
+      working-directory: ${{runner.workspace}}/externals/cc_tools_qt/build 
+      run: cmake ${{runner.workspace}}/externals/cc_tools_qt -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCC_TOOLS_QT_BUILD_APPS=OFF -DCC_TOOLS_QT_EXTERNAL_COMMS=ON -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install"
+      env:
+        CC: gcc-${{matrix.cc_ver}}
+        CXX: g++-${{matrix.cc_ver}}
+
+    - name: Build cc_tools_qt library
+      working-directory: ${{runner.workspace}}/externals/cc_tools_qt/build
+      shell: bash
+      run: cmake --build . --target install
+      env:
+        VERBOSE: 1               
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
@@ -192,17 +254,35 @@ jobs:
     - name: Configure Target Test Project
       shell: bash
       working-directory: ${{runner.workspace}}/build/build.output_test
-      run: cmake ${{runner.workspace}}/build/output_test -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/build/build.output/install"
+      run: cmake ${{runner.workspace}}/build/output_test -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/build/build.output/install"
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
 
     - name: Build Target Test Project
-      working-directory: ${{runner.workspace}}/build/build.output
+      working-directory: ${{runner.workspace}}/build/build.output_test
       shell: bash
       run: cmake --build . --target install
       env:
         VERBOSE: 1 
+
+    - name: Create Target Tools Project Build Directory
+      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
+      
+    - name: Configure Target Tools Project
+      shell: bash
+      working-directory: ${{runner.workspace}}/build/build.output_tools
+      run: cmake ${{runner.workspace}}/build/output_tools -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/externals/cc_tools_qt/build/install;${{runner.workspace}}/build/build.output/install"
+      env:
+        CC: gcc-${{matrix.cc_ver}}
+        CXX: g++-${{matrix.cc_ver}}
+
+    - name: Build Target Tools Project
+      working-directory: ${{runner.workspace}}/build/build.output_tools
+      shell: bash
+      run: cmake --build . --target install
+      env:
+        VERBOSE: 1        
       
   build_clang_ubuntu_18_04:
     runs-on: ubuntu-18.04
@@ -251,6 +331,28 @@ jobs:
       env:
         VERBOSE: 1 
 
+    - name: Clone cc_tools_qt library
+      working-directory: ${{runner.workspace}}/externals 
+      run: git clone -b $CC_TOOLS_QT_BRANCH https://github.com/commschamp/cc_tools_qt
+
+    - name: Create cc_tools_qt build directory
+      run: cmake -E make_directory ${{runner.workspace}}/externals/cc_tools_qt/build  
+
+    - name: Configure cc_tools_qt
+      shell: bash
+      working-directory: ${{runner.workspace}}/externals/cc_tools_qt/build 
+      run: cmake ${{runner.workspace}}/externals/cc_tools_qt -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCC_TOOLS_QT_BUILD_APPS=OFF -DCC_TOOLS_QT_EXTERNAL_COMMS=ON -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install"
+      env:
+        CC: clang-${{matrix.cc_ver}}
+        CXX: clang++-${{matrix.cc_ver}}
+
+    - name: Build cc_tools_qt library
+      working-directory: ${{runner.workspace}}/externals/cc_tools_qt/build
+      shell: bash
+      run: cmake --build . --target install
+      env:
+        VERBOSE: 1           
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
 
@@ -293,17 +395,35 @@ jobs:
     - name: Configure Target Test Project
       shell: bash
       working-directory: ${{runner.workspace}}/build/build.output_test
-      run: cmake ${{runner.workspace}}/build/output_test -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/build/build.output/install"
+      run: cmake ${{runner.workspace}}/build/output_test -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/build/build.output/install"
       env:
-        CC: gcc-${{matrix.cc_ver}}
-        CXX: g++-${{matrix.cc_ver}}
+        CC: clang-${{matrix.cc_ver}}
+        CXX: clang++-${{matrix.cc_ver}}
 
     - name: Build Target Test Project
-      working-directory: ${{runner.workspace}}/build/build.output
+      working-directory: ${{runner.workspace}}/build/build.output_test
       shell: bash
       run: cmake --build . --target install
       env:
         VERBOSE: 1 
+
+    - name: Create Target Tools Project Build Directory
+      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
+      
+    - name: Configure Target Tools Project
+      shell: bash
+      working-directory: ${{runner.workspace}}/build/build.output_tools
+      run: cmake ${{runner.workspace}}/build/output_tools -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/externals/cc_tools_qt/build/install;${{runner.workspace}}/build/build.output/install"
+      env:
+        CC: clang-${{matrix.cc_ver}}
+        CXX: clang++-${{matrix.cc_ver}}
+
+    - name: Build Target Tools Project
+      working-directory: ${{runner.workspace}}/build/build.output_tools
+      shell: bash
+      run: cmake --build . --target install
+      env:
+        VERBOSE: 1          
 
   build_clang_ubuntu_20_04:
     runs-on: ubuntu-20.04
@@ -351,7 +471,29 @@ jobs:
       shell: bash
       run: cmake --build . --target install
       env:
-        VERBOSE: 1       
+        VERBOSE: 1  
+
+    - name: Clone cc_tools_qt library
+      working-directory: ${{runner.workspace}}/externals 
+      run: git clone -b $CC_TOOLS_QT_BRANCH https://github.com/commschamp/cc_tools_qt
+
+    - name: Create cc_tools_qt build directory
+      run: cmake -E make_directory ${{runner.workspace}}/externals/cc_tools_qt/build  
+
+    - name: Configure cc_tools_qt
+      shell: bash
+      working-directory: ${{runner.workspace}}/externals/cc_tools_qt/build 
+      run: cmake ${{runner.workspace}}/externals/cc_tools_qt -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCC_TOOLS_QT_BUILD_APPS=OFF -DCC_TOOLS_QT_EXTERNAL_COMMS=ON -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install"
+      env:
+        CC: clang-${{matrix.cc_ver}}
+        CXX: clang++-${{matrix.cc_ver}}
+
+    - name: Build cc_tools_qt library
+      working-directory: ${{runner.workspace}}/externals/cc_tools_qt/build
+      shell: bash
+      run: cmake --build . --target install
+      env:
+        VERBOSE: 1                 
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
@@ -395,15 +537,33 @@ jobs:
     - name: Configure Target Test Project
       shell: bash
       working-directory: ${{runner.workspace}}/build/build.output_test
-      run: cmake ${{runner.workspace}}/build/output_test -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/build/build.output/install"
+      run: cmake ${{runner.workspace}}/build/output_test -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/build/build.output/install"
       env:
-        CC: gcc-${{matrix.cc_ver}}
-        CXX: g++-${{matrix.cc_ver}}
+        CC: clang-${{matrix.cc_ver}}
+        CXX: clang++-${{matrix.cc_ver}}
 
     - name: Build Target Test Project
-      working-directory: ${{runner.workspace}}/build/build.output
+      working-directory: ${{runner.workspace}}/build/build.output_test
       shell: bash
       run: cmake --build . --target install
       env:
         VERBOSE: 1 
+        
+    - name: Create Target Tools Project Build Directory
+      run: cmake -E make_directory ${{runner.workspace}}/build/build.output_test
+      
+    - name: Configure Target Tools Project
+      shell: bash
+      working-directory: ${{runner.workspace}}/build/build.output_tools
+      run: cmake ${{runner.workspace}}/build/output_tools -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH="${{runner.workspace}}/externals/comms/build/install;${{runner.workspace}}/externals/cc_tools_qt/build/install;${{runner.workspace}}/build/build.output/install"
+      env:
+        CC: clang-${{matrix.cc_ver}}
+        CXX: clang++-${{matrix.cc_ver}}
+
+    - name: Build Target Tools Project
+      working-directory: ${{runner.workspace}}/build/build.output_tools
+      shell: bash
+      run: cmake --build . --target install
+      env:
+        VERBOSE: 1            
           
