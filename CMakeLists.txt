@@ -18,6 +18,8 @@ option (DEMO1_USE_CCACHE "Use ccache on UNIX." ON)
 #     is not provided.
 # COMMS_TAG - Tag of the COMMS library to checkout if COMMS_INSTALL_DIR
 #     is not provided and examples are not disabled.
+# COMMSDSL_C_COMPILER - "C" Compiler for commsdsl project
+# COMMSDSL_CXX_COMPILER - "C++" Compiler for commsdsl project
 
 if ("${COMMSDSL_TAG}" STREQUAL "")
     set(COMMSDSL_TAG "split")
@@ -42,6 +44,14 @@ if ("${COMMSDSL_INSTALL_DIR}" STREQUAL "")
         set (commsdsl2comms_src_dir "${EXTERNALS_DIR}/commsdsl")
         set (commsdsl2comms_bin_dir "${commsdsl2comms_main_dir}/build")
         set (commsdsl2comms_install_dir "${commsdsl2comms_main_dir}/install")
+
+        if ("${COMMSDSL_C_COMPILER}" STREQUAL "")
+            set (COMMSDSL_C_COMPILER ${CMAKE_C_COMPILER})
+        endif ()        
+
+        if ("${COMMSDSL_CXX_COMPILER}" STREQUAL "")
+            set (COMMSDSL_CXX_COMPILER ${CMAKE_CXX_COMPILER})
+        endif ()        
         
         ExternalProject_Add(
             "${COMMSDSL_TGT}"
@@ -52,8 +62,8 @@ if ("${COMMSDSL_INSTALL_DIR}" STREQUAL "")
             SOURCE_DIR "${commsdsl2comms_src_dir}"
             CMAKE_ARGS
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${commsdsl2comms_install_dir}
-                -DCOMMSDSL_BUILD_UNIT_TESTS=OFF -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} 
-                -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER} 
+                -DCOMMSDSL_BUILD_UNIT_TESTS=OFF -DCMAKE_C_COMPILER=${COMMSDSL_C_COMPILER} 
+                -DCMAKE_CXX_COMPILER=${COMMSDSL_CXX_COMPILER} 
                 -DCOMMSDSL_EXTERNALS_DIR=${EXTERNALS_DIR} 
             BINARY_DIR "${commsdsl2comms_bin_dir}"
         )
