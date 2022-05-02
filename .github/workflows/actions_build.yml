@@ -78,10 +78,10 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCOMMSDSL_C_COMPILER=gcc-8 -DCOMMSDSL_CXX_COMPILER=g++-8 -DCOMMS_INSTALL_DIR=${{runner.workspace}}/externals/comms/build/install
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCOMMS_INSTALL_DIR=${{runner.workspace}}/externals/comms/build/install
       env:
-        CC: gcc-${{matrix.cc_ver}}
-        CXX: g++-${{matrix.cc_ver}}
+        CC: gcc-8
+        CXX: g++8
 
     - name: Generate Target Projects
       working-directory: ${{runner.workspace}}/build
