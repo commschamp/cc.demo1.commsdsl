@@ -2,6 +2,9 @@ name: Github Actions Build
 
 on: [push]
 
+env:
+  COMMS_BRANCH: master
+
 jobs:
   build_gcc_ubuntu_18_04:
     runs-on: ubuntu-18.04
@@ -11,7 +14,6 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: [4.8, 5, 6, 7]
         cpp: [11, 14]
-        comms_tag: [master]
 
     steps:
     - uses: actions/checkout@v2
@@ -27,7 +29,7 @@ jobs:
 
     - name: Clone COMMS library
       working-directory: ${{runner.workspace}}/externals 
-      run: git clone -b ${{comms_tag}} https://github.com/commschamp/comms
+      run: git clone -b $COMMS_BRANCH https://github.com/commschamp/comms
 
     - name: Create COMMS build directory
       run: cmake -E make_directory ${{runner.workspace}}/externals/comms/build  
@@ -110,7 +112,6 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: [8, 9, 10, 11]
         cpp: [11, 14, 17, 20]
-        comms_tag: [master]
         exclude:
           - cc_ver: 8
             cpp: 20
@@ -129,7 +130,7 @@ jobs:
 
     - name: Clone COMMS library
       working-directory: ${{runner.workspace}}/externals 
-      run: git clone -b ${{comms_tag}} https://github.com/commschamp/comms
+      run: git clone -b $COMMS_BRANCH https://github.com/commschamp/comms
 
     - name: Create COMMS build directory
       run: cmake -E make_directory ${{runner.workspace}}/externals/comms/build  
@@ -211,7 +212,6 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: ["4.0", "5.0", "6.0"]
         cpp: [11, 14, 17]
-        comms_tag: [master]
         exclude:
           - cc_ver: "4.0"
             cpp: 17
@@ -231,7 +231,7 @@ jobs:
 
     - name: Clone COMMS library
       working-directory: ${{runner.workspace}}/externals 
-      run: git clone -b ${{comms_tag}} https://github.com/commschamp/comms
+      run: git clone -b $COMMS_BRANCH https://github.com/commschamp/comms
 
     - name: Create COMMS build directory
       run: cmake -E make_directory ${{runner.workspace}}/externals/comms/build  
@@ -313,7 +313,6 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: [7, 8, 9, 10, 11, 12]
         cpp: [11, 14, 17, 20]
-        comms_tag: [master]
         exclude:
           - cc_ver: 7
             cpp: 20
@@ -334,7 +333,7 @@ jobs:
 
     - name: Clone COMMS library
       working-directory: ${{runner.workspace}}/externals 
-      run: git clone -b ${{comms_tag}} https://github.com/commschamp/comms
+      run: git clone -b $COMMS_BRANCH https://github.com/commschamp/comms
 
     - name: Create COMMS build directory
       run: cmake -E make_directory ${{runner.workspace}}/externals/comms/build  
