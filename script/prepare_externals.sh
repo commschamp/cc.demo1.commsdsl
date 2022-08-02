@@ -13,8 +13,10 @@
 # COMMSDSL_TAG - (Optional) Tag of the commdsl
 # CC_TOOLS_QT_REPO - (Optional) Repository of the cc_tools_qt
 # CC_TOOLS_QT_TAG - (Optional) Tag of the cc_tools_qt
+# CC_TOOLS_QT_SKIP - (Optional) Skip build of cc_tools_qt
 # COMMON_INSTALL_DIR - (Optional) Common directory to perform installations
 # COMMON_BUILD_TYPE - (Optional) CMake build type
+
 
 #####################################
 
@@ -149,7 +151,10 @@ set -e
 export VERBOSE=1
 build_comms
 build_commsdsl
-build_cc_tools_qt
+
+if [ -z "${CC_TOOLS_QT_SKIP}" ]; then
+    build_cc_tools_qt
+fi
 
 
 
