@@ -4,14 +4,18 @@ project ("cc.demo1.commsdsl")
 option (DEMO1_NO_EXAMPLES "Disable examples compilation." OFF)
 option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
 option (DEMO1_USE_CCACHE "Use ccache on UNIX." ON)
+option (DEMO1_BUILD_GEN_PROTOCOL "Build and install generated protocol" ON)
+option (DEMO1_BUILD_GEN_TEST "Build and install generated test application" OFF)
+option (DEMO1_BUILD_GEN_TOOLS "Build and install generated plugin for tools" OFF)
 
 # Additional variables to be used if needed
 # ---------------------------
 # DEMO1_PROT_OUTPUT_DIR - Path to protocol output directory. If not provided <build_dir>/output one is used.
 # DEMO1_TEST_OUTPUT_DIR - Path to test output directory. If not provided <build_dir>/output_tools one is used.
 # DEMO1_TOOLS_OUTPUT_DIR - Path to tools output directory. If not provided <build_dir>/output_tools one is used.
-# COMMSDSL_INSTALL_DIR - Path to "commsdsl" installation directory.
 # COMMSDSL2COMMS_EXTRA_ARGS - Extra arguments to pass to "commsdsl2comms"
+# COMMSDSL2TEST_EXTRA_ARGS - Extra arguments to pass to "commsdsl2test"
+# COMMSDSL2TOOLS_QT_EXTRA_ARGS - Extra arguments to pass to "commsdsl2tools_qt"
 
 set (VERSION "1.1.0")
 
@@ -60,14 +64,14 @@ add_custom_command(
 add_custom_command(
     OUTPUT ${test_tmp_dir}
     DEPENDS ${schema_file} ${src_files} rm_tmp_tgt
-    COMMAND ${COMMSDSL2TEST} ${warn_as_error}
+    COMMAND ${COMMSDSL2TEST} ${warn_as_error} ${COMMSDSL2TEST_EXTRA_ARGS}
         -o ${test_tmp_dir} ${schema_file}
 )
 
 add_custom_command(
     OUTPUT ${tools_tmp_dir}
     DEPENDS ${schema_file} ${src_files} rm_tmp_tgt
-    COMMAND ${COMMSDSL2TOOLS_QT} ${warn_as_error}
+    COMMAND ${COMMSDSL2TOOLS_QT} ${warn_as_error} ${COMMSDSL2TOOLS_QT_EXTRA_ARGS}
         -o ${tools_tmp_dir} ${schema_file}
 )
 
@@ -90,6 +94,72 @@ add_custom_target(${PROJECT_NAME} ALL
         -DGENERATED="${tools_tmp_dir}" -DOUTPUT="${DEMO1_TOOLS_OUTPUT_DIR}"
         -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"        
     DEPENDS ${prot_tmp_dir} ${test_tmp_dir} ${tools_tmp_dir} ${readme_file} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+
+include (ExternalProject)
+if (DEMO1_BUILD_GEN_PROTOCOL)
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_PROT_OUTPUT_DIR}/dummy.txt
+    )
+
+    set (prot_build_dir ${DEMO1_PROT_OUTPUT_DIR}/build)
+    ExternalProject_Add(
+        "prot_tgt"
+        SOURCE_DIR ${DEMO1_PROT_OUTPUT_DIR}
+        BINARY_DIR ${prot_build_dir}
+        INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+        CMAKE_GENERATOR ${CMAKE_GENERATOR}
+        CMAKE_ARGS
+            -DOPT_REQUIRE_COMMS_LIB=OFF
+            -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    )
+endif ()  
+
+if (DEMO1_BUILD_GEN_TEST)
+    if (NOT DEMO1_BUILD_GEN_PROTOCOL)
+        message (FATAL_ERROR "DEMO1_BUILD_GEN_PROTOCOL is required for DEMO1_BUILD_GEN_TEST")
+    endif ()
+
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_TEST_OUTPUT_DIR}/dummy.txt
+    )
+
+    set (test_build_dir ${DEMO1_TEST_OUTPUT_DIR}/build)
+    ExternalProject_Add(
+        "test_tgt"
+        DEPENDS "prot_tgt"
+        SOURCE_DIR ${DEMO1_TEST_OUTPUT_DIR}
+        BINARY_DIR ${test_build_dir}
+        INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+        CMAKE_GENERATOR ${CMAKE_GENERATOR}
+        CMAKE_ARGS
+            -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+            -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+    )   
+endif ()
+
+
+if (DEMO1_BUILD_GEN_TOOLS)
+    if (NOT DEMO1_BUILD_GEN_PROTOCOL)
+        message (FATAL_ERROR "DEMO1_BUILD_GEN_PROTOCOL is required for DEMO1_BUILD_GEN_TOOLS")
+    endif ()
+
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_TOOLS_OUTPUT_DIR}/dummy.txt
+    )
+
+    set (tools_build_dir ${DEMO1_TOOLS_OUTPUT_DIR}/build)
+    ExternalProject_Add(
+        "tools_tgt"
+        DEPENDS "prot_tgt"
+        SOURCE_DIR ${DEMO1_TOOLS_OUTPUT_DIR}
+        BINARY_DIR ${tools_build_dir}
+        INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+        CMAKE_GENERATOR ${CMAKE_GENERATOR}
+        CMAKE_ARGS
+            -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+            -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+    )   
+endif ()
 
 if (DEMO1_NO_EXAMPLES)
     return()
