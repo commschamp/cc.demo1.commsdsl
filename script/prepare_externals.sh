@@ -55,11 +55,11 @@ if [ -z "${COMMON_BUILD_TYPE}" ]; then
     COMMON_BUILD_TYPE=Debug
 fi
 
-if [ -n "${CC_COMMSDSL}" ]; then
+if [ -z "${CC_COMMSDSL}" ]; then
     CC_COMMSDSL=${CC}
 fi
 
-if [ -n "${CXX_COMMSDSL}" ]; then
+if [ -z "${CXX_COMMSDSL}" ]; then
     CXX_COMMSDSL=${CXX}
 fi
 
@@ -122,6 +122,7 @@ function build_commsdsl() {
     fi
 
     mkdir -p ${COMMSDSL_BUILD_DIR}
+    echo "Building commsdsl with CC=${CC_COMMSDSL} CXX=${CXX_COMMSDSL}"
     CC=${CC_COMMSDSL} CXX=${CXX_COMMSDSL} cmake -S ${COMMSDSL_SRC_DIR} -B ${COMMSDSL_BUILD_DIR} -DCMAKE_INSTALL_PREFIX=${COMMSDSL_INSTALL_DIR} -DCMAKE_BUILD_TYPE=${COMMON_BUILD_TYPE} -DCOMMSDSL_INSTALL_LIBRARY=OFF
     cmake --build ${COMMSDSL_BUILD_DIR} --config ${COMMON_BUILD_TYPE} --target install ${procs_param}
 }
@@ -144,6 +145,7 @@ function build_cc_tools_qt() {
 }
 
 set -e
+export VERBOSE=1
 build_comms
 build_commsdsl
 build_cc_tools_qt
