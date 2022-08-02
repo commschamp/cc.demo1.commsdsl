@@ -54,7 +54,7 @@ jobs:
         CXX: g++-${{matrix.cc_ver}}
 
     - name: Build Target Protocol Project
-      working-directory: ${{runner.workspace}}/build/build.output
+      working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --target install
       env:
@@ -108,7 +108,7 @@ jobs:
         CXX: g++-${{matrix.cc_ver}}
 
     - name: Build Target Protocol Project
-      working-directory: ${{runner.workspace}}/build/build.output
+      working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --target install
       env:
@@ -166,7 +166,7 @@ jobs:
         CXX: clang++-${{matrix.cc_ver}}
 
     - name: Build Target Protocol Project
-      working-directory: ${{runner.workspace}}/build/build.output
+      working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --target install
       env:
@@ -221,7 +221,7 @@ jobs:
         CXX: g++-${{matrix.cc_ver}}
 
     - name: Build Target Protocol Project
-      working-directory: ${{runner.workspace}}/build/build.output
+      working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --target install
       env:
