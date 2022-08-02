@@ -98,6 +98,10 @@ add_custom_target(${PROJECT_NAME} ALL
 include (ExternalProject)
 if (DEMO1_BUILD_GEN_PROTOCOL)
     execute_process(
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${DEMO1_PROT_OUTPUT_DIR}
+    )  
+
+    execute_process(
         COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_PROT_OUTPUT_DIR}/dummy.txt
     )
 
@@ -118,6 +122,10 @@ if (DEMO1_BUILD_GEN_TEST)
     if (NOT DEMO1_BUILD_GEN_PROTOCOL)
         message (FATAL_ERROR "DEMO1_BUILD_GEN_PROTOCOL is required for DEMO1_BUILD_GEN_TEST")
     endif ()
+
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${DEMO1_TEST_OUTPUT_DIR}
+    )
 
     execute_process(
         COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_TEST_OUTPUT_DIR}/dummy.txt
@@ -142,6 +150,10 @@ if (DEMO1_BUILD_GEN_TOOLS)
     if (NOT DEMO1_BUILD_GEN_PROTOCOL)
         message (FATAL_ERROR "DEMO1_BUILD_GEN_PROTOCOL is required for DEMO1_BUILD_GEN_TOOLS")
     endif ()
+
+    execute_process(
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${DEMO1_TOOLS_OUTPUT_DIR}
+    )    
 
     execute_process(
         COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_TOOLS_OUTPUT_DIR}/dummy.txt

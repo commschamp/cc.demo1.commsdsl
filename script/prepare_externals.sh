@@ -121,8 +121,8 @@ function build_commsdsl() {
         git clone -b ${COMMSDSL_TAG} ${COMMSDSL_REPO} ${COMMSDSL_SRC_DIR}
     fi
 
+    echo "Building commsdsl ..."
     mkdir -p ${COMMSDSL_BUILD_DIR}
-    echo "Building commsdsl with CC=${CC_COMMSDSL} CXX=${CXX_COMMSDSL}"
     CC=${CC_COMMSDSL} CXX=${CXX_COMMSDSL} cmake -S ${COMMSDSL_SRC_DIR} -B ${COMMSDSL_BUILD_DIR} -DCMAKE_INSTALL_PREFIX=${COMMSDSL_INSTALL_DIR} -DCMAKE_BUILD_TYPE=${COMMON_BUILD_TYPE} -DCOMMSDSL_INSTALL_LIBRARY=OFF
     cmake --build ${COMMSDSL_BUILD_DIR} --config ${COMMON_BUILD_TYPE} --target install ${procs_param}
 }
@@ -139,6 +139,7 @@ function build_cc_tools_qt() {
         git clone -b ${CC_TOOLS_QT_TAG} ${CC_TOOLS_QT_REPO} ${CC_TOOLS_QT_SRC_DIR}
     fi
 
+    echo "Building cc_tools_qt ..."
     mkdir -p ${CC_TOOLS_QT_BUILD_DIR}
     cmake -S ${CC_TOOLS_QT_SRC_DIR} -B ${CC_TOOLS_QT_BUILD_DIR} -DCMAKE_INSTALL_PREFIX=${CC_TOOLS_QT_INSTALL_DIR} -DCMAKE_BUILD_TYPE=${COMMON_BUILD_TYPE} -DCC_TOOLS_QT_BUILD_APPS=OFF -DCC_TOOLS_QT_EXTERNAL_COMMS=ON -DCMAKE_PREFIX_PATH=${COMMS_INSTALL_DIR}
     cmake --build ${CC_TOOLS_QT_BUILD_DIR} --config ${COMMON_BUILD_TYPE} --target install ${procs_param}
