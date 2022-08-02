@@ -53,7 +53,7 @@ jobs:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
 
-    - name: Build Target Protocol Project
+    - name: Build Target 
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --target install
@@ -107,7 +107,7 @@ jobs:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
 
-    - name: Build Target Protocol Project
+    - name: Build Target 
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --target install
@@ -165,7 +165,7 @@ jobs:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
 
-    - name: Build Target Protocol Project
+    - name: Build Target 
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --target install
@@ -217,10 +217,10 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DDEMO1_BUILD_GEN_PROTOCOL=ON -DDEMO1_BUILD_GEN_TEST=ON -DDEMO1_BUILD_GEN_TOOLS=ON
       env:
-        CC: gcc-${{matrix.cc_ver}}
-        CXX: g++-${{matrix.cc_ver}}
+        CC: clang-${{matrix.cc_ver}}
+        CXX: clang++-${{matrix.cc_ver}}
 
-    - name: Build Target Protocol Project
+    - name: Build Target 
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --target install
