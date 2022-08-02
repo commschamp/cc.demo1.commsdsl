@@ -31,18 +31,15 @@ jobs:
 
     - name: Listing sources
       shell: bash
-      run: ls -al
-      working-directory: $GITHUB_WORKSPACE
+      run: ls -al $GITHUB_WORKSPACE
 
     - name: Listing scripts
       shell: bash
-      run: ls -al
-      working-directory: $GITHUB_WORKSPACE/script
+      run: ls -al $GITHUB_WORKSPACE/script
 
     - name: Prepare externals
       shell: bash
-      working-directory: $GITHUB_WORKSPACE
-      run: ./script/prepare_externals.sh
+      run: $GITHUB_WORKSPACE/script/prepare_externals.sh
       env:
         BUILD_DIR: ${{runner.workspace}}/build
         CC: gcc-${{matrix.cc_ver}}
