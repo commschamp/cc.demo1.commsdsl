@@ -29,14 +29,6 @@ jobs:
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build    
 
-    - name: Listing sources
-      shell: bash
-      run: ls -al $GITHUB_WORKSPACE
-
-    - name: Listing scripts
-      shell: bash
-      run: ls -al $GITHUB_WORKSPACE/script
-
     - name: Prepare externals
       shell: bash
       run: $GITHUB_WORKSPACE/script/prepare_externals.sh
@@ -49,9 +41,9 @@ jobs:
         EXTERNALS_DIR: ${{runner.workspace}}/externals
         COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
         COMMON_BUILD_TYPE: ${{matrix.type}}
-        COMMS_TAG: $COMMS_BRANCH
-        COMMSDSL_TAG: $COMMSDSL_BRANCH
-        CC_TOOLS_QT_TAG: $CC_TOOLS_QT_BRANCH
+        COMMS_TAG: ${{env.COMMS_BRANCH}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}
 
     - name: Configure CMake
       shell: bash
