@@ -31,7 +31,8 @@ jobs:
 
     - name: Prepare externals
       shell: bash
-      run: ${{runner.workspace}}/script/prepare_externals.sh
+      working-directory: ${{runner.workspace}}
+      run: ./script/prepare_externals.sh
       env:
         BUILD_DIR: ${{runner.workspace}}/build
         CC: gcc-${{matrix.cc_ver}}
@@ -87,7 +88,8 @@ jobs:
 
     - name: Prepare externals
       shell: bash
-      run: ${{runner.workspace}}/script/prepare_externals.sh
+      working-directory: ${{runner.workspace}}
+      run: ./script/prepare_externals.sh
       env:
         BUILD_DIR: ${{runner.workspace}}/build
         CC: gcc-${{matrix.cc_ver}}
@@ -143,7 +145,8 @@ jobs:
 
     - name: Prepare externals
       shell: bash
-      run: ${{runner.workspace}}/script/prepare_externals.sh
+      working-directory: ${{runner.workspace}}
+      run: ./script/prepare_externals.sh
       env:
         BUILD_DIR: ${{runner.workspace}}/build
         CC: clang-${{matrix.cc_ver}}
@@ -206,7 +209,7 @@ jobs:
     - name: Prepare externals
       shell: bash
       working-directory: ${{runner.workspace}}
-      run: ${{runner.workspace}}/script/prepare_externals.sh
+      run: ./script/prepare_externals.sh
       env:
         BUILD_DIR: ${{runner.workspace}}/build
         CC: clang-${{matrix.cc_ver}}
