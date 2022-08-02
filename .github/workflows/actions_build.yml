@@ -43,7 +43,7 @@ jobs:
         COMMON_BUILD_TYPE: ${{matrix.type}}
         COMMS_TAG: ${{env.COMMS_BRANCH}}
         COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
-        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}}
 
     - name: Configure CMake
       shell: bash
