@@ -5,6 +5,7 @@ option (DEMO1_NO_EXAMPLES "Disable examples compilation." OFF)
 option (DEMO1_NO_WARN_AS_ERR "Don't treat compilation warnings as errors." OFF)
 option (DEMO1_USE_CCACHE "Use ccache on UNIX." ON)
 option (DEMO1_BUILD_GEN_PROTOCOL "Build and install generated protocol" ON)
+option (DEMO1_BUILD_GEN_DOC "Build documentation for generated protocol" ${DEMO1_BUILD_GEN_PROTOCOL})
 option (DEMO1_BUILD_GEN_TEST "Build and install generated test application" OFF)
 option (DEMO1_BUILD_GEN_TOOLS "Build and install generated plugin for tools" OFF)
 
@@ -119,6 +120,17 @@ if (DEMO1_BUILD_GEN_PROTOCOL)
             -DOPT_REQUIRE_COMMS_LIB=OFF
             -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     )
+
+    find_package(Doxygen)
+    if (DEMO1_BUILD_GEN_DOC AND DOXYGEN_FOUND)
+        ExternalProject_Add_Step(
+            "prot_tgt" 
+            "doc"
+            COMMAND ${CMAKE_COMMAND} --build ${prot_build_dir} --target doc_demo1
+            DEPENDEES "install"
+            DEPENDERS "build"
+        )
+    endif ()
 endif ()  
 
 if (DEMO1_BUILD_GEN_TEST)
