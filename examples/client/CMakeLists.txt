@@ -24,10 +24,6 @@ endif ()
 
 add_dependencies(${name} ${PROT_OUTPUT_TGT})
 
-if (TARGET ${COMMS_TGT})
-    add_dependencies(${name} ${COMMS_TGT})
-endif ()
-
 install(TARGETS ${name}
     RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR}
 )
