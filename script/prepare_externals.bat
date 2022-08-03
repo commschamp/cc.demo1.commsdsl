@@ -107,7 +107,7 @@ cd %CC_TOOLS_QT_SRC_DIR%
 git pull
 git checkout %CC_TOOLS_QT_TAG%
 
-cc_tools_qt_build:
+:cc_tools_qt_build
 echo "Building cc_tools_qt ..."
 mkdir "%CC_TOOLS_QT_BUILD_DIR%"
 cd %CC_TOOLS_QT_BUILD_DIR%
