@@ -11,6 +11,7 @@ rem CC_TOOLS_QT_REPO - (Optional) Repository of the cc_tools_qt
 rem CC_TOOLS_QT_TAG - (Optional) Tag of the cc_tools_qt
 rem COMMON_INSTALL_DIR - (Optional) Common directory to perform installations
 rem COMMON_BUILD_TYPE - (Optional) CMake build type
+rem COMMON_CXX_STANDARD - (Optional) CMake C++ standard
 
 rem -----------------------------------------------------
 
@@ -69,7 +70,7 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 echo "Building COMMS library..."
 mkdir "%COMMS_BUILD_DIR%"
 cd %COMMS_BUILD_DIR%
-cmake -G %GENERATOR% -S %COMMS_SRC_DIR% -B %COMMS_BUILD_DIR% -DCMAKE_INSTALL_PREFIX=%COMMS_INSTALL_DIR% -DCMAKE_BUILD_TYPE=%COMMON_BUILD_TYPE%
+cmake -G %GENERATOR% -S %COMMS_SRC_DIR% -B %COMMS_BUILD_DIR% -DCMAKE_INSTALL_PREFIX=%COMMS_INSTALL_DIR% -DCMAKE_BUILD_TYPE=%COMMON_BUILD_TYPE% -DCMAKE_CXX_STANDARD=%COMMON_CXX_STANDARD%
 if %errorlevel% neq 0 exit /b %errorlevel%
 cmake --build %COMMS_BUILD_DIR% --config %COMMON_BUILD_TYPE% --target install
 if %errorlevel% neq 0 exit /b %errorlevel%
@@ -111,7 +112,7 @@ git checkout %CC_TOOLS_QT_TAG%
 echo "Building cc_tools_qt ..."
 mkdir "%CC_TOOLS_QT_BUILD_DIR%"
 cd %CC_TOOLS_QT_BUILD_DIR%
-cmake -G %GENERATOR% -S %CC_TOOLS_QT_SRC_DIR% -B %CC_TOOLS_QT_BUILD_DIR% -DCMAKE_INSTALL_PREFIX=%CC_TOOLS_QT_INSTALL_DIR% -DCMAKE_BUILD_TYPE=%COMMON_BUILD_TYPE% -DCC_TOOLS_QT_BUILD_APPS=OFF -DCC_TOOLS_QT_EXTERNAL_COMMS=ON -DCMAKE_PREFIX_PATH=%COMMS_INSTALL_DIR%;%QTDIR%
+cmake -G %GENERATOR% -S %CC_TOOLS_QT_SRC_DIR% -B %CC_TOOLS_QT_BUILD_DIR% -DCMAKE_INSTALL_PREFIX=%CC_TOOLS_QT_INSTALL_DIR% -DCMAKE_BUILD_TYPE=%COMMON_BUILD_TYPE% -DCC_TOOLS_QT_BUILD_APPS=OFF -DCC_TOOLS_QT_EXTERNAL_COMMS=ON -DCMAKE_PREFIX_PATH=%COMMS_INSTALL_DIR%;%QTDIR% -DCMAKE_CXX_STANDARD=%COMMON_CXX_STANDARD%
 if %errorlevel% neq 0 exit /b %errorlevel%
 cmake --build %CC_TOOLS_QT_BUILD_DIR% --config %COMMON_BUILD_TYPE% --target install
 if %errorlevel% neq 0 exit /b %errorlevel%
