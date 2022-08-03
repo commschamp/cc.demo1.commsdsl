@@ -22,7 +22,7 @@ if (WIN32)
 endif ()
 
 
-add_dependencies(${name} ${PROJECT_NAME})
+add_dependencies(${name} ${PROT_OUTPUT_TGT})
 
 if (TARGET ${COMMS_TGT})
     add_dependencies(${name} ${COMMS_TGT})

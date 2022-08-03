@@ -25,6 +25,8 @@ find_program(COMMSDSL2COMMS commsdsl2comms PATH_SUFFIXES bin REQUIRED)
 find_program(COMMSDSL2TEST commsdsl2test PATH_SUFFIXES bin REQUIRED)        
 find_program(COMMSDSL2TOOLS_QT commsdsl2tools_qt PATH_SUFFIXES bin REQUIRED)      
 
+set (PROT_OUTPUT_TGT "${PROJECT_NAME}_PROT_OUTPUT_TGT")
+
 set (schema_file "${CMAKE_SOURCE_DIR}/dsl/schema.xml")
 set (prot_tmp_dir "${CMAKE_BINARY_DIR}/output.tmp")
 set (test_tmp_dir "${CMAKE_BINARY_DIR}/output_test.tmp")
@@ -82,8 +84,7 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/readme.generated ${readme_file}
 )
 
-set (prot_output_tgt ${name}_prot_output_tgt)
-add_custom_target(${PROJECT_NAME} ALL
+add_custom_target(${PROT_OUTPUT_TGT} ALL
     COMMAND ${CMAKE_COMMAND}
         -DGENERATED="${prot_tmp_dir}" -DOUTPUT="${DEMO1_PROT_OUTPUT_DIR}"
         -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"
@@ -105,9 +106,11 @@ if (DEMO1_BUILD_GEN_PROTOCOL)
         COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_PROT_OUTPUT_DIR}/dummy.txt
     )
 
-    set (prot_build_dir ${DEMO1_PROT_OUTPUT_DIR}/build)
+    set (prot_build_dir ${CMAKE_CURRENT_BINARY_DIR}/prot_tgt_build)
     ExternalProject_Add(
         "prot_tgt"
+        BUILD_ALWAYS TRUE
+        DEPENDS ${PROT_OUTPUT_TGT}
         SOURCE_DIR ${DEMO1_PROT_OUTPUT_DIR}
         BINARY_DIR ${prot_build_dir}
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
@@ -131,9 +134,10 @@ if (DEMO1_BUILD_GEN_TEST)
         COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_TEST_OUTPUT_DIR}/dummy.txt
     )
 
-    set (test_build_dir ${DEMO1_TEST_OUTPUT_DIR}/build)
+    set (test_build_dir ${CMAKE_CURRENT_BINARY_DIR}/test_tgt_build)
     ExternalProject_Add(
         "test_tgt"
+        BUILD_ALWAYS TRUE
         DEPENDS "prot_tgt"
         SOURCE_DIR ${DEMO1_TEST_OUTPUT_DIR}
         BINARY_DIR ${test_build_dir}
@@ -159,9 +163,10 @@ if (DEMO1_BUILD_GEN_TOOLS)
         COMMAND ${CMAKE_COMMAND} -E touch ${DEMO1_TOOLS_OUTPUT_DIR}/dummy.txt
     )
 
-    set (tools_build_dir ${DEMO1_TOOLS_OUTPUT_DIR}/build)
+    set (tools_build_dir ${CMAKE_CURRENT_BINARY_DIR}/tools_tgt_build)
     ExternalProject_Add(
         "tools_tgt"
+        BUILD_ALWAYS TRUE
         DEPENDS "prot_tgt"
         SOURCE_DIR ${DEMO1_TOOLS_OUTPUT_DIR}
         BINARY_DIR ${tools_build_dir}
