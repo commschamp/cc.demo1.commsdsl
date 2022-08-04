@@ -26,7 +26,7 @@ find_program(COMMSDSL2COMMS commsdsl2comms PATH_SUFFIXES bin REQUIRED)
 find_program(COMMSDSL2TEST commsdsl2test PATH_SUFFIXES bin REQUIRED)        
 find_program(COMMSDSL2TOOLS_QT commsdsl2tools_qt PATH_SUFFIXES bin REQUIRED)      
 
-set (PROT_OUTPUT_TGT "${PROJECT_NAME}_PROT_OUTPUT_TGT")
+set (PROT_OUTPUT_TGT "${PROJECT_NAME}_prot_output_tgt")
 
 set (schema_file "${CMAKE_SOURCE_DIR}/dsl/schema.xml")
 set (prot_tmp_dir "${CMAKE_BINARY_DIR}/output.tmp")
@@ -127,8 +127,8 @@ if (DEMO1_BUILD_GEN_PROTOCOL)
             "prot_tgt" 
             "doc"
             COMMAND ${CMAKE_COMMAND} --build ${prot_build_dir} --target doc_demo1
-            DEPENDEES "install"
-            DEPENDERS "build"
+            DEPENDEES "build"
+            DEPENDERS "install"
         )
     endif ()
 endif ()  
