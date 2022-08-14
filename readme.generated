@@ -1,6 +1,6 @@
 # Overview
 This repository contains **generated** definition of **demo1** 
-syntetic demo protocol for 
+synthetic demo protocol for 
 [CommsChampion Ecosystem](https://commschamp.github.io). 
 
 Please read the

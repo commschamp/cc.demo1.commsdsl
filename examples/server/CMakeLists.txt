@@ -8,7 +8,7 @@ set (src
 )
 
 add_executable(${name} ${src})
-target_include_directories(${name} PRIVATE "${PROT_OUTPUT_DIR}/include")
+target_include_directories(${name} PRIVATE "${DEMO1_PROT_OUTPUT_DIR}/include")
 target_link_libraries(${name} cc::comms Boost::boost Boost::program_options Boost::system)
 
 foreach (c ${extra_boost_components})
@@ -22,10 +22,7 @@ if (WIN32)
         ${name} Setupapi.lib Ws2_32.lib imm32.lib winmm.lib)
 endif ()
 
-add_dependencies(${name} ${PROJECT_NAME})
-if (TARGET ${COMMS_TGT})
-    add_dependencies(${name} ${COMMS_TGT})
-endif ()
+add_dependencies(${name} ${PROT_OUTPUT_TGT})
 
 install(TARGETS ${name}
     RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR}
