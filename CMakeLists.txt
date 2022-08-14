@@ -133,6 +133,9 @@ if (DEMO1_BUILD_GEN_PROTOCOL)
     endif ()
 endif ()  
 
+set (combined_prefix_path ${CMAKE_INSTALL_PREFIX} ${CMAKE_PREFIX_PATH})
+string (REPLACE ";" "|" combined_prefix_path_str "${combined_prefix_path}")
+
 if (DEMO1_BUILD_GEN_TEST)
     if (NOT DEMO1_BUILD_GEN_PROTOCOL)
         message (FATAL_ERROR "DEMO1_BUILD_GEN_PROTOCOL is required for DEMO1_BUILD_GEN_TEST")
@@ -155,9 +158,10 @@ if (DEMO1_BUILD_GEN_TEST)
         BINARY_DIR ${test_build_dir}
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_GENERATOR ${CMAKE_GENERATOR}
+        LIST_SEPARATOR |
         CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-            -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+            -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
     )   
 endif ()
 
@@ -184,9 +188,10 @@ if (DEMO1_BUILD_GEN_TOOLS)
         BINARY_DIR ${tools_build_dir}
         INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
         CMAKE_GENERATOR ${CMAKE_GENERATOR}
+        LIST_SEPARATOR |
         CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-            -DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX}
+            -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
     )   
 endif ()
 
