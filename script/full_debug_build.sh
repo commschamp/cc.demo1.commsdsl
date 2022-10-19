@@ -24,4 +24,4 @@ if [ -n "${procs}" ]; then
     procs_param="--parallel ${procs}"
 fi
 
-cmake --build ${BUILD_DIR} --config ${COMMON_BUILD_TYPE} --target install
+cmake --build ${BUILD_DIR} --config ${COMMON_BUILD_TYPE} --target install ${procs_param}

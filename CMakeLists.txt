@@ -18,7 +18,7 @@ option (DEMO1_BUILD_GEN_TOOLS "Build and install generated plugin for tools" OFF
 # COMMSDSL2TEST_EXTRA_ARGS - Extra arguments to pass to "commsdsl2test"
 # COMMSDSL2TOOLS_QT_EXTRA_ARGS - Extra arguments to pass to "commsdsl2tools_qt"
 
-set (VERSION "1.1.1")
+set (VERSION "2.0.0")
 
 set (EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
 
@@ -126,7 +126,7 @@ if (DEMO1_BUILD_GEN_PROTOCOL)
         ExternalProject_Add_Step(
             "prot_tgt" 
             "doc"
-            COMMAND ${CMAKE_COMMAND} --build ${prot_build_dir} --target doc_demo1
+            COMMAND ${CMAKE_COMMAND} --build ${prot_build_dir} --target doc_cc_demo1
             DEPENDEES "build"
             DEPENDERS "install"
         )
