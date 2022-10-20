@@ -97,7 +97,8 @@ function build_comms() {
     if [ -e ${COMMS_SRC_DIR}/.git ]; then
         echo "Updating COMMS library..."
         cd ${COMMS_SRC_DIR}
-        git pull
+        git fetch --all
+        git pull --all
         git checkout ${COMMS_TAG}
     else
         echo "Cloning COMMS library..."
@@ -115,7 +116,8 @@ function build_commsdsl() {
     if [ -e ${COMMSDSL_SRC_DIR}/.git ]; then
         echo "Updating commsdsl..."
         cd ${COMMSDSL_SRC_DIR}
-        git pull
+        git fetch --all
+        git pull --all
         git checkout ${COMMSDSL_TAG}
     else
         echo "Cloning commsdsl ..."
@@ -133,7 +135,8 @@ function build_cc_tools_qt() {
     if [ -e ${CC_TOOLS_QT_SRC_DIR}/.git ]; then
         echo "Updating cc_tools_qt..."
         cd ${CC_TOOLS_QT_SRC_DIR}
-        git pull
+        git fetch --all
+        git pull --all
         git checkout ${CC_TOOLS_QT_TAG}
     else
         echo "Cloning cc_tools_qt ..."
