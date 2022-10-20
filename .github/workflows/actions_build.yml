@@ -192,7 +192,7 @@ jobs:
       
     - name: Install Packages
       run: |
-        sudo apt install libqt5gui5 qtbase5-dev libboost-all-dev libxml2-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}} |
+        sudo apt install libqt5gui5 qtbase5-dev libboost-all-dev libxml2-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}} \
         python3 libpython3-dev swig default-jdk default-jre
 
     - name: Create Build Environment
