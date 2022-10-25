@@ -98,8 +98,9 @@ function build_comms() {
         echo "Updating COMMS library..."
         cd ${COMMS_SRC_DIR}
         git fetch --all
-        git pull --all
+        git checkout .
         git checkout ${COMMS_TAG}
+        git pull --all
     else
         echo "Cloning COMMS library..."
         mkdir -p ${EXTERNALS_DIR}
@@ -117,8 +118,9 @@ function build_commsdsl() {
         echo "Updating commsdsl..."
         cd ${COMMSDSL_SRC_DIR}
         git fetch --all
-        git pull --all
+        git checkout .
         git checkout ${COMMSDSL_TAG}
+        git pull --all
     else
         echo "Cloning commsdsl ..."
         mkdir -p ${EXTERNALS_DIR}
@@ -136,8 +138,9 @@ function build_cc_tools_qt() {
         echo "Updating cc_tools_qt..."
         cd ${CC_TOOLS_QT_SRC_DIR}
         git fetch --all
-        git pull --all
+        git checkout .
         git checkout ${CC_TOOLS_QT_TAG}
+        git pull --all
     else
         echo "Cloning cc_tools_qt ..."
         mkdir -p ${EXTERNALS_DIR}

@@ -52,7 +52,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=sinstall \
         -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install \
-        -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_BUILD_GEN_PROTOCOL=ON -DDEMO1_BUILD_GEN_TEST=ON -DDEMO1_NO_EXAMPLES=ON
+        -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_BUILD_EXAMPLES=OFF
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
@@ -108,7 +108,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install \
-        -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_BUILD_GEN_PROTOCOL=ON -DDEMO1_BUILD_GEN_TEST=ON -DDEMO1_BUILD_GEN_TOOLS=ON
+        -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
@@ -163,7 +163,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_BUILD_GEN_PROTOCOL=ON -DDEMO1_BUILD_GEN_TEST=ON -DDEMO1_BUILD_GEN_TOOLS=ON
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
@@ -219,8 +219,8 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_BUILD_GEN_PROTOCOL=ON -DDEMO1_BUILD_GEN_TEST=ON -DDEMO1_BUILD_GEN_TOOLS=ON \
-        -DDEMO1_BUILD_GEN_SWIG=ON
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON \
+        -DDEMO1_GEN_SWIG=ON
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
@@ -281,7 +281,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install \
-        -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_BUILD_GEN_PROTOCOL=ON -DDEMO1_BUILD_GEN_TEST=ON -DDEMO1_BUILD_GEN_TOOLS=ON
+        -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
@@ -340,7 +340,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_BUILD_GEN_PROTOCOL=ON -DDEMO1_BUILD_GEN_TEST=ON -DDEMO1_BUILD_GEN_TOOLS=ON
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
@@ -396,8 +396,8 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_BUILD_GEN_PROTOCOL=ON -DDEMO1_BUILD_GEN_TEST=ON -DDEMO1_BUILD_GEN_TOOLS=ON \
-        -DDEMO1_BUILD_GEN_SWIG=ON
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON \
+        -DDEMO1_GEN_SWIG=ON
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
