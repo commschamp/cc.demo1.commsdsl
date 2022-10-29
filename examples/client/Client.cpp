@@ -5,11 +5,11 @@
 #include <map>
 #include <sstream>
 
-#include "demo1/MsgId.h"
+#include "cc_demo1/MsgId.h"
 #include "comms/units.h"
 #include "comms/process.h"
 
-namespace demo1
+namespace cc_demo1
 {
 
 namespace client
@@ -104,7 +104,7 @@ void Client::readDataFromServer()
 void Client::readDataFromStdin()
 {
     std::cout << "\nEnter (new) message ID to send: " << std::endl;
-    m_sentId = demo1::MsgId_Ack;
+    m_sentId = cc_demo1::MsgId_Ack;
     do {
         // Unfortunatelly Windows doesn't provide an easy way to 
         // asynchronously read from stdin with boost::asio,
@@ -120,17 +120,17 @@ void Client::readDataFromStdin()
 
         using SendFunc = void (Client::*)();
         static const std::map<unsigned, SendFunc> Map = {
-            std::make_pair(demo1::MsgId_SimpleInts, &Client::sendSimpleInts),
-            std::make_pair(demo1::MsgId_ScaledInts, &Client::sendScaledInts),
-            std::make_pair(demo1::MsgId_Floats, &Client::sendFloats),
-            std::make_pair(demo1::MsgId_Enums, &Client::sendEnums),
-            std::make_pair(demo1::MsgId_Sets, &Client::sendSets),
-            std::make_pair(demo1::MsgId_Bitfields, &Client::sendBitfields),
-            std::make_pair(demo1::MsgId_Strings, &Client::sendStrings),
-            std::make_pair(demo1::MsgId_Datas, &Client::sendDatas),
-            std::make_pair(demo1::MsgId_Lists, &Client::sendLists),
-            std::make_pair(demo1::MsgId_Optionals, &Client::sendOptionals),
-            std::make_pair(demo1::MsgId_Variants, &Client::sendVariants),
+            std::make_pair(cc_demo1::MsgId_SimpleInts, &Client::sendSimpleInts),
+            std::make_pair(cc_demo1::MsgId_ScaledInts, &Client::sendScaledInts),
+            std::make_pair(cc_demo1::MsgId_Floats, &Client::sendFloats),
+            std::make_pair(cc_demo1::MsgId_Enums, &Client::sendEnums),
+            std::make_pair(cc_demo1::MsgId_Sets, &Client::sendSets),
+            std::make_pair(cc_demo1::MsgId_Bitfields, &Client::sendBitfields),
+            std::make_pair(cc_demo1::MsgId_Strings, &Client::sendStrings),
+            std::make_pair(cc_demo1::MsgId_Datas, &Client::sendDatas),
+            std::make_pair(cc_demo1::MsgId_Lists, &Client::sendLists),
+            std::make_pair(cc_demo1::MsgId_Optionals, &Client::sendOptionals),
+            std::make_pair(cc_demo1::MsgId_Variants, &Client::sendVariants),
         };
 
         auto iter = Map.find(msgId);
@@ -154,7 +154,7 @@ void Client::readDataFromStdin()
 
 void Client::sendSimpleInts()
 {
-    demo1::message::SimpleInts<OutputMsg> msg;
+    cc_demo1::message::SimpleInts<OutputMsg> msg;
     msg.field_f9().value() = 12345;
     msg.field_f10().value() = 678910;
     // Keep default value of other fields
@@ -163,7 +163,7 @@ void Client::sendSimpleInts()
 
 void Client::sendScaledInts()
 {
-    demo1::message::ScaledInts<OutputMsg> msg;
+    cc_demo1::message::ScaledInts<OutputMsg> msg;
     comms::units::setDegrees(msg.field_lat(), -27.470125);
     comms::units::setDegrees(msg.field_lon(), 153.021072);
     comms::units::setMeters(msg.field_height(), 80.123);
@@ -173,7 +173,7 @@ void Client::sendScaledInts()
 
 void Client::sendFloats()
 {
-    demo1::message::Floats<OutputMsg> msg;
+    cc_demo1::message::Floats<OutputMsg> msg;
     msg.field_timeout().setInvalid();
     assert(std::isnan(msg.field_timeout().value()));
     comms::units::setCentimeters(msg.field_distance(), 34.56);
@@ -182,7 +182,7 @@ void Client::sendFloats()
 
 void Client::sendEnums()
 {
-    using OutMsg = demo1::message::Enums<OutputMsg>;
+    using OutMsg = cc_demo1::message::Enums<OutputMsg>;
     OutMsg msg;
     msg.field_f1().value() = OutMsg::Field_f1::ValueType::V2;
     msg.field_f4().value() = OutMsg::Field_f4::ValueType::V2;
@@ -192,7 +192,7 @@ void Client::sendEnums()
 
 void Client::sendSets()
 {
-    demo1::message::Sets<OutputMsg> msg;
+    cc_demo1::message::Sets<OutputMsg> msg;
     msg.field_f1().setBitValue_Bit2(true);
     msg.field_f2().setBitValue_Bit0(true);
     msg.field_f3().value() = 0x7; // sets also reserved bit 1
@@ -202,7 +202,7 @@ void Client::sendSets()
 
 void Client::sendBitfields()
 {
-    using OutMsg = demo1::message::Bitfields<OutputMsg>;
+    using OutMsg = cc_demo1::message::Bitfields<OutputMsg>;
     OutMsg msg;
     msg.field_f1().field_mem1().value() = 5;
     msg.field_f1().field_mem2().setBitValue_Bit2(true);
@@ -212,7 +212,7 @@ void Client::sendBitfields()
 
 void Client::sendStrings()
 {
-    demo1::message::Strings<OutputMsg> msg;
+    cc_demo1::message::Strings<OutputMsg> msg;
     msg.field_f1().value() = "bla";
     msg.field_f3().value() = "str";
     msg.field_f4().value() = "oooo";
@@ -224,7 +224,7 @@ void Client::sendStrings()
 
 void Client::sendDatas()
 {
-    demo1::message::Datas<OutputMsg> msg;
+    cc_demo1::message::Datas<OutputMsg> msg;
     msg.field_f1().value() = {0x10, 0x20, 0x30};
     msg.field_f3().value() = {0x01, 0x02, 0x03};
     msg.field_f4().value() = {0x06, 0x07};
@@ -235,7 +235,7 @@ void Client::sendDatas()
 
 void Client::sendLists()
 {
-    demo1::message::Lists<OutputMsg> msg;
+    cc_demo1::message::Lists<OutputMsg> msg;
     msg.field_f1().value().resize(2);
     msg.field_f1().value()[0].value() = 0x11223344;
     msg.field_f1().value()[1].value() = 0xaabbccdd;
@@ -263,7 +263,7 @@ void Client::sendLists()
 
 void Client::sendOptionals()
 {
-    demo1::message::Optionals<OutputMsg> msg;
+    cc_demo1::message::Optionals<OutputMsg> msg;
     // Note usage of .field() to get access to inner field of optional
     msg.field_f2().field().value() = 0xaaaa; 
     msg.field_f3().field().value() = 0xbbbb;
@@ -276,7 +276,7 @@ void Client::sendOptionals()
 
 void Client::sendVariants()
 {
-    demo1::message::Variants<OutputMsg> msg;
+    cc_demo1::message::Variants<OutputMsg> msg;
     auto& props1Vec = msg.field_props1().value();
     props1Vec.resize(3U);
     props1Vec[0].initField_prop1().field_val().value() = 1234;
@@ -346,4 +346,4 @@ void Client::processInput()
 
 } // namespace client
 
-} // namespace demo1
+} // namespace cc_demo1

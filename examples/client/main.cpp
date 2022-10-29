@@ -8,7 +8,7 @@
 int main(int argc, const char* argv[])
 {
     try {
-        demo1::client::ProgramOptions options;
+        cc_demo1::client::ProgramOptions options;
         options.parse(argc, argv);
         if (options.helpRequested()) {
             std::cout << "Usage:\n\t" << argv[0] << " [OPTIONS]\n";
@@ -16,7 +16,7 @@ int main(int argc, const char* argv[])
             return 0;
         }
 
-        demo1::common::boost_wrap::io io;
+        cc_demo1::common::boost_wrap::io io;
 
         boost::asio::signal_set signals(io, SIGINT, SIGTERM);
         signals.async_wait(
@@ -31,7 +31,7 @@ int main(int argc, const char* argv[])
                 std::cerr << "Termination due to signal " << signum << std::endl;
             });
 
-        demo1::client::Client client(io, options.server(), options.port());
+        cc_demo1::client::Client client(io, options.server(), options.port());
         if (!client.start()) {
             return -1;
         }

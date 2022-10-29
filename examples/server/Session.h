@@ -8,11 +8,11 @@
 
 #include "common/boost_wrap.h"
 
-#include "demo1/Message.h"
-#include "demo1/input/ServerInputMessages.h"
-#include "demo1/frame/Frame.h"
+#include "cc_demo1/Message.h"
+#include "cc_demo1/input/ServerInputMessages.h"
+#include "cc_demo1/frame/Frame.h"
 
-namespace demo1
+namespace cc_demo1
 {
 
 namespace server
@@ -40,23 +40,23 @@ public:
     void start();
 
     using InputMsg = 
-        demo1::Message<
+        cc_demo1::Message<
             comms::option::ReadIterator<const std::uint8_t*>,
             comms::option::Handler<Session>,
             comms::option::NameInterface
         >;
 
-    using InSimpleInts = demo1::message::SimpleInts<InputMsg>;
-    using InScaledInts = demo1::message::ScaledInts<InputMsg>;
-    using InFloats = demo1::message::Floats<InputMsg>;
-    using InEnums = demo1::message::Enums<InputMsg>;
-    using InSets = demo1::message::Sets<InputMsg>;
-    using InBitfields = demo1::message::Bitfields<InputMsg>;
-    using InStrings = demo1::message::Strings<InputMsg>;
-    using InDatas = demo1::message::Datas<InputMsg>;
-    using InLists = demo1::message::Lists<InputMsg>;
-    using InOptionals = demo1::message::Optionals<InputMsg>;
-    using InVariants = demo1::message::Variants<InputMsg>;
+    using InSimpleInts = cc_demo1::message::SimpleInts<InputMsg>;
+    using InScaledInts = cc_demo1::message::ScaledInts<InputMsg>;
+    using InFloats = cc_demo1::message::Floats<InputMsg>;
+    using InEnums = cc_demo1::message::Enums<InputMsg>;
+    using InSets = cc_demo1::message::Sets<InputMsg>;
+    using InBitfields = cc_demo1::message::Bitfields<InputMsg>;
+    using InStrings = cc_demo1::message::Strings<InputMsg>;
+    using InDatas = cc_demo1::message::Datas<InputMsg>;
+    using InLists = cc_demo1::message::Lists<InputMsg>;
+    using InOptionals = cc_demo1::message::Optionals<InputMsg>;
+    using InVariants = cc_demo1::message::Variants<InputMsg>;
 
     void handle(InSimpleInts& msg);
     void handle(InScaledInts& msg);
@@ -74,19 +74,19 @@ public:
 private:
 
     using OutputMsg = 
-        demo1::Message<
+        cc_demo1::Message<
             comms::option::WriteIterator<std::back_insert_iterator<std::vector<std::uint8_t> > >,
             comms::option::LengthInfoInterface,
             comms::option::IdInfoInterface
         >;
 
-    using AllInputMessages = demo1::input::ServerInputMessages<InputMsg>;
+    using AllInputMessages = cc_demo1::input::ServerInputMessages<InputMsg>;
 
-    using Frame = demo1::frame::Frame<InputMsg, AllInputMessages>;
+    using Frame = cc_demo1::frame::Frame<InputMsg, AllInputMessages>;
 
     void terminateSession();
     void processInput();
-    void sendAck(demo1::MsgId id);
+    void sendAck(cc_demo1::MsgId id);
 
     common::boost_wrap::io& m_io;
     Socket m_socket;
@@ -101,4 +101,4 @@ using SessionPtr = std::unique_ptr<Session>;
 
 } // namespace server
 
-} // namespace demo1
+} // namespace cc_demo1

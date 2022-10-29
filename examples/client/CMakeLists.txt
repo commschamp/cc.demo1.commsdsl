@@ -1,4 +1,4 @@
-set (name "${PROJECT_NAME}_client_example")
+set (name "cc_demo1_client_example")
 
 set (src
     "main.cpp"
