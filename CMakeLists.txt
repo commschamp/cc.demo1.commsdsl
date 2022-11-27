@@ -27,7 +27,7 @@ option (DEMO1_BUILD_EXAMPLES "Build examples." ON)
 # COMMSDSL2TOOLS_QT_EXTRA_ARGS - Extra arguments to pass to "commsdsl2tools_qt"
 # COMMSDSL2SWIG_EXTRA_ARGS - Extra arguments to pass to "commsdsl2swig"
 
-set (VERSION "2.0.1")
+set (VERSION "2.0.2")
 
 set (EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
 
