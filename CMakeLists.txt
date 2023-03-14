@@ -219,7 +219,7 @@ if (DEMO1_GEN_TOOLS)
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${tools_tmp_dir}" -DOUTPUT="${DEMO1_TOOLS_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"        
-        DEPENDS ${tools_tmp_dir} ${readme_file} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS ${tools_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_TOOLS)
         if ((NOT DEMO1_GEN_PROTOCOL) OR (NOT DEMO1_BUILD_PROTOCOL))
@@ -273,7 +273,7 @@ if (DEMO1_GEN_SWIG)
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${swig_tmp_dir}" -DOUTPUT="${DEMO1_SWIG_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"        
-        DEPENDS ${swig_tmp_dir} ${readme_file} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS ${swig_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_SWIG)
         if ((NOT DEMO1_GEN_PROTOCOL) OR (NOT DEMO1_BUILD_PROTOCOL))
@@ -333,7 +333,7 @@ if (DEMO1_GEN_EMSCRIPTEN)
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${emscripten_tmp_dir}" -DOUTPUT="${DEMO1_EMSCRIPTEN_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"        
-        DEPENDS ${emscripten_tmp_dir} ${readme_file} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS ${emscripten_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_EMSCRIPTEN)
         if ((NOT DEMO1_GEN_PROTOCOL) OR (NOT DEMO1_BUILD_PROTOCOL))
