@@ -32,7 +32,7 @@ public:
             comms::option::Handler<Client> 
         >;
 
-    using InAckMsg = cc_demo1::message::Ack<InputMsg>;
+    CC_DEMO1_ALIASES_FOR_CLIENT_INPUT_MESSAGES_DEFAULT_OPTIONS(In,Msg,InputMsg);
     
     void handle(InAckMsg& msg);
     void handle(InputMsg&);
