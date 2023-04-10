@@ -31,7 +31,8 @@ option (DEMO1_BUILD_EXAMPLES "Build examples." ON)
 # COMMSDSL2SWIG_EXTRA_ARGS - Extra arguments to pass to "commsdsl2swig"
 # COMMSDSL2EMSCRIPTEN_EXTRA_ARGS - Extra arguments to pass to "commsdsl2emscripten"
 
-set (VERSION "2.2.1")
+set (DEMO1_VERSION "2.2.1")
+set (DEMO1_MIN_COMMSDSL_VERSION "6.1")
 
 set (EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
 
@@ -75,6 +76,10 @@ endif ()
 include (ExternalProject)
 if (DEMO1_GEN_PROTOCOL)
     find_program(COMMSDSL2COMMS commsdsl2comms PATH_SUFFIXES bin REQUIRED)        
+    execute_process(COMMAND "${COMMSDSL2COMMS}" --version OUTPUT_VARIABLE commsdsl2comms_version)
+    if ("${commsdsl2comms_version}" VERSION_LESS "${DEMO1_MIN_COMMSDSL_VERSION}")
+        message (FATAL_ERROR "Version of commsdsl2comms is too old, required minimum is v${DEMO1_MIN_COMMSDSL_VERSION}.")
+    endif ()
 
     set (prot_tmp_dir "${CMAKE_BINARY_DIR}/output.tmp")
 
@@ -85,7 +90,7 @@ if (DEMO1_GEN_PROTOCOL)
     add_custom_command(
         OUTPUT ${prot_tmp_dir}
         DEPENDS ${schema_file} ${src_files} rm_prot_tmp_tgt
-        COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -V ${VERSION}
+        COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -V ${DEMO1_VERSION}
             -o ${prot_tmp_dir} 
             ${COMMSDSL2COMMS_EXTRA_ARGS}  ${schema_file}
     )
@@ -147,6 +152,10 @@ string (REPLACE ";" "|" combined_prefix_path_str "${combined_prefix_path}")
 
 if (DEMO1_GEN_TEST)
     find_program(COMMSDSL2TEST commsdsl2test PATH_SUFFIXES bin REQUIRED)        
+    execute_process(COMMAND "${COMMSDSL2TEST}" --version OUTPUT_VARIABLE commsdsl2test_version)
+    if ("${commsdsl2test_version}" VERSION_LESS "${DEMO1_MIN_COMMSDSL_VERSION}")
+        message (FATAL_ERROR "Version of commsdsl2test is too old, required minimum is v${DEMO1_MIN_COMMSDSL_VERSION}.")
+    endif ()    
 
     set (test_tmp_dir "${CMAKE_BINARY_DIR}/output_test.tmp")
 
@@ -201,6 +210,10 @@ endif ()
 
 if (DEMO1_GEN_TOOLS)
     find_program(COMMSDSL2TOOLS_QT commsdsl2tools_qt PATH_SUFFIXES bin REQUIRED)    
+    execute_process(COMMAND "${COMMSDSL2TOOLS_QT}" --version OUTPUT_VARIABLE commsdsl2tools_qt_version)
+    if ("${commsdsl2tools_qt_version}" VERSION_LESS "${DEMO1_MIN_COMMSDSL_VERSION}")
+        message (FATAL_ERROR "Version of commsdsl2tools_qt is too old, required minimum is v${DEMO1_MIN_COMMSDSL_VERSION}.")
+    endif ()    
 
     set (tools_tmp_dir "${CMAKE_BINARY_DIR}/output_tools.tmp")
 
@@ -255,6 +268,10 @@ endif ()
 
 if (DEMO1_GEN_SWIG)
     find_program(COMMSDSL2SWIG commsdsl2swig PATH_SUFFIXES bin REQUIRED)    
+    execute_process(COMMAND "${COMMSDSL2SWIG}" --version OUTPUT_VARIABLE commsdsl2swig_version)
+    if ("${commsdsl2swig_version}" VERSION_LESS "${DEMO1_MIN_COMMSDSL_VERSION}")
+        message (FATAL_ERROR "Version of commsdsl2swig is too old, required minimum is v${DEMO1_MIN_COMMSDSL_VERSION}.")
+    endif ()      
 
     set (swig_tmp_dir "${CMAKE_BINARY_DIR}/output_swig.tmp")
 
@@ -315,6 +332,10 @@ endif ()
 if (DEMO1_GEN_EMSCRIPTEN)
     find_program(COMMSDSL2EMSCRIPTEN commsdsl2emscripten PATH_SUFFIXES bin REQUIRED)    
     find_program(EMCMAKE_EXECUTABLE emcmake REQUIRED)    
+    execute_process(COMMAND "${COMMSDSL2EMSCRIPTEN}" --version OUTPUT_VARIABLE commsdsl2emscripten_version)
+    if ("${commsdsl2emscripten_version}" VERSION_LESS "${DEMO1_MIN_COMMSDSL_VERSION}")
+        message (FATAL_ERROR "Version of commsdsl2emscripten is too old, required minimum is v${DEMO1_MIN_COMMSDSL_VERSION}.")
+    endif ()    
 
     set (emscripten_tmp_dir "${CMAKE_BINARY_DIR}/output_emscripten.tmp")
 
