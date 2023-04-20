@@ -46,17 +46,7 @@ public:
             comms::option::NameInterface
         >;
 
-    using InSimpleInts = cc_demo1::message::SimpleInts<InputMsg>;
-    using InScaledInts = cc_demo1::message::ScaledInts<InputMsg>;
-    using InFloats = cc_demo1::message::Floats<InputMsg>;
-    using InEnums = cc_demo1::message::Enums<InputMsg>;
-    using InSets = cc_demo1::message::Sets<InputMsg>;
-    using InBitfields = cc_demo1::message::Bitfields<InputMsg>;
-    using InStrings = cc_demo1::message::Strings<InputMsg>;
-    using InDatas = cc_demo1::message::Datas<InputMsg>;
-    using InLists = cc_demo1::message::Lists<InputMsg>;
-    using InOptionals = cc_demo1::message::Optionals<InputMsg>;
-    using InVariants = cc_demo1::message::Variants<InputMsg>;
+    CC_DEMO1_ALIASES_FOR_SERVER_INPUT_MESSAGES_DEFAULT_OPTIONS(In,,InputMsg);
 
     void handle(InSimpleInts& msg);
     void handle(InScaledInts& msg);
