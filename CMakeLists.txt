@@ -21,6 +21,7 @@ option (DEMO1_BUILD_EXAMPLES "Build examples." ON)
 # DEMO1_PROT_OUTPUT_DIR - Path to protocol output directory. If not provided <build_dir>/output one is used.
 # DEMO1_TEST_OUTPUT_DIR - Path to test output directory. If not provided <build_dir>/output_tools one is used.
 # DEMO1_TOOLS_OUTPUT_DIR - Path to tools output directory. If not provided <build_dir>/output_tools one is used.
+# DEMO1_TOOLS_QT_VER - Major Qt version to be used when building tools output. Defaults to 5
 # DEMO1_SWIG_OUTPUT_DIR - Path to swig output directory. If not provided <build_dir>/output_swig one is used.
 # DEMO1_SWIG_SRC_DIR - Path to the commsdsl2swig sources. If not provided local "swig_src" dir is used.
 # DEMO1_SWIG_LANGUAGES - Languages list to support by swig. If not provided "python java csharp" are chosen
@@ -66,6 +67,10 @@ endif ()
 
 if ("${DEMO1_EMSCRIPTEN_OUTPUT_DIR}" STREQUAL "")
     set (DEMO1_EMSCRIPTEN_OUTPUT_DIR "${CMAKE_BINARY_DIR}/output_emscripten")
+endif ()
+
+if ("${DEMO1_TOOLS_QT_VER}" STREQUAL "")
+    set (DEMO1_TOOLS_QT_VER 5)
 endif ()
 
 set (warn_as_error "--warn-as-err")
@@ -260,8 +265,8 @@ if (DEMO1_GEN_TOOLS)
                 -DCMAKE_GENERATOR=${CMAKE_GENERATOR} -DCMAKE_GENERATOR_PLATFORM=${CMAKE_GENERATOR_PLATFORM}
                 -DCMAKE_GENERATOR_TOOLSET=${CMAKE_GENERATOR_TOOLSET} -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}           
-                -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-                -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
+                -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
+                -DOPT_QT_MAJOR_VERSION=${DEMO1_TOOLS_QT_VER}
         )   
     endif ()
 endif ()
