@@ -25,8 +25,10 @@ environment:
     matrix:
         - CPP_STD: 11
           QT_MAJOR: 5
+          EXTRA_CONFIG: -DDEMO1_BUILD_TOOLS=OFF
         - CPP_STD: 14
           QT_MAJOR: 5
+          EXTRA_CONFIG: -DDEMO1_BUILD_TOOLS=OFF
         - CPP_STD: 17
           QT_MAJOR: 5
         - CPP_STD: 20
@@ -60,8 +62,9 @@ build_script:
     - cmake .. -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "%CMAKE_GENERATOR%" %PLATFORM_PARAM% ^
         -DBOOST_ROOT="%BOOST_DIR%" -DBoost_USE_STATIC_LIBS=ON -DCMAKE_INSTALL_PREFIX="%COMMON_INSTALL_DIR%" ^
         -DCMAKE_PREFIX_PATH="%COMMON_INSTALL_DIR%" -DCMAKE_CXX_STANDARD=%CPP_STD% ^
-        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_TOOLS_QT_VER=%QT_MAJOR%
-    - cmake --build . --config %CONFIGURATION% --target install
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_TOOLS_QT_VER=%QT_MAJOR% ^
+        %EXTRA_CONFIG%
+    - cmake --build . --config %CONFIGURATION% --target install --parallel %NUMBER_OF_PROCESSORS%
 
 
 
