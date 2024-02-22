@@ -73,6 +73,16 @@ if exist %COMMS_SRC_DIR%/.git (
     if %errorlevel% neq 0 exit /b %errorlevel%
 )
 
+echo "Building COMMS library..."
+mkdir "%COMMS_BUILD_DIR%"
+cd %COMMS_BUILD_DIR%
+cmake -G %GENERATOR% %PLATFORM_PARAM% -S %COMMS_SRC_DIR% -B %COMMS_BUILD_DIR% -DCMAKE_INSTALL_PREFIX=%COMMS_INSTALL_DIR% ^
+    -DCMAKE_BUILD_TYPE=%COMMON_BUILD_TYPE% -DCMAKE_CXX_STANDARD=%COMMON_CXX_STANDARD%
+if %errorlevel% neq 0 exit /b %errorlevel%
+cmake --build %COMMS_BUILD_DIR% --config %COMMON_BUILD_TYPE% --target install
+if %errorlevel% neq 0 exit /b %errorlevel%
+
+rem ----------------------------------------------------
 
 if exist %COMMSDSL_SRC_DIR%/.git (
     echo "Updating commsdsl..."
@@ -96,6 +106,8 @@ cmake -G %GENERATOR% %PLATFORM_PARAM% -S %COMMSDSL_SRC_DIR% -B %COMMSDSL_BUILD_D
 if %errorlevel% neq 0 exit /b %errorlevel%
 cmake --build %COMMSDSL_BUILD_DIR% --config %COMMON_BUILD_TYPE% --target install
 if %errorlevel% neq 0 exit /b %errorlevel%
+
+rem ----------------------------------------------------
 
 if %COMMON_CXX_STANDARD% LSS 17 (
     echo "Skipping build of cc_tools_qt due to old C++ standard"
