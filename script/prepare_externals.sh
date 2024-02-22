@@ -182,7 +182,7 @@ export VERBOSE=1
 build_comms
 build_commsdsl
 
-if [ -z "${CC_TOOLS_QT_SKIP}" -a "${CC_TOOLS_QT_SKIP}" != "0" ]; then
+if [ -z "${CC_TOOLS_QT_SKIP}" -o "${CC_TOOLS_QT_SKIP}" == "0" ]; then
     build_cc_tools_qt
 fi
 

@@ -365,7 +365,7 @@ jobs:
         COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
         CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}} 
         CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
-        CC_TOOLS_QT_SKIP: "${{ (matrix.cpp == 17 || (matrix.cpp >= 17 && matrix.cc_ver >= 15)) && '1' || '0' }}"
+        CC_TOOLS_QT_SKIP: "${{ (matrix.cpp < 17 || (matrix.cpp == 20 && matrix.cc_ver < 15)) && '1' || '0' }}"
 
     - name: Configure CMake
       shell: bash
@@ -378,11 +378,11 @@ jobs:
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
-        BUILD_TOOLS: "${{ (matrix.cpp == 17 || (matrix.cpp >= 17 && matrix.cc_ver >= 15)) && 'ON' || 'OFF' }}"
+        BUILD_TOOLS: "${{ (matrix.cpp < 17 || (matrix.cpp == 20 && matrix.cc_ver < 15)) && 'OFF' || 'ON' }}"
 
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build
       shell: bash
-      run: cmake --build . --config ${{matrix.type}} --target install 
+      run: cmake --build . --config ${{matrix.type}} --target install
       env:
         VERBOSE: 1 
