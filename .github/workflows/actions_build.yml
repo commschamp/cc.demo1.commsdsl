@@ -183,7 +183,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}}\
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} \
         -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON
       env:
         CC: gcc-${{matrix.cc_ver}}
@@ -305,7 +305,7 @@ jobs:
         COMMS_TAG: ${{env.COMMS_BRANCH}}
         COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
         CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}} 
-        CC_TOOLS_QT_SKIP: "${{ matrix.cpp == 17 && '1' || '0' }}"
+        CC_TOOLS_QT_SKIP: "${{ matrix.cpp < 17 && '1' || '0' }}"
 
     - name: Configure CMake
       shell: bash
