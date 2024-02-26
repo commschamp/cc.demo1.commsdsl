@@ -165,7 +165,7 @@ if (DEMO1_GEN_TEST)
         OUTPUT ${test_tmp_dir}
         DEPENDS ${schema_file} ${src_files} rm_test_tmp_tgt
         COMMAND ${COMMSDSL2TEST} ${warn_as_error} ${COMMSDSL2TEST_EXTRA_ARGS}
-            -o ${test_tmp_dir} ${schema_file}
+            -o ${test_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/test ${schema_file}
     )
 
     add_custom_target("test_output_tgt" ALL
