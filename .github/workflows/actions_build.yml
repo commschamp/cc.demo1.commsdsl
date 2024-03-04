@@ -3,9 +3,9 @@ name: Github Actions Build
 on: [push]
 
 env:
-  COMMS_BRANCH: v5.2.1
-  COMMSDSL_BRANCH: v6.2.4
-  CC_TOOLS_QT_BRANCH: v4.2.3
+  COMMS_BRANCH: v5.2.2
+  COMMSDSL_BRANCH: v6.3
+  CC_TOOLS_QT_BRANCH: v5.1
 
 jobs:
   build_gcc_old_ubuntu_20_04:
@@ -124,10 +124,11 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}}
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
+        BUILD_TOOLS: "${{ matrix.cpp >= 17 && 'ON' || 'OFF' }}"
 
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build
@@ -144,6 +145,7 @@ jobs:
         type: [Debug, Release, MinSizeRel]
         cc_ver: [9, 10, 11, 12]
         cpp: [11, 14, 17, 20]
+        qt_ver: [5, 6]
 
     steps:
     - uses: actions/checkout@v2
@@ -153,7 +155,7 @@ jobs:
       
     - name: Install Packages
       run: |
-        sudo apt install libqt5gui5 qtbase5-dev libboost-all-dev libxml2-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}} \
+        sudo apt install libqt${{matrix.qt_ver}}gui${{matrix.qt_ver}} qtbase5-dev qt6-base-dev libboost-all-dev libxml2-dev gcc-${{matrix.cc_ver}} g++-${{matrix.cc_ver}} \
         python3 libpython3-dev swig default-jdk default-jre emscripten
 
     - name: Create Build Environment
@@ -173,6 +175,7 @@ jobs:
         COMMS_TAG: ${{env.COMMS_BRANCH}}
         COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
         CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}}
+        CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
 
     - name: Configure CMake
       shell: bash
@@ -180,11 +183,12 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON \
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} \
         -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON
       env:
         CC: gcc-${{matrix.cc_ver}}
         CXX: g++-${{matrix.cc_ver}}
+        BUILD_TOOLS: "${{ matrix.cpp >= 17 && 'ON' || 'OFF' }}"
 
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build
@@ -247,10 +251,12 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_EXE_LINKER_FLAGS=-fuse-ld=gold -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install \
-        -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON
+        -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON \
+        -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}}
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
+        BUILD_TOOLS: "${{ matrix.cpp >= 17 && 'ON' || 'OFF' }}"
 
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build
@@ -299,6 +305,7 @@ jobs:
         COMMS_TAG: ${{env.COMMS_BRANCH}}
         COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
         CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}} 
+        CC_TOOLS_QT_SKIP: "${{ matrix.cpp < 17 && '1' || '0' }}"
 
     - name: Configure CMake
       shell: bash
@@ -306,10 +313,11 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}}
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
+        BUILD_TOOLS: "${{ matrix.cpp == 17 && 'ON' || 'OFF' }}"
 
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build
@@ -324,8 +332,9 @@ jobs:
       fail-fast: false
       matrix:
         type: [Debug, Release, MinSizeRel]
-        cc_ver: [12, 13, 14]
+        cc_ver: [12, 13, 14, 15]
         cpp: [11, 14, 17, 20]
+        qt_ver: [5, 6]
 
     steps:
     - uses: actions/checkout@v2
@@ -335,7 +344,7 @@ jobs:
       
     - name: Install Packages
       run: |
-        sudo apt install libqt5gui5 qtbase5-dev libboost-all-dev libxml2-dev clang-${{matrix.cc_ver}} \
+        sudo apt install libqt${{matrix.qt_ver}}gui${{matrix.qt_ver}} qtbase5-dev qt6-base-dev libboost-all-dev libxml2-dev clang-${{matrix.cc_ver}} \
         python3 libpython3-dev swig  default-jdk default-jre emscripten
 
     - name: Create Build Environment
@@ -355,6 +364,8 @@ jobs:
         COMMS_TAG: ${{env.COMMS_BRANCH}}
         COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
         CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}} 
+        CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
+        CC_TOOLS_QT_SKIP: "${{ (matrix.cpp < 17 || (matrix.cpp == 20 && matrix.cc_ver < 15)) && '1' || '0' }}"
 
     - name: Configure CMake
       shell: bash
@@ -362,11 +373,12 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
-        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON \
+        -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} \
         -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON
       env:
         CC: clang-${{matrix.cc_ver}}
         CXX: clang++-${{matrix.cc_ver}}
+        BUILD_TOOLS: "${{ (matrix.cpp < 17 || (matrix.cpp == 20 && matrix.cc_ver < 15)) && 'OFF' || 'ON' }}"
 
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build

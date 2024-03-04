@@ -21,8 +21,9 @@ option (DEMO1_BUILD_EXAMPLES "Build examples." ON)
 # DEMO1_PROT_OUTPUT_DIR - Path to protocol output directory. If not provided <build_dir>/output one is used.
 # DEMO1_TEST_OUTPUT_DIR - Path to test output directory. If not provided <build_dir>/output_tools one is used.
 # DEMO1_TOOLS_OUTPUT_DIR - Path to tools output directory. If not provided <build_dir>/output_tools one is used.
+# DEMO1_TOOLS_QT_VER - Major Qt version to be used when building tools output. Defaults to 5
 # DEMO1_SWIG_OUTPUT_DIR - Path to swig output directory. If not provided <build_dir>/output_swig one is used.
-# DEMO1_SWIG_SRC_DIR - Path to the commsdsl2swig sources. If not provided local "swig_src" dir is used.
+# DEMO1_SWIG_SRC_DIR - Path to the commsdsl2swig sources. If not provided local "src/swig" dir is used.
 # DEMO1_SWIG_LANGUAGES - Languages list to support by swig. If not provided "python java csharp" are chosen
 # DEMO1_EMSCRIPTEN_OUTPUT_DIR - Path to emscripten output directory. If not provided <build_dir>/output_emscripten one is used.
 # COMMSDSL2COMMS_EXTRA_ARGS - Extra arguments to pass to "commsdsl2comms"
@@ -31,8 +32,8 @@ option (DEMO1_BUILD_EXAMPLES "Build examples." ON)
 # COMMSDSL2SWIG_EXTRA_ARGS - Extra arguments to pass to "commsdsl2swig"
 # COMMSDSL2EMSCRIPTEN_EXTRA_ARGS - Extra arguments to pass to "commsdsl2emscripten"
 
-set (DEMO1_VERSION "2.5")
-set (DEMO1_MIN_COMMSDSL_VERSION "6.2.4")
+set (DEMO1_VERSION "2.6")
+set (DEMO1_MIN_COMMSDSL_VERSION "6.3")
 
 set (EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
 
@@ -57,7 +58,7 @@ if ("${DEMO1_SWIG_OUTPUT_DIR}" STREQUAL "")
 endif ()
 
 if ("${DEMO1_SWIG_SRC_DIR}" STREQUAL "")
-    set (DEMO1_SWIG_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/swig_src)
+    set (DEMO1_SWIG_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/swig)
 endif ()
 
 if ("${DEMO1_SWIG_LANGUAGES}" STREQUAL "")
@@ -66,6 +67,10 @@ endif ()
 
 if ("${DEMO1_EMSCRIPTEN_OUTPUT_DIR}" STREQUAL "")
     set (DEMO1_EMSCRIPTEN_OUTPUT_DIR "${CMAKE_BINARY_DIR}/output_emscripten")
+endif ()
+
+if ("${DEMO1_TOOLS_QT_VER}" STREQUAL "")
+    set (DEMO1_TOOLS_QT_VER 5)
 endif ()
 
 set (warn_as_error "--warn-as-err")
@@ -91,22 +96,15 @@ if (DEMO1_GEN_PROTOCOL)
         OUTPUT ${prot_tmp_dir}
         DEPENDS ${schema_file} ${src_files} rm_prot_tmp_tgt
         COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -V ${DEMO1_VERSION}
-            -o ${prot_tmp_dir} 
+            -o ${prot_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/protocol
             ${COMMSDSL2COMMS_EXTRA_ARGS}  ${schema_file}
-    )
-
-    set (readme_file "${prot_tmp_dir}/README.md")
-    add_custom_command(
-        OUTPUT ${readme_file}
-        DEPENDS ${prot_tmp_dir} 
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/readme.generated ${readme_file}
     )
 
     add_custom_target(${PROT_OUTPUT_TGT} ALL
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${prot_tmp_dir}" -DOUTPUT="${DEMO1_PROT_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"
-        DEPENDS ${prot_tmp_dir} ${readme_file} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS ${prot_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_PROTOCOL)
         execute_process(
@@ -167,7 +165,7 @@ if (DEMO1_GEN_TEST)
         OUTPUT ${test_tmp_dir}
         DEPENDS ${schema_file} ${src_files} rm_test_tmp_tgt
         COMMAND ${COMMSDSL2TEST} ${warn_as_error} ${COMMSDSL2TEST_EXTRA_ARGS}
-            -o ${test_tmp_dir} ${schema_file}
+            -o ${test_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/test ${schema_file}
     )
 
     add_custom_target("test_output_tgt" ALL
@@ -225,7 +223,8 @@ if (DEMO1_GEN_TOOLS)
         OUTPUT ${tools_tmp_dir}
         DEPENDS ${schema_file} ${src_files} rm_tools_tmp_tgt
         COMMAND ${COMMSDSL2TOOLS_QT} ${warn_as_error} ${COMMSDSL2TOOLS_QT_EXTRA_ARGS}
-            -o ${tools_tmp_dir} ${schema_file}
+            --protocol "::CC Demo1:Synthenic demo protocol to demonstrate definition of various fields as well as simple protocol framing.:cc.Demo1ProtocolPlugin"
+            -o ${tools_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/tools ${schema_file}
     )
 
     add_custom_target("tools_output_tgt" ALL
@@ -260,8 +259,8 @@ if (DEMO1_GEN_TOOLS)
                 -DCMAKE_GENERATOR=${CMAKE_GENERATOR} -DCMAKE_GENERATOR_PLATFORM=${CMAKE_GENERATOR_PLATFORM}
                 -DCMAKE_GENERATOR_TOOLSET=${CMAKE_GENERATOR_TOOLSET} -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}           
-                -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-                -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
+                -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
+                -DOPT_QT_MAJOR_VERSION=${DEMO1_TOOLS_QT_VER}
         )   
     endif ()
 endif ()
@@ -347,7 +346,7 @@ if (DEMO1_GEN_EMSCRIPTEN)
         OUTPUT ${emscripten_tmp_dir}
         DEPENDS ${schema_file} ${src_files} rm_emscripten_tmp_tgt
         COMMAND ${COMMSDSL2EMSCRIPTEN} ${warn_as_error} ${COMMSDSL2EMSCRIPTEN_EXTRA_ARGS}
-            -o ${emscripten_tmp_dir} ${schema_file}
+            -o ${emscripten_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/emscripten ${schema_file}
     )
 
     add_custom_target("emscripten_output_tgt" ALL
