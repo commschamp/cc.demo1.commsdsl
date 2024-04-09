@@ -18,7 +18,7 @@ jobs:
         cpp: [11]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Add repositories
       run: |
@@ -85,7 +85,7 @@ jobs:
           - cc_ver: 7
             cpp: 17            
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Add repositories
       run: |
@@ -148,7 +148,7 @@ jobs:
         qt_ver: [5, 6]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Prepare Install
       run: sudo apt-get update --fix-missing    
@@ -183,6 +183,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
+        -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} \
         -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} \
         -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON
       env:
@@ -211,7 +212,7 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Add repositories
       run: |
@@ -280,7 +281,7 @@ jobs:
             cpp: 20
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Prepare Install
       run: sudo apt-get update --fix-missing    
@@ -337,7 +338,7 @@ jobs:
         qt_ver: [5, 6]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Prepare Install
       run: sudo apt-get update --fix-missing    
@@ -373,6 +374,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
+        -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} \
         -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} \
         -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON
       env:
@@ -383,6 +385,67 @@ jobs:
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build
       shell: bash
+      run: cmake --build . --config ${{matrix.type}} --target install
+      env:
+        VERBOSE: 1 
+
+  build_msvc_2019:
+    runs-on: windows-2019
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [Debug, Release, MinSizeRel]
+        arch: [x64]
+        cpp: [11, 14, 17]
+        qt_ver: [5, 6]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build   
+
+    - name: Install Qt
+      if: ${{matrix.cpp >= 17}}
+      shell: cmd
+      run: |
+        choco install curl
+        curl -L https://github.com/martinrotter/qt-minimalistic-builds/releases/download/${{env.QT_VER}}/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64.7z -o ${{runner.workspace}}/qt.7z
+        7z x ${{runner.workspace}}/qt.7z -o${{runner.workspace}}/qt
+        echo QT_VER=${{env.QT_VER}} >>%GITHUB_ENV%
+        echo QTDIR=${{runner.workspace}}/qt/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64 >>%GITHUB_ENV%
+      env:
+        QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}        
+
+    - name: Prepare externals
+      shell: cmd
+      run: |
+        %GITHUB_WORKSPACE%\script\prepare_externals.bat
+      env:
+        BUILD_DIR: ${{runner.workspace}}/build
+        PLATFORM: ${{matrix.arch}}
+        EXTERNALS_DIR: ${{runner.workspace}}/externals
+        COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
+        COMMON_BUILD_TYPE: ${{matrix.type}}
+        COMMON_CXX_STANDARD: ${{matrix.cpp}}
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}} 
+        CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
+
+    - name: Configure CMake
+      shell: cmd
+      working-directory: ${{runner.workspace}}/build
+      run: |
+        cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
+          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.QTDIR}}" ^
+          -DCMAKE_CXX_STANDARD=${matrix.cpp}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
+          -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}}
+      env:
+        BUILD_TOOLS: "${{ matrix.cpp >= 17  && 'ON' || 'OFF' }}"
+
+    - name: Build Target 
+      working-directory: ${{runner.workspace}}/build
+      shell: cmd
       run: cmake --build . --config ${{matrix.type}} --target install
       env:
         VERBOSE: 1 
