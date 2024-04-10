@@ -8,6 +8,7 @@ rem COMMS_REPO - (Optional) Repository of the COMMS library
 rem COMMS_TAG - (Optional) Tag of the COMMS library
 rem COMMSDSL_REPO - (Optional) Repository of the commsdsl code generators
 rem COMMSDSL_TAG - (Optional) Tag of the commdsl
+rem COMMSDSL_PLATFORM - (Optional) Tag of the commdsl
 rem CC_TOOLS_QT_REPO - (Optional) Repository of the cc_tools_qt
 rem CC_TOOLS_QT_TAG - (Optional) Tag of the cc_tools_qt
 rem CC_TOOLS_QT_MAJOR_QT_VERSION - (Optional) Major version of the Qt library
@@ -33,6 +34,9 @@ if [%COMMS_TAG%] == [] set COMMS_TAG="master"
 if [%COMMSDSL_REPO%] == [] set COMMSDSL_REPO="https://github.com/commschamp/commsdsl.git"
 
 if [%COMMSDSL_TAG%] == [] set COMMSDSL_TAG="master"
+
+set COMMSDSL_PLATFORM_PARAM=%PLATFORM_PARAM%
+if NOT [%COMMSDSL_PLATFORM%] == [] set COMMSDSL_PLATFORM_PARAM=-A %COMMSDSL_PLATFORM%
 
 if [%CC_TOOLS_QT_REPO%] == [] set CC_TOOLS_QT_REPO="https://github.com/commschamp/cc_tools_qt.git"
 
@@ -101,7 +105,7 @@ if exist %COMMSDSL_SRC_DIR%/.git (
 echo "Building commsdsl ..."
 mkdir "%COMMSDSL_BUILD_DIR%"
 cd %COMMSDSL_BUILD_DIR%
-cmake %GENERATOR_PARAM% %PLATFORM_PARAM% -S %COMMSDSL_SRC_DIR% -B %COMMSDSL_BUILD_DIR% ^
+cmake %GENERATOR_PARAM% %COMMSDSL_PLATFORM_PARAM% -S %COMMSDSL_SRC_DIR% -B %COMMSDSL_BUILD_DIR% ^
     -DCMAKE_INSTALL_PREFIX=%COMMSDSL_INSTALL_DIR% -DCMAKE_BUILD_TYPE=%COMMON_BUILD_TYPE% ^
     -DCOMMSDSL_INSTALL_LIBRARY=OFF -DCOMMSDSL_BUILD_COMMSDSL2TEST=ON -DCOMMSDSL_BUILD_COMMSDSL2TOOLS_QT=ON
 if %errorlevel% neq 0 exit /b %errorlevel%

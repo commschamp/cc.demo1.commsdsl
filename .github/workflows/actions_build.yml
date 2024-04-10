@@ -438,6 +438,7 @@ jobs:
         COMMON_CXX_STANDARD: ${{matrix.cpp}}
         COMMS_TAG: ${{env.COMMS_TAG}}
         COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        COMMSDSL_PLATFORM: 'x64'
         CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}} 
         CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
         CC_TOOLS_QT_SKIP: ${{matrix.arch == 'Win32' && '1' || '0'}}
@@ -448,7 +449,7 @@ jobs:
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
           -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.QTDIR}}" ^
-          -DCMAKE_CXX_STANDARD=${matrix.cpp}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
           -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}}
       env:
         BUILD_TOOLS: "${{ matrix.cpp >= 17  && 'ON' || 'OFF' }}"
@@ -494,6 +495,7 @@ jobs:
         COMMON_CXX_STANDARD: ${{matrix.cpp}}
         COMMS_TAG: ${{env.COMMS_TAG}}
         COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        COMMSDSL_PLATFORM: 'x64'
         CC_TOOLS_QT_SKIP: 1
 
     - name: Configure CMake
@@ -502,7 +504,7 @@ jobs:
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
           -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install" ^
-          -DCMAKE_CXX_STANDARD=${matrix.cpp}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
           -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_BUILD_EXAMPLES=${{env.HAS_BOOST}}
       env:
         HAS_BOOST: "${{ matrix.arch == 'x64' && 'ON' || 'OFF' }}"          
