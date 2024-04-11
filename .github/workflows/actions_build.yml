@@ -3,9 +3,9 @@ name: Github Actions Build
 on: [push]
 
 env:
-  COMMS_BRANCH: v5.2.2
-  COMMSDSL_BRANCH: v6.3
-  CC_TOOLS_QT_BRANCH: v5.1
+  COMMS_TAG: v5.2.3
+  COMMSDSL_TAG: v6.3.2
+  CC_TOOLS_QT_TAG: v5.2.1
 
 jobs:
   build_gcc_old_ubuntu_20_04:
@@ -18,7 +18,7 @@ jobs:
         cpp: [11]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Add repositories
       run: |
@@ -47,8 +47,8 @@ jobs:
         COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
         COMMON_BUILD_TYPE: ${{matrix.type}}
         COMMON_CXX_STANDARD: ${{matrix.cpp}}
-        COMMS_TAG: ${{env.COMMS_BRANCH}}
-        COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
         CC_TOOLS_QT_SKIP: 1
 
     - name: Configure CMake
@@ -85,7 +85,7 @@ jobs:
           - cc_ver: 7
             cpp: 17            
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Add repositories
       run: |
@@ -114,9 +114,9 @@ jobs:
         COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
         COMMON_BUILD_TYPE: ${{matrix.type}}
         COMMON_CXX_STANDARD: ${{matrix.cpp}}
-        COMMS_TAG: ${{env.COMMS_BRANCH}}
-        COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
-        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}}
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}}
 
     - name: Configure CMake
       shell: bash
@@ -148,7 +148,7 @@ jobs:
         qt_ver: [5, 6]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Prepare Install
       run: sudo apt-get update --fix-missing    
@@ -172,9 +172,9 @@ jobs:
         COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
         COMMON_BUILD_TYPE: ${{matrix.type}}
         COMMON_CXX_STANDARD: ${{matrix.cpp}}
-        COMMS_TAG: ${{env.COMMS_BRANCH}}
-        COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
-        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}}
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}}
         CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
 
     - name: Configure CMake
@@ -183,6 +183,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
+        -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} \
         -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} \
         -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON
       env:
@@ -211,7 +212,7 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Add repositories
       run: |
@@ -241,9 +242,9 @@ jobs:
         COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
         COMMON_BUILD_TYPE: ${{matrix.type}}
         COMMON_CXX_STANDARD: ${{matrix.cpp}}
-        COMMS_TAG: ${{env.COMMS_BRANCH}}
-        COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
-        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}}
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}}
 
     - name: Configure CMake
       shell: bash
@@ -280,7 +281,7 @@ jobs:
             cpp: 20
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Prepare Install
       run: sudo apt-get update --fix-missing    
@@ -302,9 +303,9 @@ jobs:
         COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
         COMMON_BUILD_TYPE: ${{matrix.type}}
         COMMON_CXX_STANDARD: ${{matrix.cpp}}
-        COMMS_TAG: ${{env.COMMS_BRANCH}}
-        COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
-        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}} 
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}} 
         CC_TOOLS_QT_SKIP: "${{ matrix.cpp < 17 && '1' || '0' }}"
 
     - name: Configure CMake
@@ -337,7 +338,7 @@ jobs:
         qt_ver: [5, 6]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Prepare Install
       run: sudo apt-get update --fix-missing    
@@ -361,9 +362,9 @@ jobs:
         COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
         COMMON_BUILD_TYPE: ${{matrix.type}}
         COMMON_CXX_STANDARD: ${{matrix.cpp}}
-        COMMS_TAG: ${{env.COMMS_BRANCH}}
-        COMMSDSL_TAG: ${{env.COMMSDSL_BRANCH}}
-        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_BRANCH}} 
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}} 
         CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
         CC_TOOLS_QT_SKIP: "${{ (matrix.cpp < 17 || (matrix.cpp == 20 && matrix.cc_ver < 15)) && '1' || '0' }}"
 
@@ -373,6 +374,7 @@ jobs:
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install \
         -DCMAKE_PREFIX_PATH=${{runner.workspace}}/build/install -DCMAKE_CXX_STANDARD=${{matrix.cpp}} \
+        -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} \
         -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} \
         -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON
       env:
@@ -386,3 +388,130 @@ jobs:
       run: cmake --build . --config ${{matrix.type}} --target install
       env:
         VERBOSE: 1 
+
+  build_msvc_2019:
+    runs-on: windows-2019
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [Debug, Release, MinSizeRel]
+        arch: [Win32, x64]
+        cpp: [11, 14, 17]
+        qt_ver: [5, 6]
+        exclude:
+          - arch: Win32
+            qt_ver: 6           
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build   
+
+    - name: Install Qt
+      if: ${{matrix.cpp >= 17 && matrix.arch == 'x64'}}
+      shell: cmd
+      run: |
+        choco install curl
+        curl -L https://github.com/martinrotter/qt-minimalistic-builds/releases/download/${{env.QT_VER}}/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64.7z -o ${{runner.workspace}}/qt.7z
+        7z x ${{runner.workspace}}/qt.7z -o${{runner.workspace}}/qt
+        echo QT_VER=${{env.QT_VER}} >>%GITHUB_ENV%
+        echo QTDIR=${{runner.workspace}}/qt/qt-${{env.QT_VER}}-dynamic-msvc2019-x86_64 >>%GITHUB_ENV%
+      env:
+        QT_VER: ${{matrix.qt_ver == '5' && '5.15.3' || '6.2.2'}}     
+
+    - name: Install Boost
+      shell: cmd
+      run: |
+        choco install boost-msvc-14.2           
+
+    - name: Prepare externals
+      shell: cmd
+      run: |
+        %GITHUB_WORKSPACE%\script\prepare_externals.bat
+      env:
+        BUILD_DIR: ${{runner.workspace}}/build
+        PLATFORM: ${{matrix.arch}}
+        EXTERNALS_DIR: ${{runner.workspace}}/externals
+        COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
+        COMMON_BUILD_TYPE: ${{matrix.type}}
+        COMMON_CXX_STANDARD: ${{matrix.cpp}}
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        COMMSDSL_PLATFORM: 'x64'
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}} 
+        CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
+        CC_TOOLS_QT_SKIP: ${{matrix.arch == 'Win32' && '1' || '0'}}
+
+    - name: Configure CMake
+      shell: cmd
+      working-directory: ${{runner.workspace}}/build
+      run: |
+        cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
+          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.QTDIR}}" -DBoost_USE_STATIC_LIBS=ON ^
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
+          -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}}
+      env:
+        BUILD_TOOLS: "${{ matrix.cpp >= 17 && matrix.arch == 'x64'  && 'ON' || 'OFF' }}"
+
+    - name: Build Target 
+      working-directory: ${{runner.workspace}}/build
+      shell: cmd
+      run: cmake --build . --config ${{matrix.type}} --target install
+      env:
+        VERBOSE: 1 
+
+  build_msvc_2022:
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [Debug, Release, MinSizeRel]
+        arch: [Win32, x64]
+        cpp: [11, 14, 17, 20]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build   
+
+    - name: Install Boost
+      if: matrix.arch == 'x64'
+      shell: cmd
+      run: |
+        choco install boost-msvc-14.3
+
+    - name: Prepare externals
+      shell: cmd
+      run: |
+        %GITHUB_WORKSPACE%\script\prepare_externals.bat
+      env:
+        BUILD_DIR: ${{runner.workspace}}/build
+        PLATFORM: ${{matrix.arch}}
+        EXTERNALS_DIR: ${{runner.workspace}}/externals
+        COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
+        COMMON_BUILD_TYPE: ${{matrix.type}}
+        COMMON_CXX_STANDARD: ${{matrix.cpp}}
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        COMMSDSL_PLATFORM: 'x64'
+        CC_TOOLS_QT_SKIP: 1
+
+    - name: Configure CMake
+      shell: cmd
+      working-directory: ${{runner.workspace}}/build
+      run: |
+        cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
+          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install" -DBoost_USE_STATIC_LIBS=ON ^
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
+          -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_BUILD_EXAMPLES=${{env.HAS_BOOST}}
+      env:
+        HAS_BOOST: "${{ matrix.arch == 'x64' && 'ON' || 'OFF' }}"          
+
+    - name: Build Target 
+      working-directory: ${{runner.workspace}}/build
+      shell: cmd
+      run: cmake --build . --config ${{matrix.type}}
+      env:
+        VERBOSE: 1         

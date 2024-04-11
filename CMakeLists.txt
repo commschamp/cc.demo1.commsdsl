@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required (VERSION 3.10)
 project ("cc.demo1.commsdsl")
 
 option (DEMO1_WARN_AS_ERR "Treat compilation warnings as errors." ON)
@@ -32,8 +32,8 @@ option (DEMO1_BUILD_EXAMPLES "Build examples." ON)
 # COMMSDSL2SWIG_EXTRA_ARGS - Extra arguments to pass to "commsdsl2swig"
 # COMMSDSL2EMSCRIPTEN_EXTRA_ARGS - Extra arguments to pass to "commsdsl2emscripten"
 
-set (DEMO1_VERSION "2.6")
-set (DEMO1_MIN_COMMSDSL_VERSION "6.3")
+set (DEMO1_VERSION "2.7")
+set (DEMO1_MIN_COMMSDSL_VERSION "6.3.2")
 
 set (EXTERNALS_DIR "${PROJECT_SOURCE_DIR}/externals")
 
