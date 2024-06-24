@@ -203,6 +203,8 @@ if (DEMO1_GEN_TEST)
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}           
                 -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
                 -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
+                -DOPT_USE_CCACHE=${DEMO1_USE_CCACHE}
+                -DOPT_CCACHE_EXECUTABLE=${DEMO1_CCACHE_EXECUTABLE}                
         )
     endif ()
 endif ()
@@ -262,6 +264,8 @@ if (DEMO1_GEN_TOOLS)
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_EXE_LINKER_FLAGS=${CMAKE_EXE_LINKER_FLAGS}           
                 -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
                 -DOPT_QT_MAJOR_VERSION=${DEMO1_TOOLS_QT_VER}
+                -DOPT_USE_CCACHE=${DEMO1_USE_CCACHE}
+                -DOPT_CCACHE_EXECUTABLE=${DEMO1_CCACHE_EXECUTABLE}
         )   
     endif ()
 endif ()
@@ -323,6 +327,8 @@ if (DEMO1_GEN_SWIG)
                 -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
                 -DCMAKE_PREFIX_PATH=${combined_prefix_path_str}
                 -DOPT_SWIG_LANGUAGES=${combined_languages_str}
+                -DOPT_USE_CCACHE=${DEMO1_USE_CCACHE}
+                -DOPT_CCACHE_EXECUTABLE=${DEMO1_CCACHE_EXECUTABLE}
             INSTALL_COMMAND
                 ${CMAKE_COMMAND} -E echo "Skipping install"            
         )   
@@ -391,6 +397,8 @@ if (DEMO1_GEN_EMSCRIPTEN)
                 -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
                 -DOPT_MODULARIZE=ON
                 -DOPT_EXTRA_INCLUDE_DIRS=${extra_includes_path_str}
+                -DOPT_USE_CCACHE=${DEMO1_USE_CCACHE}
+                -DOPT_CCACHE_EXECUTABLE=${DEMO1_CCACHE_EXECUTABLE}
         )   
     endif ()
 endif ()
