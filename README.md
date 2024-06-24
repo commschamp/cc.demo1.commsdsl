@@ -28,8 +28,15 @@ where
 - **PAYLOAD** is message payload.
 - **CHECKSUM** is 16 bit **CRC-CCITTT** checksum of `SIZE | ID | PAYLOAD` bytes.
 
-The **generated** CMake project of this protocol definition is hosted and can be
-viewed at [cc.demo1.generated](https://github.com/commschamp/cc.demo1.generated)
+The code generators from the [commsdsl](https://github.com/commschamp/commsdsl)
+repository generate full CMake projects.
+Some of these **generated** projects are hosted as separate
+repositories that can be viewed and used independently.
+
+- [cc.demo1.generated](https://github.com/commschamp/cc.demo1.generated) - Protocol 
+    definition 
+- [cc.demo1_protocol.cc_tools_plugin](https://github.com/commschamp/cc.demo1_protocol.cc_tools_plugin) -
+    Protocol plugin for the [CommsChampion Tools](https://github.com/commschamp/cc_tools_qt).
 
 # Examples
 The [server](examples/server) prints values of received message's fields and
