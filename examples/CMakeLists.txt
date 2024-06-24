@@ -23,17 +23,20 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/common/include)
 set (cc_compile_file "${LibComms_DIR}/CC_Compile.cmake")
 include (${cc_compile_file})
 
-set (warn_as_err_opt)
+set (extra_opts)
 if (DEMO1_WARN_AS_ERR)
-    set (warn_as_err_opt WARN_AS_ERR)
+    list (APPEND extra_opts WARN_AS_ERR)
 endif()
 
-set (ccache_opt)
 if (DEMO1_USE_CCACHE)
-    set (ccache_opt USE_CCACHE)
+    list (APPEND extra_opts USE_CCACHE)
+
+    if (NOT "${DEMO1_CCACHE_EXECUTABLE}" STREQUAL "")
+        list (APPEND extra_opts CCACHE_EXECTUABLE "${DEMO1_CCACHE_EXECUTABLE}")
+    endif ()    
 endif()
 
-cc_compile(${warn_as_err_opt} ${ccache_opt})
+cc_compile(${extra_opts})
 cc_msvc_force_warn_opt("/W4")
 
 add_subdirectory (server)

@@ -11,6 +11,7 @@ export BUILD_DIR="${ROOT_DIR}/build.full.${CC}"
 export COMMON_INSTALL_DIR=${BUILD_DIR}/install
 export COMMON_BUILD_TYPE=Debug
 export EXTERNALS_DIR=${ROOT_DIR}/externals
+export COMMON_USE_CCACHE=ON
 mkdir -p ${BUILD_DIR}
 
 ${SCRIPT_DIR}/prepare_externals.sh
@@ -18,7 +19,8 @@ ${SCRIPT_DIR}/prepare_externals.sh
 cd ${BUILD_DIR}
 cmake .. -DCMAKE_INSTALL_PREFIX=${COMMON_INSTALL_DIR} \
     -DCMAKE_BUILD_TYPE=Debug -DDEMO1_BUILD_PROT_DOC=ON -DDEMO1_GEN_TEST=ON \
-    -DDEMO1_GEN_TOOLS=ON -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON "$@"
+    -DDEMO1_GEN_TOOLS=ON -DDEMO1_GEN_SWIG=ON -DDEMO1_GEN_EMSCRIPTEN=ON \
+    -DDEMO1_USE_CCACHE=ON "$@"
 
 procs=$(nproc)
 if [ -n "${procs}" ]; then
