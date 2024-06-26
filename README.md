@@ -28,8 +28,15 @@ where
 - **PAYLOAD** is message payload.
 - **CHECKSUM** is 16 bit **CRC-CCITTT** checksum of `SIZE | ID | PAYLOAD` bytes.
 
-The **generated** CMake project of this protocol definition is hosted and can be
-viewed at [cc.demo1.generated](https://github.com/commschamp/cc.demo1.generated)
+The code generators from the [commsdsl](https://github.com/commschamp/commsdsl)
+repository generate full CMake projects.
+Some of these **generated** projects are hosted as separate
+repositories that can be viewed and used independently.
+
+- [cc.demo1.generated](https://github.com/commschamp/cc.demo1.generated) - Protocol 
+    definition 
+- [cc.demo1_protocol.cc_tools_plugin](https://github.com/commschamp/cc.demo1_protocol.cc_tools_plugin) -
+    Protocol plugin for the [CommsChampion Tools](https://github.com/commschamp/cc_tools_qt).
 
 # Examples
 The [server](examples/server) prints values of received message's fields and
@@ -51,7 +58,7 @@ mentioned available parameters, which can be used in addition to standard
 ones provided by CMake itself, to modify the default build. 
 
 This project also has external dependencies, it requires an access to
-the [COMMS Library](https://github.com/commschamp/commsdsl) and
+the [COMMS Library](https://github.com/commschamp/comms) and
 code generators from [commsdsl](https://github.com/commschamp/commsdsl) projects.
 These dependencies are expected to be built independenty and access to them provided
 via standard **CMAKE_PREFIX_PATH** and/or **CMAKE_PROGRAM_PATH** (for the binaries of
@@ -59,8 +66,7 @@ the code generators). There are also scripts (
 [script/prepare_externals.sh](script/prepare_externals.sh) for Linux and
 [script/prepare_externals.bat](script/prepare_externals.bat) for Windows)
 which can help in preparation of these dependencies. They are also used
-in configuration of the [github actions](.github/workflows/actions_build.yml) and
-[appveyor](.appveyor.yml).
+in configuration of the [github actions](.github/workflows/actions_build.yml).
 
 The project's cmake configuration [options](CMakeLists.txt) allow building
 bindings to other high level programming languages using [swig](https://www.swig.org/)
