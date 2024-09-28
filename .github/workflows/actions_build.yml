@@ -593,7 +593,7 @@ jobs:
     - name: Build Target 
       working-directory: ${{runner.workspace}}/build
       shell: cmd
-      run: cmake --build . --config ${{matrix.type}} --target install
+      run: cmake --build . --config ${{matrix.type}}
       env:
         VERBOSE: 1 
 
