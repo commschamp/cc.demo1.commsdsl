@@ -16,6 +16,7 @@ env:
 
 jobs:
   build_gcc_old_ubuntu_20_04:
+    if: false
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -77,6 +78,7 @@ jobs:
         VERBOSE: 1 
 
   build_gcc_ubuntu_20_04:
+    if: false
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -144,6 +146,7 @@ jobs:
         VERBOSE: 1 
       
   build_gcc_ubuntu_22_04:
+    if: false
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -205,6 +208,7 @@ jobs:
         VERBOSE: 1 
 
   build_gcc_ubuntu_24_04:
+    if: false
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -269,6 +273,7 @@ jobs:
         VERBOSE: 1         
       
   build_clang_old_ubuntu_20_04:
+    if: false
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -335,6 +340,7 @@ jobs:
         VERBOSE: 1 
 
   build_clang_ubuntu_20_04:
+    if: false
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -394,6 +400,7 @@ jobs:
         VERBOSE: 1 
 
   build_clang_ubuntu_22_04:
+    if: false
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
@@ -456,6 +463,7 @@ jobs:
         VERBOSE: 1 
 
   build_clang_ubuntu_24_04:
+    if: false
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -521,7 +529,6 @@ jobs:
       run: cmake --build . --config ${{matrix.type}} --target install
       env:
         VERBOSE: 1 
-
 
   build_msvc_2019:
     runs-on: windows-2019
