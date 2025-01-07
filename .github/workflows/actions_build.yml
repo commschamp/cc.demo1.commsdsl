@@ -11,8 +11,8 @@ env:
   COMMS_TAG: develop
   COMMSDSL_TAG: develop
   CC_TOOLS_QT_TAG: develop
-  WIN_BOOST_VERSION: "1.86.0"
-  WIN_BOOST_DIR: "C:/local/boost_1_86_0"
+  WIN_BOOST_VERSION: "1.87.0"
+  WIN_BOOST_DIR: "C:/local/boost_1_87_0"
 
 jobs:
   build_gcc_old_ubuntu_20_04:
