@@ -33,10 +33,8 @@ Client::Client(
 bool Client::start()
 {
     boost::asio::ip::tcp::resolver resolver(m_io);
-    auto query = boost::asio::ip::tcp::resolver::query(m_server, std::to_string(m_port));
-
     boost::system::error_code ec;
-    auto iter = resolver.resolve(query, ec);
+    auto iter = resolver.resolve(m_server, std::to_string(m_port), ec);
     if (ec) {
         std::cerr << "ERROR: Failed to resolve \"" << m_server << ':' << m_port << "\" " <<
             "with error: " << ec.message() << std::endl; 
