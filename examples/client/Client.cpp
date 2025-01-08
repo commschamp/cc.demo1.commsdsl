@@ -34,14 +34,19 @@ bool Client::start()
 {
     boost::asio::ip::tcp::resolver resolver(m_io);
     boost::system::error_code ec;
-    auto iter = resolver.resolve(m_server, std::to_string(m_port), ec);
+    auto resolveResult = resolver.resolve(m_server, std::to_string(m_port), ec);
     if (ec) {
         std::cerr << "ERROR: Failed to resolve \"" << m_server << ':' << m_port << "\" " <<
             "with error: " << ec.message() << std::endl; 
         return false;
     }
 
-    auto endpoint = iter->endpoint();
+    if (resolveResult.empty()) {
+        std::cerr << "ERROR: No resolution result" << std::endl; 
+        return false;        
+    }
+
+    auto endpoint = resolveResult.begin()->endpoint();
     m_socket.connect(endpoint, ec);
     if (ec) {
         std::cerr << "ERROR: Failed to connect to \"" << endpoint << "\" " <<
