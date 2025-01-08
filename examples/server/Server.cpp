@@ -39,7 +39,7 @@ bool Server::start()
         return false;
     }
 
-    m_acceptor.listen(Socket::max_connections, ec);
+    m_acceptor.listen(Socket::max_listen_connections, ec);
     if (ec) {
         std::cerr << "Failed to listen on port " << m_port << " with error: " << ec.message() << std::endl;
         return false;
