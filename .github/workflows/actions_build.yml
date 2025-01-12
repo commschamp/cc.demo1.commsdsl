@@ -8,9 +8,9 @@ on:
       - '**'
 
 env:
-  COMMS_TAG: 5.3
-  COMMSDSL_TAG: 7.0
-  CC_TOOLS_QT_TAG: 6.0
+  COMMS_TAG: v5.3
+  COMMSDSL_TAG: v7.0
+  CC_TOOLS_QT_TAG: v6.0
   WIN_BOOST_VERSION: "1.87.0"
   WIN_BOOST_DIR: "C:/local/boost_1_87_0"
 
