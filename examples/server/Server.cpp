@@ -1,3 +1,10 @@
+//
+// Copyright 2018 - 2025 (C). Alex Robenko. All rights reserved.
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 #include "Server.h"
 
 #include <algorithm>
@@ -39,7 +46,7 @@ bool Server::start()
         return false;
     }
 
-    m_acceptor.listen(Socket::max_connections, ec);
+    m_acceptor.listen(Socket::max_listen_connections, ec);
     if (ec) {
         std::cerr << "Failed to listen on port " << m_port << " with error: " << ec.message() << std::endl;
         return false;

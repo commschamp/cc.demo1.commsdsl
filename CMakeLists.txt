@@ -33,8 +33,8 @@ option (DEMO1_BUILD_EXAMPLES "Build examples." ON)
 # COMMSDSL2SWIG_EXTRA_ARGS - Extra arguments to pass to "commsdsl2swig"
 # COMMSDSL2EMSCRIPTEN_EXTRA_ARGS - Extra arguments to pass to "commsdsl2emscripten"
 
-set (DEMO1_VERSION "2.9")
-set (DEMO1_MIN_COMMSDSL_VERSION "6.3.4")
+set (DEMO1_VERSION "3.0")
+set (DEMO1_MIN_COMMSDSL_VERSION "7.0")
 
 if (("${CMAKE_VERSION}" VERSION_GREATER_EQUAL "3.30") AND
     (NOT DEFINED CMAKE_POLICY_DEFAULT_CMP0167))
@@ -99,23 +99,15 @@ if (DEMO1_GEN_PROTOCOL)
 
     set (prot_tmp_dir "${CMAKE_BINARY_DIR}/output.tmp")
 
-    add_custom_target(rm_prot_tmp_tgt
+    add_custom_target(${PROT_OUTPUT_TGT} ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${prot_tmp_dir}
-    )
-
-    add_custom_command(
-        OUTPUT ${prot_tmp_dir}
-        DEPENDS ${schema_file} ${src_files} rm_prot_tmp_tgt
         COMMAND ${COMMSDSL2COMMS} ${warn_as_error} -V ${DEMO1_VERSION}
             -o ${prot_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/protocol
-            ${COMMSDSL2COMMS_EXTRA_ARGS}  ${schema_file}
-    )
-
-    add_custom_target(${PROT_OUTPUT_TGT} ALL
+            ${COMMSDSL2COMMS_EXTRA_ARGS}  ${schema_file}        
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${prot_tmp_dir}" -DOUTPUT="${DEMO1_PROT_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"
-        DEPENDS ${prot_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_PROTOCOL)
         execute_process(
@@ -168,22 +160,14 @@ if (DEMO1_GEN_TEST)
 
     set (test_tmp_dir "${CMAKE_BINARY_DIR}/output_test.tmp")
 
-    add_custom_target(rm_test_tmp_tgt
+    add_custom_target("test_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${test_tmp_dir}
-    )
-
-    add_custom_command(
-        OUTPUT ${test_tmp_dir}
-        DEPENDS ${schema_file} ${src_files} rm_test_tmp_tgt
         COMMAND ${COMMSDSL2TEST} ${warn_as_error} ${COMMSDSL2TEST_EXTRA_ARGS}
             -o ${test_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/test ${schema_file}
-    )
-
-    add_custom_target("test_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${test_tmp_dir}" -DOUTPUT="${DEMO1_TEST_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"        
-        DEPENDS ${test_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_TEST)
         if ((NOT DEMO1_GEN_PROTOCOL) OR (NOT DEMO1_BUILD_PROTOCOL))
@@ -228,23 +212,15 @@ if (DEMO1_GEN_TOOLS)
 
     set (tools_tmp_dir "${CMAKE_BINARY_DIR}/output_tools.tmp")
 
-    add_custom_target(rm_tools_tmp_tgt
+    add_custom_target("tools_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${tools_tmp_dir}
-    )
-
-    add_custom_command(
-        OUTPUT ${tools_tmp_dir}
-        DEPENDS ${schema_file} ${src_files} rm_tools_tmp_tgt
         COMMAND ${COMMSDSL2TOOLS_QT} ${warn_as_error} ${COMMSDSL2TOOLS_QT_EXTRA_ARGS}
             --protocol "::CC Demo1:Synthenic demo protocol to demonstrate definition of various fields as well as simple protocol framing.:cc.Demo1ProtocolPlugin"
-            -o ${tools_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/tools ${schema_file}
-    )
-
-    add_custom_target("tools_output_tgt" ALL
+            -o ${tools_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/tools ${schema_file}        
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${tools_tmp_dir}" -DOUTPUT="${DEMO1_TOOLS_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"        
-        DEPENDS ${tools_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_TOOLS)
         if ((NOT DEMO1_GEN_PROTOCOL) OR (NOT DEMO1_BUILD_PROTOCOL))
@@ -289,22 +265,14 @@ if (DEMO1_GEN_SWIG)
 
     set (swig_tmp_dir "${CMAKE_BINARY_DIR}/output_swig.tmp")
 
-    add_custom_target(rm_swig_tmp_tgt
+    add_custom_target("swig_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${swig_tmp_dir}
-    )
-
-    add_custom_command(
-        OUTPUT ${swig_tmp_dir}
-        DEPENDS ${schema_file} ${src_files} rm_swig_tmp_tgt
         COMMAND ${COMMSDSL2SWIG} ${warn_as_error} ${COMMSDSL2SWIG_EXTRA_ARGS}
             -c ${DEMO1_SWIG_SRC_DIR} -o ${swig_tmp_dir} ${schema_file}
-    )
-
-    add_custom_target("swig_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${swig_tmp_dir}" -DOUTPUT="${DEMO1_SWIG_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"        
-        DEPENDS ${swig_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_SWIG)
         if ((NOT DEMO1_GEN_PROTOCOL) OR (NOT DEMO1_BUILD_PROTOCOL))
@@ -355,22 +323,14 @@ if (DEMO1_GEN_EMSCRIPTEN)
 
     set (emscripten_tmp_dir "${CMAKE_BINARY_DIR}/output_emscripten.tmp")
 
-    add_custom_target(rm_emscripten_tmp_tgt
+    add_custom_target("emscripten_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${emscripten_tmp_dir}
-    )
-
-    add_custom_command(
-        OUTPUT ${emscripten_tmp_dir}
-        DEPENDS ${schema_file} ${src_files} rm_emscripten_tmp_tgt
         COMMAND ${COMMSDSL2EMSCRIPTEN} ${warn_as_error} ${COMMSDSL2EMSCRIPTEN_EXTRA_ARGS}
             -o ${emscripten_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/emscripten ${schema_file}
-    )
-
-    add_custom_target("emscripten_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${emscripten_tmp_dir}" -DOUTPUT="${DEMO1_EMSCRIPTEN_OUTPUT_DIR}"
             -P "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake"        
-        DEPENDS ${emscripten_tmp_dir} "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
+        DEPENDS "${CMAKE_CURRENT_LIST_DIR}/CopyGenerated.cmake" ${schema_file})
 
     if (DEMO1_BUILD_EMSCRIPTEN)
         if ((NOT DEMO1_GEN_PROTOCOL) OR (NOT DEMO1_BUILD_PROTOCOL))
