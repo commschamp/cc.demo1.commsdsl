@@ -214,7 +214,7 @@ if (DEMO1_GEN_TOOLS)
 
     add_custom_target("tools_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${tools_tmp_dir}
-        COMMAND ${COMMSDSL2TOOLS_QT} ${warn_as_error} ${COMMSDSL2TOOLS_QT_EXTRA_ARGS}
+        COMMAND ${COMMSDSL2TOOLS_QT} ${warn_as_error} -V ${DEMO1_VERSION} ${COMMSDSL2TOOLS_QT_EXTRA_ARGS}
             --protocol "::CC Demo1:Synthenic demo protocol to demonstrate definition of various fields as well as simple protocol framing.:cc.Demo1ProtocolPlugin"
             -o ${tools_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/tools ${schema_file}        
         COMMAND ${CMAKE_COMMAND}
@@ -267,7 +267,7 @@ if (DEMO1_GEN_SWIG)
 
     add_custom_target("swig_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${swig_tmp_dir}
-        COMMAND ${COMMSDSL2SWIG} ${warn_as_error} ${COMMSDSL2SWIG_EXTRA_ARGS}
+        COMMAND ${COMMSDSL2SWIG} ${warn_as_error} -V ${DEMO1_VERSION} ${COMMSDSL2SWIG_EXTRA_ARGS}
             -c ${DEMO1_SWIG_SRC_DIR} -o ${swig_tmp_dir} ${schema_file}
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${swig_tmp_dir}" -DOUTPUT="${DEMO1_SWIG_OUTPUT_DIR}"
@@ -325,7 +325,7 @@ if (DEMO1_GEN_EMSCRIPTEN)
 
     add_custom_target("emscripten_output_tgt" ALL
         COMMAND ${CMAKE_COMMAND} -E remove_directory ${emscripten_tmp_dir}
-        COMMAND ${COMMSDSL2EMSCRIPTEN} ${warn_as_error} ${COMMSDSL2EMSCRIPTEN_EXTRA_ARGS}
+        COMMAND ${COMMSDSL2EMSCRIPTEN} ${warn_as_error} -V ${DEMO1_VERSION} ${COMMSDSL2EMSCRIPTEN_EXTRA_ARGS}
             -o ${emscripten_tmp_dir} -c ${PROJECT_SOURCE_DIR}/src/emscripten ${schema_file}
         COMMAND ${CMAKE_COMMAND}
             -DGENERATED="${emscripten_tmp_dir}" -DOUTPUT="${DEMO1_EMSCRIPTEN_OUTPUT_DIR}"
