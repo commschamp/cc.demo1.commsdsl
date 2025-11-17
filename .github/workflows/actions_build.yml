@@ -357,4 +357,61 @@ jobs:
       shell: cmd
       run: cmake --build . --config ${{matrix.type}}
       env:
-        VERBOSE: 1         
+        VERBOSE: 1  
+
+build_msvc_2025:
+    runs-on: windows-2025
+    strategy:
+      fail-fast: false
+      matrix:
+        type: [Debug, Release]
+        arch: [Win32, x64]
+        cpp: [11, 14, 17, 20, 23]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{runner.workspace}}/build   
+
+    - name: Install Boost
+      if: matrix.arch == 'x64'
+      shell: cmd
+      run: |
+        choco install boost-msvc-14.3 --version=${{env.WIN_BOOST_VERSION}}
+        echo BOOST_DIR=${{env.WIN_BOOST_DIR}}/lib64-msvc-14.3/cmake >>%GITHUB_ENV%
+
+    - name: Prepare externals
+      shell: cmd
+      run: |
+        %GITHUB_WORKSPACE%\script\prepare_externals.bat
+      env:
+        BUILD_DIR: ${{runner.workspace}}/build
+        PLATFORM: ${{matrix.arch}}
+        EXTERNALS_DIR: ${{runner.workspace}}/externals
+        COMMON_INSTALL_DIR: ${{runner.workspace}}/build/install
+        COMMON_BUILD_TYPE: ${{matrix.type}}
+        COMMON_CXX_STANDARD: ${{matrix.cpp}}
+        COMMS_TAG: ${{env.COMMS_TAG}}
+        COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
+        COMMSDSL_PLATFORM: 'x64'
+        CC_TOOLS_QT_SKIP: 1
+
+    - name: Configure CMake
+      shell: cmd
+      working-directory: ${{runner.workspace}}/build
+      run: |
+        cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
+          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.BOOST_DIR}}" ^
+          -DCMAKE_POLICY_DEFAULT_CMP0167=NEW ^
+          -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
+          -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_BUILD_EXAMPLES=${{env.HAS_BOOST}}
+      env:
+        HAS_BOOST: "${{ matrix.arch == 'x64' && 'ON' || 'OFF' }}"          
+
+    - name: Build Target 
+      working-directory: ${{runner.workspace}}/build
+      shell: cmd
+      run: cmake --build . --config ${{matrix.type}}
+      env:
+        VERBOSE: 1                 
