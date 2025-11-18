@@ -287,7 +287,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
-          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.BOOST_DIR}}" ^
+          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.QTDIR}};${{env.BOOST_DIR}}" ^
           -DCMAKE_POLICY_DEFAULT_CMP0167=NEW ^
           -DCMAKE_CXX_STANDARD=${{matrix.cpp}} -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
           -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_C=ON -DDEMO1_GEN_LATEX=ON -DDEMO1_BUILD_LATEX=OFF ^
@@ -350,7 +350,7 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: |
         cmake %GITHUB_WORKSPACE% -A ${{matrix.arch}} -DCMAKE_BUILD_TYPE=${{matrix.type}} -DCMAKE_INSTALL_PREFIX=install ^
-          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.BOOST_DIR}}" ^
+          -DCMAKE_PREFIX_PATH="${{runner.workspace}}/build/install;${{env.QTDIR}};${{env.BOOST_DIR}}" ^
           -DCMAKE_POLICY_DEFAULT_CMP0167=NEW ^
           -DCMAKE_CXX_STANDARD=${{matrix.cpp}}  -DDEMO1_GEN_TOOLS=ON -DDEMO1_BUILD_TOOLS=${{env.BUILD_TOOLS}} -DDEMO1_TOOLS_QT_VER=${{matrix.qt_ver}} ^
           -DDEMO1_GEN_PROTOCOL=ON -DDEMO1_GEN_TEST=ON -DDEMO1_GEN_C=ON -DDEMO1_GEN_LATEX=ON -DDEMO1_BUILD_LATEX=OFF ^
