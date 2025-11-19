@@ -23,7 +23,7 @@
 namespace cc_demo1
 {
 
-namespace client    
+namespace client
 {
 
 class Client
@@ -33,21 +33,21 @@ public:
 
     bool start();
 
-    using InputMsg = 
+    using InputMsg =
         cc_demo1::Message<
             comms::option::ReadIterator<const std::uint8_t*>,
-            comms::option::Handler<Client> 
+            comms::option::Handler<Client>
         >;
 
     CC_DEMO1_ALIASES_FOR_CLIENT_INPUT_MESSAGES_DEFAULT_OPTIONS(In,Msg,InputMsg);
-    
+
     void handle(InAckMsg& msg);
     void handle(InputMsg&);
 
 private:
     using Socket = boost::asio::ip::tcp::socket;
 
-    using OutputMsg = 
+    using OutputMsg =
         cc_demo1::Message<
             comms::option::WriteIterator<std::back_insert_iterator<std::vector<std::uint8_t> > >,
             comms::option::LengthInfoInterface,
@@ -58,7 +58,6 @@ private:
     using AllInputMessages = cc_demo1::input::ClientInputMessages<InputMsg>;
 
     using Frame = cc_demo1::frame::Frame<InputMsg, AllInputMessages>;
-
 
     void readDataFromServer();
     void readDataFromStdin();

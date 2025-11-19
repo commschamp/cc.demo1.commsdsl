@@ -23,9 +23,9 @@ namespace client
 {
 
 Client::Client(
-        common::boost_wrap::io& io, 
+        common::boost_wrap::io& io,
         const std::string& server,
-        std::uint16_t port)    
+        std::uint16_t port)
   : m_io(io),
     m_socket(io),
     m_timer(io),
@@ -44,20 +44,20 @@ bool Client::start()
     auto resolveResult = resolver.resolve(m_server, std::to_string(m_port), ec);
     if (ec) {
         std::cerr << "ERROR: Failed to resolve \"" << m_server << ':' << m_port << "\" " <<
-            "with error: " << ec.message() << std::endl; 
+            "with error: " << ec.message() << std::endl;
         return false;
     }
 
     if (resolveResult.empty()) {
-        std::cerr << "ERROR: No resolution result" << std::endl; 
-        return false;        
+        std::cerr << "ERROR: No resolution result" << std::endl;
+        return false;
     }
 
     auto endpoint = resolveResult.begin()->endpoint();
     m_socket.connect(endpoint, ec);
     if (ec) {
         std::cerr << "ERROR: Failed to connect to \"" << endpoint << "\" " <<
-            "with error: " << ec.message() << std::endl; 
+            "with error: " << ec.message() << std::endl;
         return false;
     }
 
@@ -70,7 +70,7 @@ bool Client::start()
 void Client::handle(InAckMsg& msg)
 {
     if (msg.field_msgId().value() != m_sentId) {
-        std::cerr << "WARNING: Ack for the wrong ID: " << 
+        std::cerr << "WARNING: Ack for the wrong ID: " <<
             static_cast<unsigned>(msg.field_msgId().value()) << std::endl;
         return;
     }
@@ -107,7 +107,7 @@ void Client::readDataFromServer()
 
             m_inputBuf.insert(m_inputBuf.end(), m_readBuf.begin(), m_readBuf.begin() + bytesCount);
             processInput();
-            readDataFromServer();            
+            readDataFromServer();
         });
 }
 
@@ -116,7 +116,7 @@ void Client::readDataFromStdin()
     std::cout << "\nEnter (new) message ID to send: " << std::endl;
     m_sentId = cc_demo1::MsgId_Ack;
     do {
-        // Unfortunatelly Windows doesn't provide an easy way to 
+        // Unfortunatelly Windows doesn't provide an easy way to
         // asynchronously read from stdin with boost::asio,
         // read synchronously. DON'T COPY-PASTE TO PRODUCTION CODE!!!
         unsigned msgId = 0U;
@@ -254,18 +254,18 @@ void Client::sendLists()
     msg.field_f2().value()[0].value() = 0xffffffff;
 
     msg.field_f3().value().resize(1);
-    msg.field_f3().value()[0].field_mem1().value() = 5;    
-    msg.field_f3().value()[0].field_mem2().value() = -5;    
+    msg.field_f3().value()[0].field_mem1().value() = 5;
+    msg.field_f3().value()[0].field_mem2().value() = -5;
 
     msg.field_f4().value().resize(1);
-    msg.field_f4().value()[0].field_mem1().value() = 7;    
-    msg.field_f4().value()[0].field_mem2().value() = "hello";      
+    msg.field_f4().value()[0].field_mem1().value() = 7;
+    msg.field_f4().value()[0].field_mem2().value() = "hello";
 
     msg.field_f5().value().resize(2);
-    msg.field_f5().value()[0].field_mem1().value() = 10;    
-    msg.field_f5().value()[0].field_mem2().value() = -10;     
-    msg.field_f5().value()[1].field_mem1().value() = 15;    
-    msg.field_f5().value()[1].field_mem2().value() = -15;     
+    msg.field_f5().value()[0].field_mem1().value() = 10;
+    msg.field_f5().value()[0].field_mem2().value() = -10;
+    msg.field_f5().value()[1].field_mem1().value() = 15;
+    msg.field_f5().value()[1].field_mem2().value() = -15;
 
     msg.doRefresh(); // Bring message into consistent state, i.e. update F2Len
     sendMessage(msg);
@@ -275,7 +275,7 @@ void Client::sendOptionals()
 {
     cc_demo1::message::Optionals<OutputMsg> msg;
     // Note usage of .field() to get access to inner field of optional
-    msg.field_f2().field().value() = 0xaaaa; 
+    msg.field_f2().field().value() = 0xaaaa;
     msg.field_f3().field().value() = 0xbbbb;
 
     msg.field_flags().setBitValue_F2Exists(true);
@@ -292,14 +292,14 @@ void Client::sendVariants()
     props1Vec[0].initField_prop1().field_val().value() = 1234;
     props1Vec[1].initField_prop3().field_val().value() = "hello";
     props1Vec[2].initField_prop2().field_val().value() = 5555555;
-    
+
     auto& props2Vec = msg.field_props2().value();
     props2Vec.resize(3U);
     props2Vec[0].initField_prop1().field_val().value() = 4321;
     props2Vec[1].initField_prop3().field_val().value() = "blabla";
     props2Vec[2].initField_prop2().field_val().value() = 88888;
     msg.doRefresh(); // Bring all the lengths into consistent state
-    
+
     sendMessage(msg);
 }
 

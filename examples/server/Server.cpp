@@ -16,7 +16,7 @@ namespace cc_demo1
 namespace server
 {
 
-Server::Server(common::boost_wrap::io& io, std::uint16_t port)    
+Server::Server(common::boost_wrap::io& io, std::uint16_t port)
   : m_io(io),
     m_acceptor(io),
     m_socket(io),
@@ -50,7 +50,7 @@ bool Server::start()
     if (ec) {
         std::cerr << "Failed to listen on port " << m_port << " with error: " << ec.message() << std::endl;
         return false;
-    }    
+    }
 
     acceptNewConnection();
     return true;
@@ -63,7 +63,7 @@ void Server::acceptNewConnection()
         [this](const boost::system::error_code& ec2)
         {
             if (ec2) {
-                std::cerr << "WARNING: failed to accept new connection with error: " << 
+                std::cerr << "WARNING: failed to accept new connection with error: " <<
                     ec2.message() << std::endl;
                 acceptNewConnection();
                 return;
@@ -75,7 +75,7 @@ void Server::acceptNewConnection()
             newSession->setTerminateCallback(
                 [this, sessionPtr]()
                 {
-                    auto iter = 
+                    auto iter =
                         std::find_if(
                             m_sessions.begin(), m_sessions.end(),
                             [sessionPtr](auto& s)
