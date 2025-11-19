@@ -280,6 +280,7 @@ jobs:
         COMMS_TAG: ${{env.COMMS_TAG}}
         COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
         COMMSDSL_PLATFORM: 'x64'
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}} 
         CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
         CC_TOOLS_QT_SKIP: ${{matrix.arch == 'Win32' && '1' || '0'}}
 
@@ -356,6 +357,7 @@ jobs:
         COMMS_TAG: ${{env.COMMS_TAG}}
         COMMSDSL_TAG: ${{env.COMMSDSL_TAG}}
         COMMSDSL_PLATFORM: 'x64'
+        CC_TOOLS_QT_TAG: ${{env.CC_TOOLS_QT_TAG}} 
         CC_TOOLS_QT_MAJOR_QT_VERSION: ${{matrix.qt_ver}}
         CC_TOOLS_QT_SKIP: ${{matrix.arch == 'Win32' && '1' || '0'}}
 
