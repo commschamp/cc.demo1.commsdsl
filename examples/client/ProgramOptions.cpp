@@ -15,7 +15,7 @@ namespace cc_demo1
 {
 
 namespace client
-{    
+{
 
 namespace
 {

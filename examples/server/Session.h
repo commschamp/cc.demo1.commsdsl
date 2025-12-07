@@ -31,10 +31,10 @@ public:
     using Socket = boost::asio::ip::tcp::socket;
     using TermCallback = std::function<void ()>;
 
-    explicit Session(common::boost_wrap::io& io, Socket&& sock) 
+    explicit Session(common::boost_wrap::io& io, Socket&& sock)
       : m_io(io),
         m_socket(std::move(sock)),
-        m_remote(m_socket.remote_endpoint()) 
+        m_remote(m_socket.remote_endpoint())
     {
     };
 
@@ -46,7 +46,7 @@ public:
 
     void start();
 
-    using InputMsg = 
+    using InputMsg =
         cc_demo1::Message<
             comms::option::ReadIterator<const std::uint8_t*>,
             comms::option::Handler<Session>,
@@ -70,7 +70,7 @@ public:
 
 private:
 
-    using OutputMsg = 
+    using OutputMsg =
         cc_demo1::Message<
             comms::option::WriteIterator<std::back_insert_iterator<std::vector<std::uint8_t> > >,
             comms::option::LengthInfoInterface,
@@ -87,12 +87,12 @@ private:
 
     common::boost_wrap::io& m_io;
     Socket m_socket;
-    TermCallback m_termCb;    
+    TermCallback m_termCb;
     boost::array<std::uint8_t, 1024> m_readBuf;
     std::vector<std::uint8_t> m_inputBuf;
     Frame m_frame;
     Socket::endpoint_type m_remote;
-}; 
+};
 
 using SessionPtr = std::unique_ptr<Session>;
 

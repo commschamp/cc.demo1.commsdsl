@@ -21,7 +21,6 @@ if (WIN32)
         ${name} Setupapi.lib Ws2_32.lib imm32.lib winmm.lib)
 endif ()
 
-
 add_dependencies(${name} ${PROT_OUTPUT_TGT})
 
 install(TARGETS ${name}

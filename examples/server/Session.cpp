@@ -56,7 +56,6 @@ private:
             >::type
         >::type;
 
-
     template <typename TField>
     static void printInternal(const TField& field, DataTag)
     {
@@ -129,13 +128,13 @@ void Session::start()
 
             m_inputBuf.insert(m_inputBuf.end(), m_readBuf.begin(), m_readBuf.begin() + bytesCount);
             processInput();
-            start();            
+            start();
         });
 }
 
 void Session::handle (InSimpleInts& msg)
 {
-    std::cout << 
+    std::cout <<
         "\tF1 = " << static_cast<int>(msg.field_f1().value()) << '\n' <<
         "\tF2 = " << static_cast<unsigned>(msg.field_f2().value()) << '\n' <<
         "\tF3 = " << msg.field_f3().value() << '\n' <<
@@ -152,35 +151,35 @@ void Session::handle (InSimpleInts& msg)
 
 void Session::handle (InScaledInts& msg)
 {
-    std::cout << 
+    std::cout <<
         '\t' << msg.field_lat().name() << ": "
-            "raw = " << msg.field_lat().value() << 
+            "raw = " << msg.field_lat().value() <<
             "; deg = " << comms::units::getDegrees<float>(msg.field_lat()) <<
             "; rad = " << comms::units::getRadians<float>(msg.field_lat()) << '\n' <<
-        '\t' << msg.field_lon().name() << ": " 
-            "raw = " << msg.field_lon().value() << 
+        '\t' << msg.field_lon().name() << ": "
+            "raw = " << msg.field_lon().value() <<
             "; deg = " << comms::units::getDegrees<float>(msg.field_lon()) <<
             "; rad = " << comms::units::getRadians<float>(msg.field_lon()) << '\n' <<
-        '\t' << msg.field_height().name() << ": " 
-            "raw = " << msg.field_height().value() << 
+        '\t' << msg.field_height().name() << ": "
+            "raw = " << msg.field_height().value() <<
             "; mm = " << comms::units::getMillimeters<float>(msg.field_height()) <<
-            "; cm = " << comms::units::getCentimeters<float>(msg.field_height()) << 
+            "; cm = " << comms::units::getCentimeters<float>(msg.field_height()) <<
             "; m = " << comms::units::getMeters<float>(msg.field_height()) << '\n' <<
-        '\t' << msg.field_someScaledVal().name() << ": " 
-            "raw = " << msg.field_someScaledVal().value() << 
-            "; scaled = " << msg.field_someScaledVal().getScaled<float>() << '\n' <<            
+        '\t' << msg.field_someScaledVal().name() << ": "
+            "raw = " << msg.field_someScaledVal().value() <<
+            "; scaled = " << msg.field_someScaledVal().getScaled<float>() << '\n' <<
         std::endl;
     sendAck(msg.doGetId());
 }
 
 void Session::handle(InFloats& msg)
 {
-    std::cout << 
+    std::cout <<
         '\t' << msg.field_timeout().name() << ": " << msg.field_timeout().value() << '\n' <<
-        '\t' << msg.field_distance().name() << ": " 
-            "raw = " << msg.field_distance().value() << 
+        '\t' << msg.field_distance().name() << ": "
+            "raw = " << msg.field_distance().value() <<
             "; mm = " << comms::units::getMillimeters<float>(msg.field_distance()) <<
-            "; cm = " << comms::units::getCentimeters<float>(msg.field_distance()) << 
+            "; cm = " << comms::units::getCentimeters<float>(msg.field_distance()) <<
             "; m = " << comms::units::getMeters<float>(msg.field_distance()) << '\n' <<
         std::endl;
     sendAck(msg.doGetId());
@@ -188,7 +187,7 @@ void Session::handle(InFloats& msg)
 
 void Session::handle(InEnums& msg)
 {
-    std::cout << 
+    std::cout <<
         '\t' << msg.field_f1().name() << " = " << static_cast<unsigned>(msg.field_f1().value()) << '\n' <<
         '\t' << msg.field_f2().name() << " = " << static_cast<int>(msg.field_f2().value()) << '\n' <<
         '\t' << msg.field_f3().name() << " = 0x" << std::hex  << static_cast<unsigned>(msg.field_f3().value()) << std::dec << '\n' <<
@@ -200,11 +199,11 @@ void Session::handle(InEnums& msg)
 void Session::handle(InSets& msg)
 {
     std::cout << std::hex <<
-        '\t' << msg.field_f1().name() << " = 0x" << static_cast<unsigned>(msg.field_f1().value()) << 
+        '\t' << msg.field_f1().name() << " = 0x" << static_cast<unsigned>(msg.field_f1().value()) <<
             " (valid = " << std::boolalpha << msg.field_f1().valid() << ")\n" <<
-        '\t' << msg.field_f2().name() << " = 0x" << msg.field_f2().value() << 
+        '\t' << msg.field_f2().name() << " = 0x" << msg.field_f2().value() <<
             " (valid = " << std::boolalpha << msg.field_f2().valid() << ")\n" <<
-        '\t' << msg.field_f3().name() << " = 0x" << msg.field_f3().value() << 
+        '\t' << msg.field_f3().name() << " = 0x" << msg.field_f3().value() <<
             " (valid = " << std::boolalpha << msg.field_f3().valid() << ")\n" <<
         std::endl;
     sendAck(msg.doGetId());
@@ -212,20 +211,20 @@ void Session::handle(InSets& msg)
 
 void Session::handle(InBitfields& msg)
 {
-    std::cout << 
+    std::cout <<
         '\t' << msg.field_f1().name() << ":\n" <<
-        "\t\t" << msg.field_f1().field_mem1().name() << " = "  << 
-            static_cast<unsigned>(msg.field_f1().field_mem1().value()) << '\n' << 
-        "\t\t" << msg.field_f1().field_mem2().name() << std::hex << 
-            " = 0x"  << msg.field_f1().field_mem2().value() << std::dec << '\n' << 
-        "\t\t" << msg.field_f1().field_mem3().name() << " = " << static_cast<unsigned>(msg.field_f1().field_mem3().value()) << '\n' << 
+        "\t\t" << msg.field_f1().field_mem1().name() << " = "  <<
+            static_cast<unsigned>(msg.field_f1().field_mem1().value()) << '\n' <<
+        "\t\t" << msg.field_f1().field_mem2().name() << std::hex <<
+            " = 0x"  << msg.field_f1().field_mem2().value() << std::dec << '\n' <<
+        "\t\t" << msg.field_f1().field_mem3().name() << " = " << static_cast<unsigned>(msg.field_f1().field_mem3().value()) << '\n' <<
         std::endl;
     sendAck(msg.doGetId());
 }
 
 void Session::handle(InStrings& msg)
 {
-    std::cout << 
+    std::cout <<
         '\t' << msg.field_f1().name() << " = " << msg.field_f1().value() << '\n' <<
         '\t' << msg.field_f2().name() << " = " << msg.field_f2().value() << '\n' <<
         '\t' << msg.field_f3().name() << " = " << msg.field_f3().value() << '\n' <<
@@ -276,7 +275,7 @@ void Session::handle(InLists& msg)
         }
         std::cout << "{" << v.field_mem1().value() << ", " << v.field_mem2().value() << "}";
     }
-    std::cout << "}\n";    
+    std::cout << "}\n";
 
     std::cout << '\t' << msg.field_f4().name() << " = {";
     for (auto& v : msg.field_f4().value()) {
@@ -285,7 +284,7 @@ void Session::handle(InLists& msg)
         }
         std::cout << "{" << v.field_mem1().value() << ", " << v.field_mem2().value() << "}";
     }
-    std::cout << "}\n";    
+    std::cout << "}\n";
 
     std::cout << '\t' << msg.field_f5().name() << " = {";
     for (auto& v : msg.field_f5().value()) {
@@ -294,7 +293,7 @@ void Session::handle(InLists& msg)
         }
         std::cout << "{" << v.field_mem1().value() << ", " << v.field_mem2().value() << "}";
     }
-    std::cout << "}\n";            
+    std::cout << "}\n";
 
     std::cout << std::endl;
     sendAck(msg.doGetId());
@@ -303,11 +302,11 @@ void Session::handle(InLists& msg)
 void Session::handle(InOptionals& msg)
 {
     std::cout << std::hex <<
-        '\t' << msg.field_flags().name() << " = 0x" << 
+        '\t' << msg.field_flags().name() << " = 0x" <<
             static_cast<unsigned>(msg.field_flags().value()) << '\n' <<
-        '\t' << msg.field_f2().name() << " = 0x" << msg.field_f2().field().value() << 
+        '\t' << msg.field_f2().name() << " = 0x" << msg.field_f2().field().value() <<
             " (exists = " << std::boolalpha << msg.field_f2().doesExist() << ")\n" <<
-        '\t' << msg.field_f3().name() << " = 0x" << msg.field_f3().field().value() << 
+        '\t' << msg.field_f3().name() << " = 0x" << msg.field_f3().field().value() <<
             " (exists = " << std::boolalpha << msg.field_f3().doesExist() << ")\n" <<
         std::dec << std::endl;
     sendAck(msg.doGetId());
@@ -324,7 +323,7 @@ void Session::handle(InVariants& msg)
         p.currentFieldExec(VariantPrintHelper());
     }
     std::cout << "}\n" << std::endl;
-    
+
     std::cout << '\t' << msg.field_props2().name() << " = {";
     for (auto& p : msg.field_props2().value()) {
         if (&p != &msg.field_props2().value().front()) {
@@ -334,7 +333,7 @@ void Session::handle(InVariants& msg)
         p.currentFieldExec(Variant2PrintHelper());
     }
     std::cout << "}\n" << std::endl;
-    
+
     sendAck(msg.doGetId());
 }
 
@@ -348,7 +347,7 @@ void Session::terminateSession()
     std::cout << "Terminating session to " << m_remote << std::endl;
     if (m_termCb) {
         common::boost_wrap::post(
-            m_io,        
+            m_io,
             [this]()
             {
                 m_termCb();
