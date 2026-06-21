@@ -359,7 +359,7 @@ void Session::processInput()
 {
     if (!m_inputBuf.empty()) {
         auto consumed = comms::processAllWithDispatch(&m_inputBuf[0], m_inputBuf.size(), m_frame, *this);
-        m_inputBuf.erase(m_inputBuf.begin(), m_inputBuf.begin() + consumed);
+        m_inputBuf.erase(m_inputBuf.begin(), m_inputBuf.begin() + static_cast<int>(consumed));
     }
 }
 
