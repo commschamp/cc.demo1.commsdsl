@@ -7,6 +7,7 @@
 
 #include "Client.h"
 
+#include <chrono>
 #include <cmath>
 #include <iostream>
 #include <map>
@@ -333,7 +334,7 @@ void Client::sendMessage(const OutputMsg& msg)
 
 void Client::waitForAck()
 {
-    m_timer.expires_from_now(boost::posix_time::seconds(2));
+    m_timer.expires_from_now(std::chrono::seconds(2));
     m_timer.async_wait(
         [this](const boost::system::error_code& ec)
         {

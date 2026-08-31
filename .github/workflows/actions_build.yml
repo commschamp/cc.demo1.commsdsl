@@ -8,9 +8,9 @@ on:
       - '**'
 
 env:
-  COMMS_TAG: v5.5.2
+  COMMS_TAG: develop
   COMMSDSL_TAG: develop
-  CC_TOOLS_QT_TAG: v6.0.8
+  CC_TOOLS_QT_TAG: develop
   WIN_BOOST_VERSION: "1.87.0"
   WIN_BOOST_DIR: "C:/local/boost_1_87_0"
 
@@ -234,7 +234,7 @@ jobs:
 
     - name: Install Packages
       run: |
-        sudo apt install libqt${{matrix.qt_ver}}gui${{matrix.qt_ver}} qtbase5-dev qt6-base-dev libboost-all-dev libxml2-dev clang-${{matrix.cc_ver}} \
+        sudo apt install qt${{matrix.qt_ver}}-base-dev libboost-all-dev libxml2-dev clang-${{matrix.cc_ver}} \
         python3 libpython3-dev swig  default-jdk default-jre emscripten
 
     - name: Create Build Environment

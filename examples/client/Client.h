@@ -78,7 +78,7 @@ private:
 
     common::boost_wrap::io& m_io;
     Socket m_socket;
-    boost::asio::deadline_timer m_timer;
+    boost::asio::steady_timer m_timer;
     std::string m_server;
     std::uint16_t m_port = 0U;
     Frame m_frame;
